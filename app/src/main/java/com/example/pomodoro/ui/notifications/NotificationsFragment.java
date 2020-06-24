@@ -1,6 +1,7 @@
 package com.example.pomodoro.ui.notifications;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.pomodoro.R;
 
 public class NotificationsFragment extends Fragment {
+    private static final String TAG = "NotificationsFragment";
 
     private NotificationsViewModel notificationsViewModel;
     private String prj;
@@ -32,6 +34,7 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
+                Log.d(TAG, "onChanged: project= "+prj);
                 textView.setText(prj);
             }
         });

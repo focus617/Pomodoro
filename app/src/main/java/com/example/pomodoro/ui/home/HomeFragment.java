@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
                 // 从目标 home 向 定时器 notification 传递参数：项目
                 String prj = "Learn Android";
                 HomeFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
-                        HomeFragmentDirections.actionNavigationHomeToNavigationNotifications(prj);
+                        HomeFragmentDirections.actionNavigationHomeToNavigationNotifications().setProject(prj);
                 Navigation.findNavController(test_btn).navigate(action);
             }
         });

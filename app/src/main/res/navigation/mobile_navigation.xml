@@ -29,7 +29,8 @@
         <argument
             android:name="project"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="默认工作" />
     </fragment>
 
     <fragment

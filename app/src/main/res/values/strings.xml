@@ -3,4 +3,6 @@
     <string name="title_home">目标</string>
     <string name="title_dashboard">统计面板</string>
     <string name="title_notifications">定时器</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
 </resources>

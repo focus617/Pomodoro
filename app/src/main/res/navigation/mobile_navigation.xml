@@ -13,11 +13,11 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_notifications"
             app:destination="@id/navigation_notifications"/>
-<!-- 添加动画效果，问题是没有找到以下资源的定义
-            app:enterAnim="@anim/slide_in_right"
+<!--        app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />-->
+            app:popExitAnim="@anim/slide_out_right" -->
+        <!-- 添加动画效果，问题是自定义的动画效果太Low-->
 
     </fragment>
 

@@ -5,4 +5,5 @@
     <string name="title_notifications">定时器</string>
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
+    <string name="add_alarm">添加项目</string>
 </resources>

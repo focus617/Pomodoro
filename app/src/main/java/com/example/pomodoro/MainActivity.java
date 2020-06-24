@@ -49,17 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent intent;
 
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Toast.makeText(this, "You clicked settings", Toast.LENGTH_SHORT).show();
-                break;
+                return true;
             case R.id.action_about:
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
-                break;
+                return true;
             default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 }

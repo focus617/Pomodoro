@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="40sp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_marginRight="20dp"
+        android:layout_marginBottom="@dimen/fab_bottom_margin"
+        android:layout_marginRight="@dimen/fab_right_margin"
         android:autofillHints="@string/add_alarm"
         app:srcCompat="@android:drawable/ic_menu_add" />
 

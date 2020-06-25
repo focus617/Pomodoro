@@ -6,4 +6,12 @@
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
     <string name="add_alarm">添加项目</string>
+    <string name="start">开始</string>
+    <string name="pause">暂停</string>
+    <string name="resume">继续</string>
+    <string name="reset">重启</string>
+    <string name="lap">计时</string>
+    <string name="hour">小时</string>
+    <string name="minute">分钟</string>
+    <string name="second">秒</string>
 </resources>

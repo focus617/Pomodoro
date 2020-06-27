@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
 
@@ -76,6 +77,11 @@ public class NotificationsFragment extends Fragment {
                 allTime = Integer.parseInt(etHour.getText().toString()) * 60
                         * 60 + Integer.parseInt(etMin.getText().toString()) * 60
                         + Integer.parseInt(etSec.getText().toString());
+
+                NotificationsFragmentDirections.ActionNavigationNotificationsToNavigationCountdown action =
+                        NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown().setAllTime(allTime);
+                Navigation.findNavController(btnStart).navigate(action);
+
                 allTimeCount = allTime;
                 startTimer();
                 btnStart.setVisibility(View.GONE);

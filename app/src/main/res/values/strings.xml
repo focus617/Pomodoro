@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Pomodoro</string>
     <string name="title_home">目标</string>
+    <string name="title_notifications">活动</string>
+    <string name="title_countdown">定时器</string>
     <string name="title_dashboard">统计面板</string>
-    <string name="title_notifications">定时器</string>
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
     <string name="add_alarm">添加项目</string>
@@ -14,4 +15,5 @@
     <string name="hour">小时</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
+
 </resources>

@@ -73,10 +73,10 @@ public class NotificationsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                allTimeCount = Integer.parseInt(etHour.getText().toString()) * 60
+                allTime = Integer.parseInt(etHour.getText().toString()) * 60
                         * 60 + Integer.parseInt(etMin.getText().toString()) * 60
                         + Integer.parseInt(etSec.getText().toString());
-                allTime = allTimeCount;
+                allTimeCount = allTime;
                 startTimer();
                 btnStart.setVisibility(View.GONE);
                 btnPause.setVisibility(View.VISIBLE);

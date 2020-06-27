@@ -31,13 +31,9 @@ public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
     private static final String PROJECT_KEY = "Project_Key";
 
-    private static final int MSG_WHAT_TIME_IS_UP = 1;
-    private static final int MSG_WHAT_TIME_TICK = 2;
 
     private String prj;
-    private int allTime, allTimeCount = 0;
-    private Timer timer = new Timer();
-    private TimerTask timerTask = null;
+    private int allTime;
     private Button btnStart, btnPause, btnResume, btnReset;
     private EditText etHour, etMin, etSec;
 
@@ -56,12 +52,12 @@ public class NotificationsFragment extends Fragment {
             // 获取目标 homeFragment 传递的参数： project
             prj = NotificationsFragmentArgs.fromBundle(getArguments()).getProject();
         }
-        Toast.makeText(getActivity(), "Current Project: "+prj, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Current Project: " + prj, Toast.LENGTH_SHORT).show();
 
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                Log.d(TAG, "onChanged: project= "+prj);
+                Log.d(TAG, "onChanged: project= " + prj);
             }
         });
 
@@ -69,6 +65,9 @@ public class NotificationsFragment extends Fragment {
         btnPause = (Button) root.findViewById(R.id.btnPause);
         btnResume = (Button) root.findViewById(R.id.btnResume);
         btnReset = (Button) root.findViewById(R.id.btnReset);
+        btnPause.setVisibility(View.GONE);
+        btnReset.setVisibility(View.GONE);
+        btnResume.setVisibility(View.GONE);
 
         btnStart.setOnClickListener(new View.OnClickListener() {
 
@@ -81,48 +80,8 @@ public class NotificationsFragment extends Fragment {
                 NotificationsFragmentDirections.ActionNavigationNotificationsToNavigationCountdown action =
                         NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown().setAllTime(allTime);
                 Navigation.findNavController(btnStart).navigate(action);
-
-                allTimeCount = allTime;
-                startTimer();
-                btnStart.setVisibility(View.GONE);
-                btnPause.setVisibility(View.VISIBLE);
-                btnReset.setVisibility(View.VISIBLE);
             }
         });
-
-        btnPause.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                stopTimer();
-                btnPause.setVisibility(View.GONE);
-                btnResume.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnResume.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startTimer();
-                btnPause.setVisibility(View.VISIBLE);
-                btnResume.setVisibility(View.GONE);
-            }
-        });
-
-        btnReset.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                stopTimer();
-                allTimeCount = allTime;
-                startTimer();
-
-                btnResume.setVisibility(View.GONE);
-                btnPause.setVisibility(View.VISIBLE);
-            }
-        });
-
 
         etHour = (EditText) root.findViewById(R.id.etHour);
         etMin = (EditText) root.findViewById(R.id.etMin);
@@ -222,12 +181,8 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-
         btnStart.setVisibility(View.VISIBLE);
         btnStart.setEnabled(false);
-        btnPause.setVisibility(View.GONE);
-        btnResume.setVisibility(View.GONE);
-        btnReset.setVisibility(View.GONE);
 
         return root;
 
@@ -249,83 +204,4 @@ public class NotificationsFragment extends Fragment {
                 || (!TextUtils.isEmpty(etSec.getText()) && Integer
                 .parseInt(etSec.getText().toString()) > 0));
     }
-
-    private void startTimer() {
-        Log.d(TAG, "startTimer: ");
-
-        if (timerTask == null) {
-
-            timerTask = new TimerTask() {
-
-                @Override
-                public void run() {
-                    Log.d(TAG, "run: timer count--");
-
-                    allTimeCount--;
-
-                    // 每秒通知 Activity - TimerView 减一
-                    handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
-                    if (allTimeCount <= 0) {
-                        Log.d(TAG, "run: time is up!");
-
-                        handler.sendEmptyMessage(MSG_WHAT_TIME_IS_UP);
-                        stopTimer();
-                    }
-                }
-            };
-            timer.schedule(timerTask, 1000, 1000);
-        }
-    }
-
-    private void stopTimer() {
-        Log.d(TAG, "stopTimer: ");
-
-        if (timerTask != null) {
-            timerTask.cancel();
-            timerTask = null;
-        }
-    }
-
-    // 因为 TimerTask在一个线程里面，需要使用Handler通知 Activity 来更新计时器UI
-    private Handler handler = new Handler() {
-
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case MSG_WHAT_TIME_TICK:
-                    int hour = allTimeCount / 60 / 60;
-                    int min = (allTimeCount / 60) % 60;
-                    int sec = allTimeCount % 60;
-
-                    etHour.setText(hour + "");
-                    etMin.setText(min + "");
-                    etSec.setText(sec + "");
-                    break;
-
-                case MSG_WHAT_TIME_IS_UP:
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Time is up!")
-                            .setMessage("Time is up!")
-                            .setNegativeButton("Cancel", null).show();
-
-                    btnReset.setVisibility(View.GONE);
-                    btnResume.setVisibility(View.GONE);
-                    btnPause.setVisibility(View.GONE);
-                    btnStart.setVisibility(View.VISIBLE);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        ;
-    };
-
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
-        super.onDestroy();
-        timer.cancel();
-    }
-
 }

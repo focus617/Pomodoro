@@ -50,14 +50,12 @@ public class NotificationsFragment extends Fragment {
         // 获取目标 homeFragment 传递的参数： project
         prj = NotificationsFragmentArgs.fromBundle(getArguments()).getProject();
 
-/*      final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Log.d(TAG, "onChanged: project= "+prj);
-                textView.setText(prj);
             }
-        });*/
+        });
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);
@@ -303,5 +301,11 @@ public class NotificationsFragment extends Fragment {
         ;
     };
 
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
+        timer.cancel();
+    }
 
 }

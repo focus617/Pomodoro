@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +32,8 @@ public class CountDownFragment extends Fragment {
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
     private Button btnStart, btnPause, btnResume, btnReset;
-    private EditText etHour, etMin, etSec;
+    private ProgressBar prgbar;
+    private TextView etHour, etMin, etSec;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class CountDownFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragment_countdown, container, false);
 
         Toast.makeText(getActivity(), "CountDown Fragment", Toast.LENGTH_SHORT).show();
 
@@ -89,15 +92,19 @@ public class CountDownFragment extends Fragment {
             }
         });
 
-        etHour = (EditText) root.findViewById(R.id.etHour);
-        etMin = (EditText) root.findViewById(R.id.etMin);
-        etSec = (EditText) root.findViewById(R.id.etSec);
-
-        etHour.setText("00");
-        etMin.setText("00");
-        etSec.setText("00");
+        etHour = (TextView) root.findViewById(R.id.etHour);
+        etMin = (TextView) root.findViewById(R.id.etMin);
+        etSec = (TextView) root.findViewById(R.id.etSec);
 
         allTimeCount = allTime;
+        int hour = allTimeCount / 60 / 60;
+        int min = (allTimeCount / 60) % 60;
+        int sec = allTimeCount % 60;
+
+        etHour.setText(hour + "");
+        etMin.setText(min + "");
+        etSec.setText(sec + "");
+
         startTimer();
 
         return root;

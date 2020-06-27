@@ -66,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                Toast.makeText(this, "You clicked unknown", Toast.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                return NavigationUI.onNavDestinationSelected(item, navController)
+                        || super.onOptionsItemSelected(item);
         }
     }
 }

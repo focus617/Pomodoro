@@ -85,6 +85,13 @@ public class CountDownFragment extends Fragment {
             public void onClick(View v) {
                 stopTimer();
                 allTimeCount = allTime;
+                int hour = allTimeCount / 60 / 60;
+                int min = (allTimeCount / 60) % 60;
+                int sec = allTimeCount % 60;
+
+                etHour.setText(hour + "");
+                etMin.setText(min + "");
+                etSec.setText(sec + "");
                 startTimer();
 
                 btnResume.setVisibility(View.GONE);

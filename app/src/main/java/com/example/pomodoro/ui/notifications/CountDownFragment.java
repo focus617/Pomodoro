@@ -1,6 +1,9 @@
 package com.example.pomodoro.ui.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -34,12 +37,13 @@ public class CountDownFragment extends Fragment {
     private Button btnStart, btnPause, btnResume, btnReset;
     private ProgressBar prgbar;
     private TextView etHour, etMin, etSec;
+    private MediaPlayer mp;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         allTime = CountDownFragmentArgs.fromBundle(getArguments()).getAllTime();
-        Log.d(TAG, String.format("onCreateView: allTime=%d",allTime));
+        Log.d(TAG, String.format("onCreateView: allTime=%d", allTime));
     }
 
     @Override
@@ -156,6 +160,7 @@ public class CountDownFragment extends Fragment {
     // 因为 TimerTask在一个线程里面，需要使用Handler通知 Activity 来更新计时器UI
     private Handler handler = new Handler() {
 
+        @SuppressLint("HandlerLeak")
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_WHAT_TIME_TICK:
@@ -169,10 +174,20 @@ public class CountDownFragment extends Fragment {
                     break;
 
                 case MSG_WHAT_TIME_IS_UP:
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Time is up!")
-                            .setMessage("Time is up!")
-                            .setNegativeButton("Cancel", null).show();
+                    mp = MediaPlayer.create(getContext(), R.raw.music);
+                    mp.start();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("定时器");
+                    builder.setMessage("闹钟时间到了!");
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d(TAG, "AlertDialog.onCancel: ");
+                            mp.stop();
+                            mp.release();
+                        }
+                    });
+                    builder.show();
 
                     btnReset.setVisibility(View.VISIBLE);
                     btnResume.setVisibility(View.GONE);

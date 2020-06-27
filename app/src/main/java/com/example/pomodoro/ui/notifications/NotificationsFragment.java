@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,12 +28,13 @@ import java.util.TimerTask;
 
 public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
+    private static final String PROJECT_KEY = "Project_Key";
 
     private static final int MSG_WHAT_TIME_IS_UP = 1;
     private static final int MSG_WHAT_TIME_TICK = 2;
 
     private String prj;
-    private int allTimeCount = 0;
+    private int allTime, allTimeCount = 0;
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
     private Button btnStart, btnPause, btnResume, btnReset;
@@ -47,8 +49,13 @@ public class NotificationsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        // 获取目标 homeFragment 传递的参数： project
-        prj = NotificationsFragmentArgs.fromBundle(getArguments()).getProject();
+        if (savedInstanceState != null) {
+            prj = savedInstanceState.getString(PROJECT_KEY);
+        } else {
+            // 获取目标 homeFragment 传递的参数： project
+            prj = NotificationsFragmentArgs.fromBundle(getArguments()).getProject();
+        }
+        Toast.makeText(getActivity(), "Current Project: "+prj, Toast.LENGTH_SHORT).show();
 
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -66,6 +73,10 @@ public class NotificationsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                allTimeCount = Integer.parseInt(etHour.getText().toString()) * 60
+                        * 60 + Integer.parseInt(etMin.getText().toString()) * 60
+                        + Integer.parseInt(etSec.getText().toString());
+                allTime = allTimeCount;
                 startTimer();
                 btnStart.setVisibility(View.GONE);
                 btnPause.setVisibility(View.VISIBLE);
@@ -92,19 +103,17 @@ public class NotificationsFragment extends Fragment {
                 btnResume.setVisibility(View.GONE);
             }
         });
+
         btnReset.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 stopTimer();
-                etHour.setText("00");
-                etMin.setText("00");
-                etSec.setText("00");
+                allTimeCount = allTime;
+                startTimer();
 
-                btnReset.setVisibility(View.GONE);
                 btnResume.setVisibility(View.GONE);
-                btnPause.setVisibility(View.GONE);
-                btnStart.setVisibility(View.VISIBLE);
+                btnPause.setVisibility(View.VISIBLE);
             }
         });
 
@@ -218,6 +227,13 @@ public class NotificationsFragment extends Fragment {
 
     }
 
+    // 将目标 Project 进行保存
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(PROJECT_KEY, prj);
+    }
+
     // 检查时分秒数据的有效性，若有效就启用
     private void checkToEnableBtnStart() {
         btnStart.setEnabled((!TextUtils.isEmpty(etHour.getText()) && Integer
@@ -232,9 +248,7 @@ public class NotificationsFragment extends Fragment {
         Log.d(TAG, "startTimer: ");
 
         if (timerTask == null) {
-            allTimeCount = Integer.parseInt(etHour.getText().toString()) * 60
-                    * 60 + Integer.parseInt(etMin.getText().toString()) * 60
-                    + Integer.parseInt(etSec.getText().toString());
+
             timerTask = new TimerTask() {
 
                 @Override

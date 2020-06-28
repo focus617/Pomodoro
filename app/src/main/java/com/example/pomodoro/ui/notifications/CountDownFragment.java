@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro.R;
 
@@ -30,7 +31,7 @@ public class CountDownFragment extends Fragment {
     private static final int MSG_WHAT_TIME_IS_UP = 1;
     private static final int MSG_WHAT_TIME_TICK = 2;
 
-    private int allTime, allTimeCount = 0;
+    private int allTime;
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
     private Button btnStart, btnPause, btnResume, btnReset;
@@ -38,6 +39,7 @@ public class CountDownFragment extends Fragment {
     private TextView etHour, etMin, etSec;
     private MediaPlayer mp;
 
+    private NotificationsViewModel model;
     private LifeObserverCountDownFg observer;
 
     @Override
@@ -58,7 +60,9 @@ public class CountDownFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_countdown, container, false);
 
-        Toast.makeText(getActivity(), "CountDown Fragment", Toast.LENGTH_SHORT).show();
+        model = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
+        String activity = model.getSelected().toString();
+        Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",model.allTimeCount), Toast.LENGTH_SHORT).show();
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);
@@ -94,10 +98,10 @@ public class CountDownFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 stopTimer();
-                allTimeCount = allTime;
-                int hour = allTimeCount / 60 / 60;
-                int min = (allTimeCount / 60) % 60;
-                int sec = allTimeCount % 60;
+                model.allTimeCount = allTime;
+                int hour = model.allTimeCount / 60 / 60;
+                int min = (model.allTimeCount / 60) % 60;
+                int sec = model.allTimeCount % 60;
 
                 etHour.setText(hour + "");
                 etMin.setText(min + "");
@@ -113,10 +117,9 @@ public class CountDownFragment extends Fragment {
         etMin = (TextView) root.findViewById(R.id.etMin);
         etSec = (TextView) root.findViewById(R.id.etSec);
 
-        allTimeCount = allTime;
-        int hour = allTimeCount / 60 / 60;
-        int min = (allTimeCount / 60) % 60;
-        int sec = allTimeCount % 60;
+        int hour = model.allTimeCount / 60 / 60;
+        int min = (model.allTimeCount / 60) % 60;
+        int sec = model.allTimeCount % 60;
 
         etHour.setText(hour + "");
         etMin.setText(min + "");
@@ -139,11 +142,11 @@ public class CountDownFragment extends Fragment {
                 public void run() {
                     Log.d(TAG, "run: timer count--");
 
-                    allTimeCount--;
+                    model.allTimeCount--;
 
                     // 每秒通知 Activity - TimerView 减一
                     handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
-                    if (allTimeCount <= 0) {
+                    if (model.allTimeCount <= 0) {
                         Log.d(TAG, "run: time is up!");
 
                         handler.sendEmptyMessage(MSG_WHAT_TIME_IS_UP);
@@ -171,9 +174,9 @@ public class CountDownFragment extends Fragment {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_WHAT_TIME_TICK:
-                    int hour = allTimeCount / 60 / 60;
-                    int min = (allTimeCount / 60) % 60;
-                    int sec = allTimeCount % 60;
+                    int hour = model.allTimeCount / 60 / 60;
+                    int min = (model.allTimeCount / 60) % 60;
+                    int sec = model.allTimeCount % 60;
 
                     etHour.setText(hour + "");
                     etMin.setText(min + "");

@@ -40,9 +40,11 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
         model = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
         model.select("Test");
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
 
         if (savedInstanceState != null) {
             prj = savedInstanceState.getString(PROJECT_KEY);
@@ -208,6 +210,8 @@ public class NotificationsFragment extends Fragment {
         NotificationsFragmentDirections.ActionNavigationNotificationsToNavigationCountdown action =
                 NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown().setAllTime(allTime);
         Navigation.findNavController(btnStart).navigate(action);
+
+        model.allTimeCount = allTime;
     }
 
     //TODO: 在此增加“添加 ActivityRecord”的功能

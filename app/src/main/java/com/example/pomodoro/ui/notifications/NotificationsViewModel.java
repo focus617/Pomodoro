@@ -8,11 +8,13 @@ public class NotificationsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<String> selectedActivity;
+    public int allTimeCount;
 
     public NotificationsViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
         selectedActivity = new MutableLiveData<>();
+        allTimeCount = 0;
     }
 
     public LiveData<String> getText() {

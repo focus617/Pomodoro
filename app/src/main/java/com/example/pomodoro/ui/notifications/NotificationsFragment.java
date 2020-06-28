@@ -1,8 +1,6 @@
 package com.example.pomodoro.ui.notifications;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,20 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Calendar;
 
 public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
@@ -33,17 +29,19 @@ public class NotificationsFragment extends Fragment {
 
 
     private String prj;
+    private long startTimeStamp, endTimeStamp;
+
     private int allTime;
     private Button btnStart, btnPause, btnResume, btnReset;
     private EditText etHour, etMin, etSec;
 
-    private NotificationsViewModel notificationsViewModel;
+    private NotificationsViewModel model;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
+        model.select("Test");
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         if (savedInstanceState != null) {
@@ -54,7 +52,7 @@ public class NotificationsFragment extends Fragment {
         }
         Toast.makeText(getActivity(), "Current Project: " + prj, Toast.LENGTH_SHORT).show();
 
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        model.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Log.d(TAG, "onChanged: project= " + prj);
@@ -77,9 +75,7 @@ public class NotificationsFragment extends Fragment {
                         * 60 + Integer.parseInt(etMin.getText().toString()) * 60
                         + Integer.parseInt(etSec.getText().toString());
 
-                NotificationsFragmentDirections.ActionNavigationNotificationsToNavigationCountdown action =
-                        NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown().setAllTime(allTime);
-                Navigation.findNavController(btnStart).navigate(action);
+                startCountDownTimer();
             }
         });
 
@@ -203,5 +199,20 @@ public class NotificationsFragment extends Fragment {
                 .parseInt(etMin.getText().toString()) > 0)
                 || (!TextUtils.isEmpty(etSec.getText()) && Integer
                 .parseInt(etSec.getText().toString()) > 0));
+    }
+
+    private void startCountDownTimer() {
+        Calendar currentTime = Calendar.getInstance();
+        startTimeStamp = currentTime.getTimeInMillis();
+
+        NotificationsFragmentDirections.ActionNavigationNotificationsToNavigationCountdown action =
+                NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown().setAllTime(allTime);
+        Navigation.findNavController(btnStart).navigate(action);
+    }
+
+    //TODO: 在此增加“添加 ActivityRecord”的功能
+    public void endCountDownTimer() {
+        Calendar currentTime = Calendar.getInstance();
+        endTimeStamp = currentTime.getTimeInMillis();
     }
 }

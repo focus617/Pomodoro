@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +38,17 @@ public class CountDownFragment extends Fragment {
     private TextView etHour, etMin, etSec;
     private MediaPlayer mp;
 
+    private LifeObserverCountDownFg observer;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         allTime = CountDownFragmentArgs.fromBundle(getArguments()).getAllTime();
+
+        // 增加一个lifecycle Observer
+        observer = new LifeObserverCountDownFg();
+        getLifecycle().addObserver(observer);
+
         Log.d(TAG, String.format("onCreateView: allTime=%d", allTime));
     }
 
@@ -121,6 +127,7 @@ public class CountDownFragment extends Fragment {
         return root;
     }
 
+    // TODO: move allTimeCount into a service, in order to avoid the fragment lifecycle impact.
     private void startTimer() {
         Log.d(TAG, "startTimer: ");
 

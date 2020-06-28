@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
                 return true;
             default:
-                Toast.makeText(this, "You clicked unknown", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You clicked backward", Toast.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
                 navController.popBackStack();
                 return super.onOptionsItemSelected(item);

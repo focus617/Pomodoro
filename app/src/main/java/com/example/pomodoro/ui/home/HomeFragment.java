@@ -25,10 +25,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.example.pomodoro.MainViewModel;
 import com.example.pomodoro.R;
+import com.example.pomodoro.ui.notifications.NotificationsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,15 +40,22 @@ import java.util.Calendar;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    private HomeViewModel homeViewModel;
+    private MainViewModel model;
     
     private ListView lvPrjList;                 // 用来存储我们添加的闹钟
     private ArrayAdapter<AlarmData> adapter;    // ListView适配器
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get the ViewModel.
+        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         // 添加项目按钮

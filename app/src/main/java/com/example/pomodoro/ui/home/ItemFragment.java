@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.dummy.DummyContent;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A fragment representing a list of Items.
@@ -57,10 +59,21 @@ public class ItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // 添加项目按钮
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "You clicked add project", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 构造RecycleView
+        RecyclerView recyclerView = view.findViewById(R.id.lvPrjList);
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (recyclerView instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            //RecyclerView recyclerView = (RecyclerView) recyclerView;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -68,6 +81,7 @@ public class ItemFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS));
         }
+
         return view;
     }
 }

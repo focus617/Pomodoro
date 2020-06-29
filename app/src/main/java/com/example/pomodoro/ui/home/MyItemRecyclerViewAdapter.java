@@ -2,10 +2,12 @@ package com.example.pomodoro.ui.home;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.dummy.DummyContent.DummyItem;
@@ -17,6 +19,7 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+    private static final String TAG = "MyItemRecyclerViewAdapt";
 
     private final List<DummyItem> mValues;
 
@@ -28,14 +31,24 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_project, parent, false);
+                //创建卡片  参数:  布局，组件组，是否是根节点
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
+        holder.mIdView.setText(String.valueOf(position + 1));
         holder.mContentView.setText(mValues.get(position).content);
+
+        //添加点击事件
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
+            }
+        });
+
     }
 
     @Override

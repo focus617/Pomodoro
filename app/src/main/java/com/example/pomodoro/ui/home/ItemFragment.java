@@ -29,9 +29,8 @@ import java.util.ArrayList;
 public class ItemFragment extends Fragment {
     private static final String TAG = "ItemFragment";
 
-    private MainViewModel model;                // View Model
+    private MainViewModel model;                // ViewModel
     private MyItemRecyclerViewAdapter adapter;  // Adapter of recycleView
-    final int COUNT = 15;                       // No of Dummy projects for testing purpose
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -65,9 +64,6 @@ public class ItemFragment extends Fragment {
 
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-
-        // Create dummy project for testing
-        model.createDummyItems(COUNT);
 
         // Create the observer which updates the UI.
         final Observer<ArrayList<Project>> observer = new Observer<ArrayList<Project>>() {

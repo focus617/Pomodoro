@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.pomodoro.viewModel.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.LongDef;
@@ -19,13 +20,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
+    private MainViewModel model;    // ViewModel for whole activity
+    final int COUNT = 15;           // No of Dummy projects for testing purpose
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         ActionBar actionBar = getSupportActionBar();
+
+/**
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+ * TODO: Replace the implementation with code for your data type.
+ */
+        // Get the ViewModel.
+        model = new ViewModelProvider(this).get(MainViewModel.class);
+        // Create dummy project for testing
+        model.createDummyItems(COUNT);
     }
 
     @Override
@@ -61,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Toast.makeText(this, "You clicked settings", Toast.LENGTH_SHORT).show();
+                // Create dummy project for testing
+                model.createDummyItems(COUNT);
                 return true;
             case R.id.action_about:
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();

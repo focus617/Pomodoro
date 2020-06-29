@@ -1,12 +1,9 @@
 package com.example.pomodoro.ui.home;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,26 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.example.pomodoro.MainViewModel;
+import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.R;
-import com.example.pomodoro.ui.notifications.NotificationsViewModel;
+import com.example.pomodoro.viewModel.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
@@ -51,6 +44,18 @@ public class HomeFragment extends Fragment {
 
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        // Create the observer which updates the UI.
+        final Observer<ArrayList<Project>> observer = new Observer<ArrayList<Project>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Project> projectArrayList) {
+                // Update the UI.
+                adapter.notifyDataSetChanged();
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        model.getPrjList().observe(this, observer);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -83,10 +88,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 从目标 home 向 定时器 notification 传递参数：项目
-                String prj = "Learn Android";
+/*                String prj = "Learn Android";
                 HomeFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
                         HomeFragmentDirections.actionNavigationHomeToNavigationNotifications().setProject(prj);
-                Navigation.findNavController(lvPrjList).navigate(action);
+                Navigation.findNavController(lvPrjList).navigate(action);*/
             }
         });
 

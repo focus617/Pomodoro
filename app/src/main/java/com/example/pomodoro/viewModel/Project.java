@@ -12,8 +12,8 @@ public class Project {
     private long create_time;
     private Calendar date;
 
-    public Project(String prjname) {
-        this.id = 0;
+    public Project(int index, String prjname) {
+        this.id = index;
         this.title = prjname;
         this.create_time = getInstance().getTimeInMillis();
     }

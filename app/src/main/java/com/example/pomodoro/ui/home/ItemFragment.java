@@ -3,7 +3,10 @@ package com.example.pomodoro.ui.home;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,14 +17,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.pomodoro.R;
-import com.example.pomodoro.dummy.DummyContent;
+import com.example.pomodoro.viewModel.MainViewModel;
+import com.example.pomodoro.viewModel.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
  */
 public class ItemFragment extends Fragment {
     private static final String TAG = "ItemFragment";
+
+    private MainViewModel model;                // View Model
+    private MyItemRecyclerViewAdapter adapter;  // Adapter of recycleView
+    final int COUNT = 15;                       // No of Dummy projects for testing purpose
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -52,6 +62,24 @@ public class ItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        // Get the ViewModel.
+        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        // Create dummy project for testing
+        model.createDummyItems(COUNT);
+
+        // Create the observer which updates the UI.
+        final Observer<ArrayList<Project>> observer = new Observer<ArrayList<Project>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Project> projectArrayList) {
+                // Update the UI if source changed.
+                adapter.notifyDataSetChanged();
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        model.getPrjList().observe(this, observer);
     }
 
     @Override
@@ -70,17 +98,17 @@ public class ItemFragment extends Fragment {
 
         // 构造RecycleView
         RecyclerView recyclerView = view.findViewById(R.id.lvPrjList);
-        // Set the adapter
-        if (recyclerView instanceof RecyclerView) {
-            Context context = view.getContext();
-            //RecyclerView recyclerView = (RecyclerView) recyclerView;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS));
+        // Set the layoutManager
+        Context context = view.getContext();
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+
+        // Set the adapter
+        adapter = new MyItemRecyclerViewAdapter(model.getPrjList().getValue());
+        recyclerView.setAdapter(adapter);
 
         return view;
     }

@@ -45,5 +45,13 @@ public class MainViewModel extends AndroidViewModel {
         prjList.setValue(list);
     }
 
+    // Create dummy list for testing purpose
+    public void createDummyItems(int count) {
+        // Add some sample items.
+        for (int i = 1; i <= count; i++) {
+            addProject(new Project(i, "计划目标 " + i));
+        }
+    }
+
 }
 

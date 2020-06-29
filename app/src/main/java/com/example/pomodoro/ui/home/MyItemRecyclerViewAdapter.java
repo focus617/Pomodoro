@@ -10,8 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pomodoro.R;
-import com.example.pomodoro.dummy.DummyContent.DummyItem;
+import com.example.pomodoro.viewModel.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +22,15 @@ import java.util.List;
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "MyItemRecyclerViewAdapt";
 
-    private final List<DummyItem> mValues;
+    //private List<DummyItem> mValues;
+    private List<Project> mValues;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items) {
+    public MyItemRecyclerViewAdapter(List<Project> items) {
         mValues = items;
+    }
+
+    public void setProjects(List<Project> items) {
+        this.mValues = items;
     }
 
     @Override
@@ -39,7 +45,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(String.valueOf(position + 1));
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mContentView.setText(mValues.get(position).getTitle());
 
         //添加点击事件
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +66,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Project mItem;
 
         public ViewHolder(View view) {
             super(view);

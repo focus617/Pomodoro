@@ -15,10 +15,10 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="@dimen/bottomNavView_height_margin"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.home.ItemFragment"
         tools:listitem="@layout/list_item_project"
-        android:textSize="40sp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

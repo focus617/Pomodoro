@@ -24,6 +24,6 @@ public interface ProjectDAO {
     @Query("DELETE FROM PROJECT")
     void deleteAllProjects();
 
-    @Query("SELECT * FROM PROJECT ORDER BY ID DESC")
+    @Query("SELECT * FROM PROJECT ORDER BY ID")
     LiveData<List<Project>> getAllProjectsLive();
 }

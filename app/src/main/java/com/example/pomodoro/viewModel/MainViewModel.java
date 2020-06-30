@@ -1,7 +1,6 @@
 package com.example.pomodoro.viewModel;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,23 +11,20 @@ import com.example.pomodoro.R;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
-    private ProjectDAO projectDao;
-    private LiveData<List<Project>> prjListLive;
+    private MyRepository repository;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        ProjectDatabase projectDatabase = ProjectDatabase.getDatabase(application);
-        projectDao = projectDatabase.getProjectDao();
-        prjListLive = projectDao.getAllProjectsLive();
+        repository = new MyRepository(application);
     }
 
     public LiveData<List<Project>> getPrjListLive() {
-        return prjListLive;
+        return repository.getPrjListLive();
     }
 
 
     // Create dummy list for testing purpose
-    public void createDummyItems(int count) {
+    public void createDummyPrjList(int count) {
         // Add some sample items.
         for (int i = 1; i <= count; i++) {
             insertProjects(new Project("计划目标 " + i,  R.drawable.ic_baseline_add_circle_24));
@@ -36,78 +32,19 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void insertProjects(Project...projects){
-        new InsertAsyncTask(projectDao).execute(projects);
+        repository.insertProjects(projects);
     }
 
     public void updateProjects(Project...projects){
-        new UpdateAsyncTask(projectDao).execute(projects);
+        repository.updateProjects(projects);
     }
 
     public void deleteProjects(Project...projects){
-        new DeleteAsyncTask(projectDao).execute(projects);
+        repository.deleteProjects(projects);
     }
 
     public void deleteAllProjects(Void...voids){
-        new DeleteAllAsyncTask(projectDao).execute();
-    }
-
-    static class InsertAsyncTask extends AsyncTask<Project,Void,Void>{
-        private ProjectDAO projectDAO;
-
-        public InsertAsyncTask(ProjectDAO projectDAO) {
-            this.projectDAO = projectDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Project... projects) {
-            projectDAO.insertProject(projects);
-            return null;
-        }
-    }
-
-
-    static class UpdateAsyncTask extends AsyncTask<Project,Void,Void>{
-        private ProjectDAO projectDAO;
-
-        public UpdateAsyncTask(ProjectDAO projectDAO) {
-            this.projectDAO = projectDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Project... projects) {
-            projectDAO.updateProject(projects);
-            return null;
-        }
-    }
-
-
-    static class DeleteAsyncTask extends AsyncTask<Project,Void,Void>{
-        private ProjectDAO projectDAO;
-
-        public DeleteAsyncTask(ProjectDAO projectDAO) {
-            this.projectDAO = projectDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Project... projects) {
-            projectDAO.deleteProject(projects);
-            return null;
-        }
-    }
-
-
-    static class DeleteAllAsyncTask extends AsyncTask<Void,Void,Void>{
-        private ProjectDAO projectDAO;
-
-        public DeleteAllAsyncTask(ProjectDAO projectDAO) {
-            this.projectDAO = projectDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            projectDAO.deleteAllProjects();
-            return null;
-        }
+        repository.deleteAllProjects();
     }
 
 }

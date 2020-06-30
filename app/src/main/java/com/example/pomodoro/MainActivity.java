@@ -68,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
                  * TODO: Replace the implementation with code for your data type.
                  */
                 // Create dummy project for testing
-                model.deleteAllProjects();
-                model.createDummyItems(COUNT);
+                model.createDummyPrjList(COUNT);
                 return true;
 
             case R.id.action_about:

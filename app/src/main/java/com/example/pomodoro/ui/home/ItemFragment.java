@@ -30,7 +30,7 @@ public class ItemFragment extends Fragment {
     private static final String TAG = "ItemFragment";
 
     private MainViewModel model;                // ViewModel
-    private MyItemRecyclerViewAdapter adapter;  // Adapter of recycleView
+    private ItemRecyclerViewAdapter adapter;  // Adapter of recycleView
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -103,7 +103,7 @@ public class ItemFragment extends Fragment {
         }
 
         // Set the adapter
-        adapter = new MyItemRecyclerViewAdapter(model.getPrjList().getValue());
+        adapter = new ItemRecyclerViewAdapter(model.getPrjList().getValue());
         recyclerView.setAdapter(adapter);
 
         return view;

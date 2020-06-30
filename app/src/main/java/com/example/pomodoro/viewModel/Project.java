@@ -9,25 +9,31 @@ public class Project {
 
     private int id;
     private String title;
+    private int imageId;
     private long create_time;
     private Calendar date;
 
-    public Project(int index, String prjname) {
+    public Project(int index, String prjname, int imageId) {
         this.id = index;
         this.title = prjname;
+        this.imageId = imageId;
         this.create_time = getInstance().getTimeInMillis();
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public void setTitle(String newTitle) {
         this.title = newTitle;
     }
 
-    public int getId() {
-        return this.id;
+    public int getImageId() {
+        return imageId;
     }
 
     public long getCreateTime() {
@@ -37,9 +43,9 @@ public class Project {
     public String toString() {
         date = Calendar.getInstance();
         date.setTimeInMillis(this.create_time);
-        String timeLabel =String.format("%年%d月%d日",
+        String timeLabel = String.format("%年%d月%d日",
                 date.get(YEAR),
-                date.get(MONTH)+1,
+                date.get(MONTH) + 1,
                 date.get(DAY_OF_MONTH));
 
         return this.title + timeLabel;

@@ -52,14 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
- * TODO: Replace the implementation with code for your data type.
- */
         // Get the ViewModel.
         model = new ViewModelProvider(this).get(MainViewModel.class);
-        // Create dummy project for testing
-        model.createDummyItems(COUNT);
     }
 
     @Override
@@ -76,12 +70,18 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Toast.makeText(this, "You clicked settings", Toast.LENGTH_SHORT).show();
+                /**
+                 * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+                 * TODO: Replace the implementation with code for your data type.
+                 */
                 // Create dummy project for testing
                 model.createDummyItems(COUNT);
                 return true;
+
             case R.id.action_about:
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
                 return true;
+
             default:
                 Toast.makeText(this, "You clicked backward", Toast.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

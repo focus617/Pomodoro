@@ -6,20 +6,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.Project;
 
 import java.util.List;
 
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "MyItemRecyclerViewAdapt";
 
     //private List<DummyItem> mValues;
     private List<Project> mValues;
 
-    public MyItemRecyclerViewAdapter(List<Project> items) {
+    public ItemRecyclerViewAdapter(List<Project> items) {
         mValues = items;
     }
 
@@ -39,6 +41,10 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                Project prj = mValues.get(position);
+                Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
+
                 Log.d(TAG, "onClick: ");
             }
         });
@@ -49,7 +55,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.valueOf(position + 1));
+        holder.mImageView.setImageResource(mValues.get(position).getImageId());
         holder.mTitleView.setText(mValues.get(position).getTitle());
     }
 
@@ -60,14 +66,14 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final ImageView mImageView;
         public final TextView mTitleView;
         public Project mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_id);
+            mImageView = (ImageView) view.findViewById(R.id.item_image);
             mTitleView = (TextView) view.findViewById(R.id.item_title);
         }
 

@@ -3,11 +3,13 @@ package com.example.pomodoro.ui.home;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +24,7 @@ import com.example.pomodoro.viewModel.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A fragment representing a list of Items.
@@ -102,9 +105,54 @@ public class ItemFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
+        //从 viewModel的liveData获取List数据
+        final ArrayList<Project> list = model.getPrjList().getValue();
         // Set the adapter
-        adapter = new ItemRecyclerViewAdapter(model.getPrjList().getValue());
+        adapter = new ItemRecyclerViewAdapter(list);
         recyclerView.setAdapter(adapter);
+
+        // 创建ItemTouchHelper.Callback，实现回调方法
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+            // 返回允许滑动的方向
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                // 返回可滑动方向，通过使用一个int，在各个bit位标记来记录。
+                // 这里drag支持上下方向，swipe支持左右方向。
+                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+                // 返回设置了标识位的复合int
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            // 允许drag的前提下，当ItemTouchHelper想要将拖动的项目从其旧位置移动到新位置时调用
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                // 获取被拖拽item和目标item的适配器索引（适配器索引是该item对应数据集的索引，getLayoutPosition是当前布局的位置）
+                int from = viewHolder.getAdapterPosition();
+                int to = target.getAdapterPosition();
+                // 交换数据集的数据
+                Collections.swap(list, from, to);
+                // 通知Adapter更新
+                adapter.notifyItemMoved(from, to);
+                // 返回true表示item移到了目标位置
+                return true;
+            }
+
+            // 允许swipe的前提下，当用户滑动ViewHolder触发临界时调用
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // 获取滑动的item对应的适配器索引
+                int pos = viewHolder.getAdapterPosition();
+                // 从数据集移除数据
+                list.remove(pos);
+                // 通知Adapter更新
+                adapter.notifyItemRemoved(pos);
+            }
+        };
+        // 传入ItemTouchHelper.Callback
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        // 将touchHelper和recyclerView绑定
+        touchHelper.attachToRecyclerView(recyclerView);
 
         return view;
     }

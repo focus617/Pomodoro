@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.pomodoro.R;
 
@@ -51,7 +50,7 @@ public class MainViewModel extends AndroidViewModel {
     public void createDummyItems(int count) {
         // Add some sample items.
         for (int i = 1; i <= count; i++) {
-            addProject(new Project(i, "计划目标 " + i, R.drawable.ic_baseline_add_circle_24));
+            addProject(new Project("计划目标 " + i,  R.drawable.ic_baseline_add_circle_24));
         }
     }
 

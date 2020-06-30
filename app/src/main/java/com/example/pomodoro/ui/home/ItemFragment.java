@@ -23,8 +23,8 @@ import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -32,7 +32,7 @@ import java.util.Collections;
 public class ItemFragment extends Fragment {
     private static final String TAG = "ItemFragment";
 
-    private MainViewModel model;                // ViewModel
+    private MainViewModel model;           // ViewModel
     private ItemRecyclerViewAdapter adapter;  // Adapter of recycleView
 
     // TODO: Customize parameter argument names
@@ -69,16 +69,16 @@ public class ItemFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         // Create the observer which updates the UI.
-        final Observer<ArrayList<Project>> observer = new Observer<ArrayList<Project>>() {
+        final Observer<List<Project>> observer = new Observer<List<Project>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<Project> projectArrayList) {
+            public void onChanged(@Nullable List<Project> projectList) {
                 // Update the UI if source changed.
                 adapter.notifyDataSetChanged();
             }
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getPrjList().observe(this, observer);
+        model.getPrjListLive().observe(this, observer);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class ItemFragment extends Fragment {
         }
 
         //从 viewModel的liveData获取List数据
-        final ArrayList<Project> list = model.getPrjList().getValue();
+        final List<Project> list = model.getPrjListLive().getValue();
         // Set the adapter
         adapter = new ItemRecyclerViewAdapter(list);
         recyclerView.setAdapter(adapter);

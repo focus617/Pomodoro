@@ -15,7 +15,6 @@ public abstract class ProjectDatabase extends RoomDatabase {
         if (INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     ProjectDatabase.class,"project")
-                    .allowMainThreadQueries()
                     .build();
         }
         return INSTANCE;

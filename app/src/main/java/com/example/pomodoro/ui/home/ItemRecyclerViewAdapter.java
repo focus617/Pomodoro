@@ -19,16 +19,15 @@ import java.util.List;
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "MyItemRecyclerViewAdapt";
 
-    //private List<DummyItem> mValues;
     private List<Project> mValues;
 
     public ItemRecyclerViewAdapter(List<Project> items) {
         mValues = items;
     }
 
-    public void setProjects(List<Project> items) {
+/*    public void setProjects(List<Project> items) {
         this.mValues = items;
-    }
+    }*/
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -67,7 +66,11 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if(null == mValues){  //TODO: check why mValue may equal to null?
+            return 0;
+        } else {
+            return mValues.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

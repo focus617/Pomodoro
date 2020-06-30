@@ -1,10 +1,5 @@
 package com.example.pomodoro;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,11 +10,9 @@ import android.widget.Toast;
 import com.example.pomodoro.viewModel.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -75,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                  * TODO: Replace the implementation with code for your data type.
                  */
                 // Create dummy project for testing
+                model.deleteAllProjects();
                 model.createDummyItems(COUNT);
                 return true;
 

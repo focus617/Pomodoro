@@ -1,5 +1,6 @@
 package com.example.pomodoro.ui.home;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -46,6 +47,11 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
                 Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
 
                 Log.d(TAG, "onClick: ");
+
+                // 从目标 ItemFragment 向 定时器 NotificationFragment 传递参数：项目
+                ItemFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
+                        ItemFragmentDirections.actionNavigationHomeToNavigationNotifications().setProject(prj.getTitle());
+                Navigation.findNavController(v).navigate(action);
             }
         });
 

@@ -5,7 +5,9 @@
     android:id="@+id/item_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="4dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp">
 
@@ -28,5 +30,12 @@
             android:layout_margin="@dimen/text_margin"
             android:layout_weight="1"
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_baseline_chevron_right_24" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

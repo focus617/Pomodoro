@@ -68,11 +68,15 @@ public class MainActivity extends AppCompatActivity {
                  * TODO: Replace the implementation with code for your data type.
                  */
                 // Create dummy project for testing
+                // TODO: Clean in future
                 model.createDummyPrjList(COUNT);
                 return true;
 
             case R.id.action_about:
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
+
+                // Clear database for testing purpose
+                // TODO: Clean in future
                 model.deleteAllProjects();
                 return true;
 

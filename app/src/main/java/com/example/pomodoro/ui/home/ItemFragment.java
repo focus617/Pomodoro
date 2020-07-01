@@ -64,6 +64,8 @@ public class ItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        // create adapter for RecyclerView
+        adapter = new ItemRecyclerViewAdapter();
 
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
@@ -72,8 +74,8 @@ public class ItemFragment extends Fragment {
         final Observer<List<Project>> observer = new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projectList) {
-                // Update the UI if source changed.
-                adapter.notifyDataSetChanged();
+                adapter.setProjectList(projectList);
+                adapter.notifyDataSetChanged();    // Update the UI if source changed.
             }
         };
 
@@ -110,7 +112,6 @@ public class ItemFragment extends Fragment {
         //从 viewModel的liveData获取List数据
         list = model.getPrjListLive().getValue();
         // Set the adapter
-        adapter = new ItemRecyclerViewAdapter(list);
         recyclerView.setAdapter(adapter);
 
         // 创建ItemTouchHelper.Callback，实现回调方法

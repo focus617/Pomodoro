@@ -8,7 +8,7 @@ import java.util.Calendar;
 
 import static java.util.Calendar.*;
 
-// 表示项目的数据类，用来存储创建的项目，并提供给HomeFragment
+// 表示项目（目标）的数据类，用来存储创建的项目，并提供给ItemFragment
 @Entity
 public class Project {
 
@@ -19,7 +19,6 @@ public class Project {
     private String title;
     @ColumnInfo(name = "imageID")
     private int imageId;
-
     @ColumnInfo(name = "createTime")
     private long createTime;
 

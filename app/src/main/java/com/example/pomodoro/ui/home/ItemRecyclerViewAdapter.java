@@ -14,15 +14,16 @@ import android.widget.Toast;
 import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "MyItemRecyclerViewAdapt";
 
-    private List<Project> mValues;
+    private List<Project> mValues = new ArrayList<>();  // 避免空指针
 
-    public ItemRecyclerViewAdapter(List<Project> items) {
-        mValues = items;
+    public void setProjectList(List<Project> mValues) {
+        this.mValues = mValues;
     }
 
     @Override
@@ -62,14 +63,10 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     @Override
     public int getItemCount() {
-        if(null == mValues){  //TODO: check why mValue may equal to null?
-            return 0;
-        } else {
-            return mValues.size();
-        }
+        return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView mImageView;
         public final TextView mTitleView;

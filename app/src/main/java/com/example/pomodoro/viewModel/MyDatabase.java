@@ -7,14 +7,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(entities = {Project.class}, version = 1,exportSchema = false)
-public abstract class ProjectDatabase extends RoomDatabase {
-    private static ProjectDatabase INSTANCE;
+public abstract class MyDatabase extends RoomDatabase {
+    private static MyDatabase INSTANCE;
 
     // create singleton database
-    static synchronized ProjectDatabase getDatabase(Context context){
+    static synchronized MyDatabase getDatabase(Context context){
         if (INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    ProjectDatabase.class,"project")
+                    MyDatabase.class,"Pomodoro")
                     .build();
         }
         return INSTANCE;

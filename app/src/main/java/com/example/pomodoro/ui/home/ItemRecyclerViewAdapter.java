@@ -25,10 +25,6 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         mValues = items;
     }
 
-/*    public void setProjects(List<Project> items) {
-        this.mValues = items;
-    }*/
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

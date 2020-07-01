@@ -84,6 +84,8 @@ public class ItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final List<Project> list;
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // 添加项目按钮
@@ -106,7 +108,7 @@ public class ItemFragment extends Fragment {
         }
 
         //从 viewModel的liveData获取List数据
-        final List<Project> list = model.getPrjListLive().getValue();
+        list = model.getPrjListLive().getValue();
         // Set the adapter
         adapter = new ItemRecyclerViewAdapter(list);
         recyclerView.setAdapter(adapter);

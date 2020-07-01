@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_about:
                 Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
+                model.deleteAllProjects();
                 return true;
 
             default:

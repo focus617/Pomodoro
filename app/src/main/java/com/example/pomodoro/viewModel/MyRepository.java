@@ -12,8 +12,8 @@ public class MyRepository {
     private ProjectDAO projectDao;
 
     public MyRepository(Context context) {
-        ProjectDatabase projectDatabase = ProjectDatabase.getDatabase(context.getApplicationContext());
-        projectDao = projectDatabase.getProjectDao();
+        MyDatabase myDatabase = MyDatabase.getDatabase(context.getApplicationContext());
+        projectDao = myDatabase.getProjectDao();
         prjListLive = projectDao.getAllProjectsLive();
     }
 

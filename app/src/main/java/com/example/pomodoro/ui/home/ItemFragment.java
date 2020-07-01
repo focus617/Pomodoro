@@ -64,11 +64,13 @@ public class ItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        // create adapter for RecyclerView
-        adapter = new ItemRecyclerViewAdapter();
 
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        // create adapter for RecyclerView
+        adapter = new ItemRecyclerViewAdapter(model);
+
 
         // Create the observer which updates the UI.
         final Observer<List<Project>> observer = new Observer<List<Project>>() {
@@ -145,8 +147,8 @@ public class ItemFragment extends Fragment {
                 // 获取滑动的item对应的适配器索引
                 int pos = viewHolder.getAdapterPosition();
                 // 从数据集移除数据
-                Project prj = adapter.getProject(pos);
-                model.deleteProjects(prj);
+                adapter.removeItem(pos);
+
                 // 通知Adapter更新
                 adapter.notifyItemRemoved(pos);
             }

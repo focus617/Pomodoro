@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 
 import java.util.ArrayList;
@@ -21,12 +22,22 @@ import java.util.List;
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "MyItemRecyclerViewAdapt";
 
+    private MainViewModel viewModel;
     private List<Project> mValues = new ArrayList<>();  // 避免空指针
+
+    public ItemRecyclerViewAdapter(MainViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
 
     public void setProjectList(List<Project> mValues) {
         this.mValues = mValues;
     }
-    public Project getProject(int position){return mValues.get(position);}
+
+    public void removeItem(int position) {
+        Project prj = mValues.get(position);
+        viewModel.deleteProjects(prj);  //TODO: check why it doesn't work?
+    }
+
     public void swap(int from, int to){
         Collections.swap(mValues, from, to);
     }

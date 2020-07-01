@@ -109,8 +109,6 @@ public class ItemFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        //从 viewModel的liveData获取List数据
-        list = model.getPrjListLive().getValue();
         // Set the adapter
         recyclerView.setAdapter(adapter);
 
@@ -134,7 +132,7 @@ public class ItemFragment extends Fragment {
                 int from = viewHolder.getAdapterPosition();
                 int to = target.getAdapterPosition();
                 // 交换数据集的数据
-                Collections.swap(list, from, to);
+                adapter.swap(from, to);
                 // 通知Adapter更新
                 adapter.notifyItemMoved(from, to);
                 // 返回true表示item移到了目标位置
@@ -147,7 +145,8 @@ public class ItemFragment extends Fragment {
                 // 获取滑动的item对应的适配器索引
                 int pos = viewHolder.getAdapterPosition();
                 // 从数据集移除数据
-                list.remove(pos);
+                Project prj = adapter.getProject(pos);
+                model.deleteProjects(prj);
                 // 通知Adapter更新
                 adapter.notifyItemRemoved(pos);
             }

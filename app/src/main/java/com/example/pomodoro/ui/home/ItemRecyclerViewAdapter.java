@@ -15,6 +15,7 @@ import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.Project;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
@@ -24,6 +25,10 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     public void setProjectList(List<Project> mValues) {
         this.mValues = mValues;
+    }
+    public Project getProject(int position){return mValues.get(position);}
+    public void swap(int from, int to){
+        Collections.swap(mValues, from, to);
     }
 
     @Override

@@ -2,9 +2,12 @@ package com.example.pomodoro.viewModel;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Project.class}, version = 1,exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
@@ -20,4 +23,11 @@ public abstract class MyDatabase extends RoomDatabase {
         return INSTANCE;
     }
     public abstract ProjectDAO getProjectDao();
+
+    static final Migration MIGRATION_1_2 = new Migration(1,2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database){
+            database.execSQL("ALTER TABLE project ADD COLUMN XXX INTEGER NOT NULL DEFAULT 1");
+        }
+    };
 }

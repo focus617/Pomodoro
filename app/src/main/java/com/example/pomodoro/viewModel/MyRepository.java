@@ -17,6 +17,8 @@ public class MyRepository {
         prjListLive = projectDao.getAllProjectsLive();
     }
 
+    // Room在单独的线程上执行所有查询。
+    // 观察到的LiveData将在数据更改时通知观察者
     public LiveData<List<Project>> getPrjListLive() {
         return prjListLive;
     }

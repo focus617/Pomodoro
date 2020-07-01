@@ -27,6 +27,8 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     public ItemRecyclerViewAdapter(MainViewModel viewModel) {
         this.viewModel = viewModel;
+        List<Project> prjList = viewModel.getPrjListLive().getValue();
+        if(null != prjList){ this.mValues = prjList;}
     }
 
     //Interface of Adapter
@@ -36,10 +38,18 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     public void removeItem(int position) {
         Project prj = mValues.get(position);
-        viewModel.deleteProjects(prj);  //TODO: check why it doesn't work?
+        viewModel.deleteProjects(prj);          //TODO: check why it doesn't work?
     }
 
     public void swapItem(int from, int to){
+        Project fromProject = mValues.get(from);
+        fromProject.setPriority(to);
+        viewModel.updateProjects(fromProject);  //TODO: check why it doesn't work?
+
+        Project toProject = mValues.get(to);
+        toProject.setPriority(from);
+        viewModel.updateProjects(toProject);    //TODO: check why it doesn't work?
+
         Collections.swap(mValues, from, to);
     }
 

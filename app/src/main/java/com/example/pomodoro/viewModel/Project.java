@@ -15,10 +15,15 @@ public class Project {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    /**
+     * 如果希望与成员变量的名称不同，请通过name指定列的名称。
+     * */
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "imageID")
     private int imageId;
+    @ColumnInfo(name = "priority")
+    private int priority;
     @ColumnInfo(name = "createTime")
     private long createTime;
 
@@ -26,6 +31,7 @@ public class Project {
         this.title = title;
         this.imageId = imageId;
         this.createTime = getInstance().getTimeInMillis();
+        this.priority = 0;
     }
 
     public int getId() {
@@ -46,6 +52,14 @@ public class Project {
 
     public int getImageId() {
         return imageId;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public long getCreateTime() {

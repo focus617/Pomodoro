@@ -23,6 +23,6 @@ public interface ProjectDAO {
     @Query("DELETE FROM PROJECT")
     void deleteAllProjects();
 
-    @Query("SELECT * FROM PROJECT ORDER BY ID")
-    LiveData<List<Project>> getAllProjectsLive();
+    @Query("SELECT * FROM PROJECT ORDER BY priority")
+    LiveData<List<Project>> getAllProjectsLive();   //当Room查询返回时LiveData，将自动在后台线程上异步运行。
 }

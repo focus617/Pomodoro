@@ -27,7 +27,9 @@ public class MainViewModel extends AndroidViewModel {
     public void createDummyPrjList(int count) {
         // Add some sample items.
         for (int i = 1; i <= count; i++) {
-            insertProjects(new Project("计划目标 " + i,  R.drawable.ic_baseline_add_circle_24));
+            Project prj = new Project("计划目标 " + i,  R.drawable.ic_baseline_add_circle_24);
+            prj.setPriority(i);
+            insertProjects(prj);
         }
     }
 

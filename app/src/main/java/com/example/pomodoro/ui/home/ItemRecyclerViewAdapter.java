@@ -29,6 +29,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         this.viewModel = viewModel;
     }
 
+    //Interface of Adapter
     public void setProjectList(List<Project> mValues) {
         this.mValues = mValues;
     }
@@ -38,7 +39,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         viewModel.deleteProjects(prj);  //TODO: check why it doesn't work?
     }
 
-    public void swap(int from, int to){
+    public void swapItem(int from, int to){
         Collections.swap(mValues, from, to);
     }
 

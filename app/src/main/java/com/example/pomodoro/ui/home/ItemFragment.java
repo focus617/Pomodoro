@@ -23,7 +23,6 @@ import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -134,7 +133,7 @@ public class ItemFragment extends Fragment {
                 int from = viewHolder.getAdapterPosition();
                 int to = target.getAdapterPosition();
                 // 交换数据集的数据
-                adapter.swap(from, to);
+                adapter.swapItem(from, to);
                 // 通知Adapter更新
                 adapter.notifyItemMoved(from, to);
                 // 返回true表示item移到了目标位置

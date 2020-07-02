@@ -136,7 +136,7 @@ public class ItemFragment extends Fragment {
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
                 //adapter.notifyItemMoved(from, to);
-                
+
                 // 返回true表示item移到了目标位置
                 return true;
             }
@@ -151,6 +151,13 @@ public class ItemFragment extends Fragment {
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
                 //adapter.notifyItemRemoved(pos);
+            }
+
+            //当用户操作完毕后，记录项目清单的顺序
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                adapter.adjustPriority();
             }
         };
         // 传入ItemTouchHelper.Callback

@@ -43,13 +43,13 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         notifyItemRemoved(position);
     }
 
-    public void swapItem(int from, int to){
+    public void swapItem(int from, int to) {
         Collections.swap(mValues, from, to);
         notifyItemMoved(from, to);
+    }
 
-        // Adjust priority of each project
-        // TODO: Here introduce a limitation that drag and swap only can be done between neighbor.
-        // Need further improve.
+    // Adjust priority of each project
+    public void adjustPriority(){
         for (int i = 0; i < mValues.size(); i++) {
             Project prj = mValues.get(i);
             prj.setPriority(i+1);

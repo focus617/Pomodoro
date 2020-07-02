@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
+public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "MyItemRecyclerViewAdapt";
 
     private MainViewModel viewModel;
     private List<Project> mValues = new ArrayList<>();  // 避免空指针
 
-    public ItemRecyclerViewAdapter(MainViewModel viewModel) {
+    public ProjectRecyclerViewAdapter(MainViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
@@ -76,8 +76,8 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
                 Log.d(TAG, "onClick: ");
 
                 // 从目标 ItemFragment 向 定时器 NotificationFragment 传递参数：项目
-                ItemFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
-                        ItemFragmentDirections.actionNavigationHomeToNavigationNotifications().setProject(prj.getTitle());
+                HomeFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
+                        HomeFragmentDirections.actionNavigationHomeToNavigationNotifications(prj.getId());
                 Navigation.findNavController(v).navigate(action);
             }
         });

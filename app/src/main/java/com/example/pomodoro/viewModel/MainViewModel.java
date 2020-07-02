@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.pomodoro.R;
 
@@ -16,6 +17,9 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         repository = new MyRepository(application);
+
+        //Temporary Call
+        NotificationsViewModel();
     }
 
     public LiveData<List<Project>> getPrjListLive() {
@@ -49,4 +53,24 @@ public class MainViewModel extends AndroidViewModel {
         repository.deleteAllProjects();
     }
 
+    // Data for NotificationFragment
+    private MutableLiveData<String> mText = new MutableLiveData<>();
+    private MutableLiveData<String> selectedActivity ;
+    public int allTimeCount = 0;
+
+    public void NotificationsViewModel() {
+        mText.setValue("This is notifications fragment");
+    }
+
+    public LiveData<String> getText() {
+        return mText;
+    }
+
+    public void select(String activity) {
+        selectedActivity.setValue(activity);
+    }
+
+    public LiveData<String> getSelected() {
+        return selectedActivity;
+    }
 }

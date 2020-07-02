@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.pomodoro.ui.home.ItemFragment"
+        android:name="com.example.pomodoro.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -27,10 +27,8 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" >
         <argument
-            android:name="project"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="默认工作" />
+            android:name="projectId"
+            app:argType="integer" />
         <action
             android:id="@+id/action_navigation_notifications_to_navigation_countdown"
             app:destination="@id/navigation_countdown" />

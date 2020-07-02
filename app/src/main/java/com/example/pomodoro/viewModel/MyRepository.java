@@ -23,6 +23,11 @@ public class MyRepository {
         return prjListLive;
     }
 
+
+/*    public void getProjectById(Project...projects){
+        new GetAsyncTask(projectDao).execute(projects);
+    }*/
+
     public void insertProjects(Project...projects){
         new InsertAsyncTask(projectDao).execute(projects);
     }
@@ -38,6 +43,20 @@ public class MyRepository {
     public void deleteAllProjects(Void...voids){
         new DeleteAllAsyncTask(projectDao).execute();
     }
+
+/*    static class GetAsyncTask extends AsyncTask<Project,Void,Void>{
+        private ProjectDAO projectDAO;
+
+        public GetAsyncTask(ProjectDAO projectDAO) {
+            this.projectDAO = projectDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            projectDAO.getProjectById(id);
+            return null;
+        }
+    }*/
 
     static class InsertAsyncTask extends AsyncTask<Project,Void,Void> {
         private ProjectDAO projectDAO;
@@ -66,7 +85,6 @@ public class MyRepository {
             return null;
         }
     }
-
 
     static class DeleteAsyncTask extends AsyncTask<Project,Void,Void>{
         private ProjectDAO projectDAO;

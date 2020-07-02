@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.ItemFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,7 +17,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="@dimen/bottomNavView_height_margin"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.home.ItemFragment"
+        tools:context=".ui.home.HomeFragment"
         tools:listitem="@layout/list_item_project"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 

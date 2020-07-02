@@ -28,11 +28,11 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class ItemFragment extends Fragment {
+public class HomeFragment extends Fragment {
     private static final String TAG = "ItemFragment";
 
     private MainViewModel model;           // ViewModel
-    private ItemRecyclerViewAdapter adapter;  // Adapter of recycleView
+    private ProjectRecyclerViewAdapter adapter;  // Adapter of recycleView
 
     // TODO:(NoActionNeeded) Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -43,13 +43,13 @@ public class ItemFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemFragment() {
+    public HomeFragment() {
     }
 
     // TODO:(NoActionNeeded) Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ItemFragment newInstance(int columnCount) {
-        ItemFragment fragment = new ItemFragment();
+    public static HomeFragment newInstance(int columnCount) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -68,7 +68,7 @@ public class ItemFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         // create adapter for RecyclerView
-        adapter = new ItemRecyclerViewAdapter(model);
+        adapter = new ProjectRecyclerViewAdapter(model);
 
 
         // Create the observer which updates the UI.

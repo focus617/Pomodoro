@@ -20,6 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.viewModel.MainViewModel;
+import com.example.pomodoro.viewModel.Project;
 
 import java.util.Calendar;
 
@@ -28,38 +30,39 @@ public class NotificationsFragment extends Fragment {
     private static final String PROJECT_KEY = "Project_Key";
 
 
-    private String prj;
+    private int prjId;
+    Project project;
     private long startTimeStamp, endTimeStamp;
 
     private int allTime;
     private Button btnStart, btnPause, btnResume, btnReset;
     private EditText etHour, etMin, etSec;
 
-    private NotificationsViewModel model;
+    private MainViewModel model;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        model = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
-        model.select("Test");
-
-
         if (savedInstanceState != null) {
-            prj = savedInstanceState.getString(PROJECT_KEY);
+            prjId = savedInstanceState.getInt(PROJECT_KEY);
         } else {
-            // 获取目标 homeFragment 传递的参数： project
-            prj = NotificationsFragmentArgs.fromBundle(getArguments()).getProject();
+            // 获取目标 ItemFragment 传递的参数： projectId
+            prjId = NotificationsFragmentArgs.fromBundle(getArguments()).getProjectId();
         }
-        Toast.makeText(getActivity(), "Current Project: " + prj, Toast.LENGTH_SHORT).show();
 
-        model.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        // Get the ViewModel.
+        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        Toast.makeText(getActivity(), "Current Project_Id: " + String.valueOf(prjId), Toast.LENGTH_SHORT).show();
+
+/*        model.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Log.d(TAG, "onChanged: project= " + prj);
             }
-        });
+        });*/
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);
@@ -190,7 +193,7 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(PROJECT_KEY, prj);
+        outState.putInt(PROJECT_KEY, prjId);
     }
 
     // 检查时分秒数据的有效性，若有效就启用

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.viewModel.MainViewModel;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,7 +40,7 @@ public class CountDownFragment extends Fragment {
     private TextView etHour, etMin, etSec;
     private MediaPlayer mp;
 
-    private NotificationsViewModel model;
+    private MainViewModel model;
     private LifeObserverCountDownFg observer;
 
     @Override
@@ -60,7 +61,7 @@ public class CountDownFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_countdown, container, false);
 
-        model = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         String activity = model.getSelected().toString();
         Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",model.allTimeCount), Toast.LENGTH_SHORT).show();
 

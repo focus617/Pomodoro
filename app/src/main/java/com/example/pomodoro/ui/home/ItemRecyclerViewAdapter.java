@@ -32,23 +32,23 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     //Interface of Adapter
     public void setProjectList(List<Project> mValues) {
         this.mValues = mValues;
-        notifyDataSetChanged();    // Update the UI if source changed.
+
+/*        // Adjust priority of each project
+        for (int i = 0; i < mValues.size(); i++) {
+            Project prj = mValues.get(i);
+            prj.setPriority(i+1);
+            viewModel.updateProjects(prj);
+        }*/
+        // Update the UI when source changed.
+        notifyDataSetChanged();
     }
 
     public void removeItem(int position) {
         Project prj = mValues.get(position);
-        viewModel.deleteProjects(prj);          //TODO: check why it doesn't work?
+        viewModel.deleteProjects(prj);
     }
 
     public void swapItem(int from, int to){
-        Project fromProject = mValues.get(from);
-        fromProject.setPriority(to);
-        viewModel.updateProjects(fromProject);  //TODO: check why it doesn't work?
-
-        Project toProject = mValues.get(to);
-        toProject.setPriority(from);
-        viewModel.updateProjects(toProject);    //TODO: check why it doesn't work?
-
         Collections.swap(mValues, from, to);
     }
 

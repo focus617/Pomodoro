@@ -76,7 +76,6 @@ public class ItemFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<Project> projectList) {
                 adapter.setProjectList(projectList);
-                adapter.notifyDataSetChanged();    // Update the UI if source changed.
             }
         };
 

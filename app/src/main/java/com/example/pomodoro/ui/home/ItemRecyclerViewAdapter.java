@@ -27,13 +27,12 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     public ItemRecyclerViewAdapter(MainViewModel viewModel) {
         this.viewModel = viewModel;
-        List<Project> prjList = viewModel.getPrjListLive().getValue();
-        if(null != prjList){ this.mValues = prjList;}
     }
 
     //Interface of Adapter
     public void setProjectList(List<Project> mValues) {
         this.mValues = mValues;
+        notifyDataSetChanged();    // Update the UI if source changed.
     }
 
     public void removeItem(int position) {

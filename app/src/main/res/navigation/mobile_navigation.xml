@@ -28,7 +28,8 @@
         tools:layout="@layout/fragment_notifications" >
         <argument
             android:name="projectId"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="0" />
         <action
             android:id="@+id/action_navigation_notifications_to_navigation_countdown"
             app:destination="@id/navigation_countdown" />

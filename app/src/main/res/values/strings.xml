@@ -15,5 +15,8 @@
     <string name="hour">小时</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
+    <string name="time_seperator">:</string>
+    <string name="item_removable">左右拖动删除</string>
+    <string name="icon_msg">图标</string>
 
 </resources>

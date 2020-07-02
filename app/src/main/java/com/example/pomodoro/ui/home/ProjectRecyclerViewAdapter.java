@@ -77,7 +77,7 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
 
                 // 从目标 ItemFragment 向 定时器 NotificationFragment 传递参数：项目
                 HomeFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
-                        HomeFragmentDirections.actionNavigationHomeToNavigationNotifications(prj.getId());
+                        HomeFragmentDirections.actionNavigationHomeToNavigationNotifications().setProjectId(prj.getId());
                 Navigation.findNavController(v).navigate(action);
             }
         });

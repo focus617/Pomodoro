@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                  * {@link RecyclerView.Adapter} Create dummy project list that can display a {@link DummyItem}.
                  * TODO: Clean it in future and Replace the implementation with code for your data type.
                  */
-                model.createDummyPrjList(COUNT);
+                model.createDummyPrjList();
                 return true;
 
             case R.id.action_about:

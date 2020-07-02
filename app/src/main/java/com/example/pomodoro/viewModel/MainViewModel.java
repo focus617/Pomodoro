@@ -28,11 +28,36 @@ public class MainViewModel extends AndroidViewModel {
 
 
     // Create dummy list for testing purpose
-    public void createDummyPrjList(int count) {
+    public void createDummyPrjList() {
+        String[] projects = {
+                "读书",
+                "锻炼身体",
+                "学习Android开发",
+                "冥想",
+                "工作",
+                "读书",
+                "锻炼身体",
+                "学习Android开发",
+                "冥想",
+                "工作"
+        };
+        int[] images = {
+                R.drawable.read_book,
+                R.drawable.exercise,
+                R.drawable.study,
+                R.drawable.thinking,
+                R.drawable.work,
+                R.drawable.read_book,
+                R.drawable.exercise,
+                R.drawable.study,
+                R.drawable.thinking,
+                R.drawable.work
+        };
+
         // Add some sample items.
-        for (int i = 1; i <= count; i++) {
-            Project prj = new Project("计划目标 " + i,  R.drawable.ic_baseline_add_circle_24);
-            prj.setPriority(i);
+        for (int i = 0; i < images.length; i++) {
+            Project prj = new Project(projects[i],  images[i]);
+            prj.setPriority(i+1);
             insertProjects(prj);
         }
     }

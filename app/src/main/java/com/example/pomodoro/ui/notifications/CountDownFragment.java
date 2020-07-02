@@ -62,7 +62,6 @@ public class CountDownFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_countdown, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        String activity = model.getSelected().toString();
         Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",model.allTimeCount), Toast.LENGTH_SHORT).show();
 
         btnStart = (Button) root.findViewById(R.id.btnStart);

@@ -20,6 +20,9 @@ public interface ProjectDAO {
     @Delete
     void  deleteProject(Project...projects);
 
+    @Query("SELECT * FROM PROJECT WHERE id = :id")
+    Project getProjectById(int id);
+
     @Query("DELETE FROM PROJECT")
     void deleteAllProjects();
 

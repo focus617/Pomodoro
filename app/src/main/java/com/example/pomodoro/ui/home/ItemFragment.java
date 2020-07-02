@@ -34,9 +34,9 @@ public class ItemFragment extends Fragment {
     private MainViewModel model;           // ViewModel
     private ItemRecyclerViewAdapter adapter;  // Adapter of recycleView
 
-    // TODO: Customize parameter argument names
+    // TODO:(NoActionNeeded) Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+    // TODO:(NoActionNeeded) Customize parameters
     private int mColumnCount = 1;
 
     /**
@@ -46,7 +46,7 @@ public class ItemFragment extends Fragment {
     public ItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
+    // TODO:(NoActionNeeded) Customize parameter initialization
     @SuppressWarnings("unused")
     public static ItemFragment newInstance(int columnCount) {
         ItemFragment fragment = new ItemFragment();
@@ -133,8 +133,10 @@ public class ItemFragment extends Fragment {
                 int to = target.getAdapterPosition();
                 // 交换数据集的数据
                 adapter.swapItem(from, to);
-                // 通知Adapter更新
-                adapter.notifyItemMoved(from, to);
+
+                // 通知Adapter更新，此动作应是Adapter的内生逻辑
+                //adapter.notifyItemMoved(from, to);
+                
                 // 返回true表示item移到了目标位置
                 return true;
             }
@@ -147,8 +149,8 @@ public class ItemFragment extends Fragment {
                 // 从数据集移除数据
                 adapter.removeItem(pos);
 
-                // 通知Adapter更新
-                adapter.notifyItemRemoved(pos);
+                // 通知Adapter更新，此动作应是Adapter的内生逻辑
+                //adapter.notifyItemRemoved(pos);
             }
         };
         // 传入ItemTouchHelper.Callback

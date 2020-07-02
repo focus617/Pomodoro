@@ -64,11 +64,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Toast.makeText(this, "You clicked settings", Toast.LENGTH_SHORT).show();
                 /**
-                 * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
-                 * TODO: Replace the implementation with code for your data type.
+                 * {@link RecyclerView.Adapter} Create dummy project list that can display a {@link DummyItem}.
+                 * TODO: Clean it in future and Replace the implementation with code for your data type.
                  */
-                // Create dummy project for testing
-                // TODO: Clean in future
                 model.createDummyPrjList(COUNT);
                 return true;
 

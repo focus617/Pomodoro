@@ -33,12 +33,6 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     public void setProjectList(List<Project> mValues) {
         this.mValues = mValues;
 
-/*        // Adjust priority of each project
-        for (int i = 0; i < mValues.size(); i++) {
-            Project prj = mValues.get(i);
-            prj.setPriority(i+1);
-            viewModel.updateProjects(prj);
-        }*/
         // Update the UI when source changed.
         notifyDataSetChanged();
     }
@@ -46,10 +40,21 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     public void removeItem(int position) {
         Project prj = mValues.get(position);
         viewModel.deleteProjects(prj);
+        notifyItemRemoved(position);
     }
 
     public void swapItem(int from, int to){
         Collections.swap(mValues, from, to);
+        notifyItemMoved(from, to);
+
+        // Adjust priority of each project
+        // TODO: Here introduce a limitation that drag and swap only can be done between neighbor.
+        // Need further improve.
+        for (int i = 0; i < mValues.size(); i++) {
+            Project prj = mValues.get(i);
+            prj.setPriority(i+1);
+            viewModel.updateProjects(prj);
+        }
     }
 
     @Override

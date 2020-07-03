@@ -26,10 +26,6 @@
         android:name="com.example.pomodoro.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" >
-        <argument
-            android:name="projectId"
-            app:argType="integer"
-            android:defaultValue="0" />
         <action
             android:id="@+id/action_navigation_notifications_to_navigation_countdown"
             app:destination="@id/navigation_countdown" />
@@ -45,11 +41,6 @@
         android:id="@+id/navigation_countdown"
         android:name="com.example.pomodoro.ui.notifications.CountDownFragment"
         android:label="@string/title_countdown"
-        tools:layout="@layout/fragment_countdown" >
-        <argument
-            android:name="allTime"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </fragment>
+        tools:layout="@layout/fragment_countdown" />
 
 </navigation>

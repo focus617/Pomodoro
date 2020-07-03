@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
@@ -24,6 +25,7 @@ import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
@@ -45,25 +47,25 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        if (savedInstanceState != null) {
-            prjId = savedInstanceState.getInt(PROJECT_KEY);
-        } else {
-            // 获取目标 ItemFragment 传递的参数： projectId
-            prjId = NotificationsFragmentArgs.fromBundle(getArguments()).getProjectId();
-        }
-        //project = model.getProjectById(prjId);
-
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
-        Toast.makeText(getActivity(), "Current ProjectId: " + String.valueOf(prjId), Toast.LENGTH_SHORT).show();
+        //Get current project
+        project = model.getCurrentProject().getValue();
 
-/*        model.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        Toast.makeText(getActivity(), "Current Project: " + project.getTitle(), Toast.LENGTH_SHORT).show();
+
+        // Create the observer which updates the UI.
+        final Observer<Project> observer = new Observer<Project>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                Log.d(TAG, "onChanged: project= " + prj);
+            public void onChanged(@Nullable Project project) {
+                project = model.getCurrentProject().getValue();
+                Log.d(TAG, "onChanged: project= " + project.getTitle());
+                //TODO: adjust corresponding actionlist
             }
-        });*/
+        };
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        model.getCurrentProject().observe(this, observer);
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);
@@ -211,8 +213,7 @@ public class NotificationsFragment extends Fragment {
         Calendar currentTime = Calendar.getInstance();
         startTimeStamp = currentTime.getTimeInMillis();
 
-        NotificationsFragmentDirections.ActionNavigationNotificationsToNavigationCountdown action =
-                NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown().setAllTime(allTime);
+        NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown();
         Navigation.findNavController(btnStart).navigate(action);
 
         model.allTimeCount = allTime;

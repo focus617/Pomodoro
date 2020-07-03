@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.viewModel.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 import java.util.Timer;
@@ -32,6 +33,7 @@ public class CountDownFragment extends Fragment {
     private static final int MSG_WHAT_TIME_IS_UP = 1;
     private static final int MSG_WHAT_TIME_TICK = 2;
 
+    private Activity activity;
     private int allTime;
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
@@ -46,7 +48,13 @@ public class CountDownFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        allTime = CountDownFragmentArgs.fromBundle(getArguments()).getAllTime();
+
+        // Get the ViewModel.
+        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        //Get current activity
+        activity = model.getCurrentActivity().getValue();
+        allTime = activity.getAllTime();
 
         // 增加一个lifecycle Observer
         observer = new LifeObserverCountDownFg();

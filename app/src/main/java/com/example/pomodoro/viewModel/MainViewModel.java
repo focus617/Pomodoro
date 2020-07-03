@@ -13,18 +13,49 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     private MyRepository repository;
+    private MutableLiveData<Project> currentProject;   // 当前选择的目标活动
+    private MutableLiveData<Activity> currentActivity ;
+    public int allTimeCount = 0;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         repository = new MyRepository(application);
-
-        //Temporary Call
-        NotificationsViewModel();
     }
 
     public LiveData<List<Project>> getPrjListLive() {
         return repository.getPrjListLive();
     }
+
+    public MutableLiveData<Project> getCurrentProject() {
+        if (null == currentProject){
+            currentProject = new MutableLiveData<>();
+            currentProject.setValue(getPrjListLive().getValue().get(0));
+        }
+        return currentProject;
+    }
+
+    public void setCurrentProject(Project project) {
+        if (null == currentProject) {
+            currentProject = new MutableLiveData<>();
+        }
+        currentProject.setValue(project);
+    }
+
+    public MutableLiveData<Activity> getCurrentActivity() {
+        if (null == currentActivity) {
+            currentActivity = new MutableLiveData<>();
+            currentActivity.setValue(createDummyActivity());
+        }
+        return currentActivity;
+    }
+
+    public void setCurrentActivity(Activity activity) {
+        if (null == currentActivity) {
+            currentActivity = new MutableLiveData<>();
+        }
+        currentActivity.setValue(activity);
+    }
+
 
 
     // Create dummy list for testing purpose
@@ -62,6 +93,11 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
+    public Activity createDummyActivity(){
+        Activity act =  new Activity("番茄工作时间",R.drawable.focus, 25*60*1000);
+        return act;
+    }
+
     public Project getProjectById(int id){
         return repository.getProjectById(id);
     }
@@ -82,24 +118,5 @@ public class MainViewModel extends AndroidViewModel {
         repository.deleteAllProjects();
     }
 
-    // Data for NotificationFragment
-    private MutableLiveData<String> mText = new MutableLiveData<>();
-    private MutableLiveData<String> selectedActivity ;
-    public int allTimeCount = 0;
 
-    public void NotificationsViewModel() {
-        mText.setValue("This is notifications fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
-    }
-
-    public void select(String activity) {
-        selectedActivity.setValue(activity);
-    }
-
-    public LiveData<String> getSelected() {
-        return selectedActivity;
-    }
 }

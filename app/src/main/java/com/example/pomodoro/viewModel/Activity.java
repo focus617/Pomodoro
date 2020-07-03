@@ -7,11 +7,15 @@ import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
 
-import static java.util.Calendar.*;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+import static java.util.Calendar.getInstance;
 
-// 表示项目（目标）的数据类，用来存储创建的项目，并提供给HomeFragment
+
+// 表示活动（定时工作）的数据类，用来存储创建的活动，并提供给NotificationFragment
 @Entity
-public class Project {
+public class Activity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -23,19 +27,19 @@ public class Project {
     private String title;
     @ColumnInfo(name = "imageID")
     private int imageId;
-    @ColumnInfo(name = "priority")
-    private int priority;
+    @ColumnInfo(name = "allTime")
+    private int allTime;
     @ColumnInfo(name = "createTime")
     private long createTime;
 
     /**
-     * Room会使用这个构造器来存储数据，也就是当你从表中得到 Project对象时候，Room会使用这个构造器
+     * Room会使用这个构造器来存储数据，也就是当你从表中得到 Activity对象时候，Room会使用这个构造器
      * */
-    public Project(int id, String title, int imageId, int priority, long createTime) {
+    public Activity(int id, String title, int imageId, int allTime, long createTime) {
         this.id = id;
         this.title = title;
         this.imageId = imageId;
-        this.priority = priority;
+        this.allTime = allTime;
         this.createTime = createTime;
     }
 
@@ -44,11 +48,11 @@ public class Project {
      * 同样，@Ignore标签还可用于字段，使用@Ignore标签标记过的字段，Room不会持久化该字段的数据
      * */
     @Ignore
-    public Project(String title, int imageId) {
+    public Activity(String title, int imageId, int allTime) {
         this.title = title;
         this.imageId = imageId;
+        this.allTime = allTime;
         this.createTime = getInstance().getTimeInMillis();
-        this.priority = 0;
     }
 
 
@@ -73,12 +77,12 @@ public class Project {
         return imageId;
     }
 
-    public int getPriority() {
-        return priority;
+    public int getAllTime() {
+        return allTime;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setAllTime(int allTime) {
+        this.allTime = allTime;
     }
 
     public long getCreateTime() {

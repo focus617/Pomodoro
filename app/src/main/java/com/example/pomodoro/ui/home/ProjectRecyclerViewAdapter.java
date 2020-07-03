@@ -1,5 +1,6 @@
 package com.example.pomodoro.ui.home;
 
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,13 +72,13 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Project prj = mValues.get(position);
-                Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
+                viewModel.setCurrentProject(prj);
 
+                //Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: ");
 
-                // 从目标 ItemFragment 向 定时器 NotificationFragment 传递参数：项目
-                HomeFragmentDirections.ActionNavigationHomeToNavigationNotifications action =
-                        HomeFragmentDirections.actionNavigationHomeToNavigationNotifications().setProjectId(prj.getId());
+                // Navigate to NotificationFragment
+                NavDirections action = HomeFragmentDirections.actionNavigationHomeToNavigationNotifications();
                 Navigation.findNavController(v).navigate(action);
             }
         });

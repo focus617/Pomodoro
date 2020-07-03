@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.databinding.FragmentCountdownBinding;
 import com.example.pomodoro.viewModel.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 
@@ -37,13 +39,14 @@ public class CountDownFragment extends Fragment {
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
 
-    private Button btnStart, btnPause, btnResume, btnReset;
-    private ProgressBar prgbar;
-    private TextView etHour, etMin, etSec;
+    //private Button btnStart, btnPause, btnResume, btnReset;
+    //private ProgressBar prgbar;
+    //private TextView etHour, etMin, etSec;
     private MediaPlayer mp;
 
     private MainViewModel model;
     private LifeObserverCountDownFg observer;
+    private FragmentCountdownBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,42 +69,45 @@ public class CountDownFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.fragment_countdown, container, false);
+        //View root = inflater.inflate(R.layout.fragment_countdown, container, false);
+
+        // Get the Databinding object
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_countdown,container, false);
 
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",
                 model.getCurrentActivity().getValue().getAllTime()), Toast.LENGTH_SHORT).show();
 
-        btnStart = (Button) root.findViewById(R.id.btnStart);
-        btnPause = (Button) root.findViewById(R.id.btnPause);
-        btnResume = (Button) root.findViewById(R.id.btnResume);
-        btnReset = (Button) root.findViewById(R.id.btnReset);
-        btnStart.setVisibility(View.GONE);
-        btnPause.setVisibility(View.VISIBLE);
-        btnReset.setVisibility(View.VISIBLE);
-        btnResume.setVisibility(View.GONE);
+//        btnStart = (Button) root.findViewById(R.id.btnStart);
+//        btnPause = (Button) root.findViewById(R.id.btnPause);
+//        btnResume = (Button) root.findViewById(R.id.btnResume);
+//        btnReset = (Button) root.findViewById(R.id.btnReset);
+        binding.btnStart.setVisibility(View.GONE);
+        binding.btnPause.setVisibility(View.VISIBLE);
+        binding.btnReset.setVisibility(View.VISIBLE);
+        binding.btnResume.setVisibility(View.GONE);
 
-        btnPause.setOnClickListener(new View.OnClickListener() {
+        binding.btnPause.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 stopTimer();
-                btnPause.setVisibility(View.GONE);
-                btnResume.setVisibility(View.VISIBLE);
+                binding.btnPause.setVisibility(View.GONE);
+                binding.btnResume.setVisibility(View.VISIBLE);
             }
         });
 
-        btnResume.setOnClickListener(new View.OnClickListener() {
+        binding.btnResume.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startTimer();
-                btnPause.setVisibility(View.VISIBLE);
-                btnResume.setVisibility(View.GONE);
+                binding.btnPause.setVisibility(View.VISIBLE);
+                binding.btnResume.setVisibility(View.GONE);
             }
         });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        binding.btnReset.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -111,31 +117,31 @@ public class CountDownFragment extends Fragment {
                 int min = (model.getTimeCounter().getValue() / 60) % 60;
                 int sec = model.getTimeCounter().getValue() % 60;
 
-                etHour.setText(hour + "");
-                etMin.setText(min + "");
-                etSec.setText(sec + "");
+                binding.etHour.setText(hour + "");
+                binding.etMin.setText(min + "");
+                binding.etSec.setText(sec + "");
                 startTimer();
 
-                btnResume.setVisibility(View.GONE);
-                btnPause.setVisibility(View.VISIBLE);
+                binding.btnResume.setVisibility(View.GONE);
+                binding.btnPause.setVisibility(View.VISIBLE);
             }
         });
 
-        etHour = (TextView) root.findViewById(R.id.etHour);
-        etMin = (TextView) root.findViewById(R.id.etMin);
-        etSec = (TextView) root.findViewById(R.id.etSec);
+//        etHour = (TextView) root.findViewById(R.id.etHour);
+//        etMin = (TextView) root.findViewById(R.id.etMin);
+//        etSec = (TextView) root.findViewById(R.id.etSec);
 
         int hour = model.getTimeCounter().getValue() / 60 / 60;
         int min = (model.getTimeCounter().getValue() / 60) % 60;
         int sec = model.getTimeCounter().getValue() % 60;
 
-        etHour.setText(hour + "");
-        etMin.setText(min + "");
-        etSec.setText(sec + "");
+        binding.etHour.setText(hour + "");
+        binding.etMin.setText(min + "");
+        binding.etSec.setText(sec + "");
 
         startTimer();
 
-        return root;
+        return binding.getRoot();
     }
 
     // TODO: move allTimeCount into a service, in order to avoid the fragment lifecycle impact.
@@ -186,9 +192,9 @@ public class CountDownFragment extends Fragment {
                     int min = (model.getTimeCounter().getValue() / 60) % 60;
                     int sec = model.getTimeCounter().getValue() % 60;
 
-                    etHour.setText(hour + "");
-                    etMin.setText(min + "");
-                    etSec.setText(sec + "");
+                    binding.etHour.setText(hour + "");
+                    binding.etMin.setText(min + "");
+                    binding.etSec.setText(sec + "");
                     break;
 
                 case MSG_WHAT_TIME_IS_UP:
@@ -207,9 +213,9 @@ public class CountDownFragment extends Fragment {
                     });
                     builder.show();
 
-                    btnReset.setVisibility(View.VISIBLE);
-                    btnResume.setVisibility(View.GONE);
-                    btnPause.setVisibility(View.GONE);
+                    binding.btnReset.setVisibility(View.VISIBLE);
+                    binding.btnResume.setVisibility(View.GONE);
+                    binding.btnPause.setVisibility(View.GONE);
                     break;
 
                 default:

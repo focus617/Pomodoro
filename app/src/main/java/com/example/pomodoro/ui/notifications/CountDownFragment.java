@@ -35,12 +35,12 @@ public class CountDownFragment extends Fragment {
     private Activity activity;
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
-
     private MediaPlayer mp;
 
     private MainViewModel model;
-    private LifeObserverCountDownFg observer;
     private FragmentCountdownBinding binding;
+
+    private LifeObserverCountDownFg observer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

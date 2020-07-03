@@ -13,9 +13,9 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     private MyRepository repository;
-    private MutableLiveData<Project> currentProject;   // 当前选择的目标活动
-    private MutableLiveData<Activity> currentActivity ;
-    public int allTimeCount = 0;
+    private MutableLiveData<Project> currentProject;    // 当前选择的目标活动
+    private MutableLiveData<Activity> currentActivity;  // 当前选择的活动
+    public MutableLiveData<Integer> timeCounter;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -56,7 +56,31 @@ public class MainViewModel extends AndroidViewModel {
         currentActivity.setValue(activity);
     }
 
+    public MutableLiveData<Integer> getTimeCounter() {
+        if (null == timeCounter) {
+            timeCounter = new MutableLiveData<>();
+            timeCounter.setValue(currentActivity.getValue().getAllTime());
+        }
+        return timeCounter;
+    }
 
+    public void setTimeCounter(Integer timeCount) {
+        if (null == timeCounter) {
+            timeCounter = new MutableLiveData<>();
+        }
+        timeCounter.postValue(timeCount);
+    }
+
+    public void resetTimeCounter(Activity act) {
+        if (null == timeCounter) {
+            timeCounter = new MutableLiveData<>();
+        }
+        timeCounter.setValue(act.getAllTime());
+    }
+
+    public void countdown(){
+        timeCounter.postValue(timeCounter.getValue()-1);
+    }
 
     // Create dummy list for testing purpose
     public void createDummyPrjList() {

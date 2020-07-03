@@ -34,9 +34,9 @@ public class CountDownFragment extends Fragment {
     private static final int MSG_WHAT_TIME_TICK = 2;
 
     private Activity activity;
-    private int allTime;
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
+
     private Button btnStart, btnPause, btnResume, btnReset;
     private ProgressBar prgbar;
     private TextView etHour, etMin, etSec;
@@ -54,13 +54,12 @@ public class CountDownFragment extends Fragment {
 
         //Get current activity
         activity = model.getCurrentActivity().getValue();
-        allTime = activity.getAllTime();
 
         // 增加一个lifecycle Observer
         observer = new LifeObserverCountDownFg();
         getLifecycle().addObserver(observer);
 
-        Log.d(TAG, String.format("onCreateView: allTime=%d", allTime));
+        Log.d(TAG, String.format("onCreateView: allTime=%d", model.getCurrentActivity().getValue().getAllTime()));
     }
 
     @Override
@@ -70,7 +69,8 @@ public class CountDownFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_countdown, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",model.allTimeCount), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",
+                model.getCurrentActivity().getValue().getAllTime()), Toast.LENGTH_SHORT).show();
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);
@@ -106,10 +106,10 @@ public class CountDownFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 stopTimer();
-                model.allTimeCount = allTime;
-                int hour = model.allTimeCount / 60 / 60;
-                int min = (model.allTimeCount / 60) % 60;
-                int sec = model.allTimeCount % 60;
+                model.resetTimeCounter(activity);
+                int hour = model.getTimeCounter().getValue() / 60 / 60;
+                int min = (model.getTimeCounter().getValue() / 60) % 60;
+                int sec = model.getTimeCounter().getValue() % 60;
 
                 etHour.setText(hour + "");
                 etMin.setText(min + "");
@@ -125,9 +125,9 @@ public class CountDownFragment extends Fragment {
         etMin = (TextView) root.findViewById(R.id.etMin);
         etSec = (TextView) root.findViewById(R.id.etSec);
 
-        int hour = model.allTimeCount / 60 / 60;
-        int min = (model.allTimeCount / 60) % 60;
-        int sec = model.allTimeCount % 60;
+        int hour = model.getTimeCounter().getValue() / 60 / 60;
+        int min = (model.getTimeCounter().getValue() / 60) % 60;
+        int sec = model.getTimeCounter().getValue() % 60;
 
         etHour.setText(hour + "");
         etMin.setText(min + "");
@@ -150,11 +150,11 @@ public class CountDownFragment extends Fragment {
                 public void run() {
                     Log.d(TAG, "run: timer count--");
 
-                    model.allTimeCount--;
+                    model.countdown();
 
                     // 每秒通知 Activity - TimerView 减一
                     handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
-                    if (model.allTimeCount <= 0) {
+                    if (model.getTimeCounter().getValue() <= 0) {
                         Log.d(TAG, "run: time is up!");
 
                         handler.sendEmptyMessage(MSG_WHAT_TIME_IS_UP);
@@ -182,9 +182,9 @@ public class CountDownFragment extends Fragment {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_WHAT_TIME_TICK:
-                    int hour = model.allTimeCount / 60 / 60;
-                    int min = (model.allTimeCount / 60) % 60;
-                    int sec = model.allTimeCount % 60;
+                    int hour = model.getTimeCounter().getValue() / 60 / 60;
+                    int min = (model.getTimeCounter().getValue() / 60) % 60;
+                    int sec = model.getTimeCounter().getValue() % 60;
 
                     etHour.setText(hour + "");
                     etMin.setText(min + "");

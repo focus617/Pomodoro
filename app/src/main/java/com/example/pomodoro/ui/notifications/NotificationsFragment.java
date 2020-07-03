@@ -21,6 +21,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.viewModel.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 
@@ -34,9 +35,9 @@ public class NotificationsFragment extends Fragment {
 
     private int prjId;
     Project project;
+    Activity activity;
     private long startTimeStamp, endTimeStamp;
 
-    private int allTime;
     private Button btnStart, btnPause, btnResume, btnReset;
     private EditText etHour, etMin, etSec;
 
@@ -66,6 +67,7 @@ public class NotificationsFragment extends Fragment {
         };
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         model.getCurrentProject().observe(this, observer);
+        activity = model.getCurrentActivity().getValue();
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);
@@ -79,9 +81,11 @@ public class NotificationsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                allTime = Integer.parseInt(etHour.getText().toString()) * 60
+                int allTime = Integer.parseInt(etHour.getText().toString()) * 60
                         * 60 + Integer.parseInt(etMin.getText().toString()) * 60
                         + Integer.parseInt(etSec.getText().toString());
+
+                activity.setAllTime(allTime);
 
                 startCountDownTimer();
             }
@@ -216,7 +220,7 @@ public class NotificationsFragment extends Fragment {
         NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown();
         Navigation.findNavController(btnStart).navigate(action);
 
-        model.allTimeCount = allTime;
+        model.resetTimeCounter(activity);   // 初始化TimeCounter
     }
 
     //TODO: 在此增加“添加 ActivityRecord”的功能

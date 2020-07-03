@@ -51,11 +51,12 @@ public class NotificationsFragment extends Fragment {
             // 获取目标 ItemFragment 传递的参数： projectId
             prjId = NotificationsFragmentArgs.fromBundle(getArguments()).getProjectId();
         }
+        //project = model.getProjectById(prjId);
 
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
-        Toast.makeText(getActivity(), "Current Project_Id: " + String.valueOf(prjId), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Current ProjectId: " + String.valueOf(prjId), Toast.LENGTH_SHORT).show();
 
 /*        model.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

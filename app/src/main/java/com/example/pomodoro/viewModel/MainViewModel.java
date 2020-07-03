@@ -62,6 +62,10 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
+    public Project getProjectById(int id){
+        return repository.getProjectById(id);
+    }
+
     public void insertProjects(Project...projects){
         repository.insertProjects(projects);
     }

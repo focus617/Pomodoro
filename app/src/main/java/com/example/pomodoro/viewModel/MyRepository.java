@@ -24,9 +24,10 @@ public class MyRepository {
     }
 
 
-/*    public void getProjectById(Project...projects){
-        new GetAsyncTask(projectDao).execute(projects);
-    }*/
+    public Project getProjectById(int id){
+        //new GetAsyncTask(projectDao).execute(projects);
+        return projectDao.getProjectById(id);
+    }
 
     public void insertProjects(Project...projects){
         new InsertAsyncTask(projectDao).execute(projects);

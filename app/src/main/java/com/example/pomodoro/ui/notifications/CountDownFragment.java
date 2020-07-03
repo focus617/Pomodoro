@@ -10,9 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,9 +36,6 @@ public class CountDownFragment extends Fragment {
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
 
-    //private Button btnStart, btnPause, btnResume, btnReset;
-    //private ProgressBar prgbar;
-    //private TextView etHour, etMin, etSec;
     private MediaPlayer mp;
 
     private MainViewModel model;
@@ -61,27 +55,21 @@ public class CountDownFragment extends Fragment {
         // 增加一个lifecycle Observer
         observer = new LifeObserverCountDownFg();
         getLifecycle().addObserver(observer);
-
-        Log.d(TAG, String.format("onCreateView: allTime=%d", model.getCurrentActivity().getValue().getAllTime()));
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        //View root = inflater.inflate(R.layout.fragment_countdown, container, false);
 
-        // Get the Databinding object
+        // Databinding
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_countdown,container, false);
+        binding.setTimeCount(model);
+        binding.setLifecycleOwner(this);
 
-        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",
                 model.getCurrentActivity().getValue().getAllTime()), Toast.LENGTH_SHORT).show();
 
-//        btnStart = (Button) root.findViewById(R.id.btnStart);
-//        btnPause = (Button) root.findViewById(R.id.btnPause);
-//        btnResume = (Button) root.findViewById(R.id.btnResume);
-//        btnReset = (Button) root.findViewById(R.id.btnReset);
         binding.btnStart.setVisibility(View.GONE);
         binding.btnPause.setVisibility(View.VISIBLE);
         binding.btnReset.setVisibility(View.VISIBLE);
@@ -113,31 +101,12 @@ public class CountDownFragment extends Fragment {
             public void onClick(View v) {
                 stopTimer();
                 model.resetTimeCounter(activity);
-                int hour = model.getTimeCounter().getValue() / 60 / 60;
-                int min = (model.getTimeCounter().getValue() / 60) % 60;
-                int sec = model.getTimeCounter().getValue() % 60;
-
-                binding.etHour.setText(hour + "");
-                binding.etMin.setText(min + "");
-                binding.etSec.setText(sec + "");
                 startTimer();
 
                 binding.btnResume.setVisibility(View.GONE);
                 binding.btnPause.setVisibility(View.VISIBLE);
             }
         });
-
-//        etHour = (TextView) root.findViewById(R.id.etHour);
-//        etMin = (TextView) root.findViewById(R.id.etMin);
-//        etSec = (TextView) root.findViewById(R.id.etSec);
-
-        int hour = model.getTimeCounter().getValue() / 60 / 60;
-        int min = (model.getTimeCounter().getValue() / 60) % 60;
-        int sec = model.getTimeCounter().getValue() % 60;
-
-        binding.etHour.setText(hour + "");
-        binding.etMin.setText(min + "");
-        binding.etSec.setText(sec + "");
 
         startTimer();
 
@@ -154,12 +123,13 @@ public class CountDownFragment extends Fragment {
 
                 @Override
                 public void run() {
-                    Log.d(TAG, "run: timer count--");
+                    Log.d(TAG, "run: timer count--: "+
+                            String.valueOf(model.getTimeCounter().getValue()));
 
                     model.countdown();
 
                     // 每秒通知 Activity - TimerView 减一
-                    handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
+                    //handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
                     if (model.getTimeCounter().getValue() <= 0) {
                         Log.d(TAG, "run: time is up!");
 
@@ -188,13 +158,7 @@ public class CountDownFragment extends Fragment {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_WHAT_TIME_TICK:
-                    int hour = model.getTimeCounter().getValue() / 60 / 60;
-                    int min = (model.getTimeCounter().getValue() / 60) % 60;
-                    int sec = model.getTimeCounter().getValue() % 60;
-
-                    binding.etHour.setText(hour + "");
-                    binding.etMin.setText(min + "");
-                    binding.etSec.setText(sec + "");
+                    // 因为使用了Databinding，就不需要每秒手动更新UI了。
                     break;
 
                 case MSG_WHAT_TIME_IS_UP:

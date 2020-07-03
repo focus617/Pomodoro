@@ -79,7 +79,10 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void countdown(){
-        timeCounter.postValue(timeCounter.getValue()-1);
+        int counter = timeCounter.getValue();
+        if (counter > 0) {
+            timeCounter.postValue(counter - 1);
+        }
     }
 
     // Create dummy list for testing purpose

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.databinding.FragmentNotificationsBinding;
 import com.example.pomodoro.viewModel.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
@@ -30,23 +30,20 @@ import java.util.Calendar;
 
 public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
-    private static final String PROJECT_KEY = "Project_Key";
 
-
-    private int prjId;
-    Project project;
-    Activity activity;
+    private Project project;
+    private Activity activity;
     private long startTimeStamp, endTimeStamp;
 
     private Button btnStart, btnPause, btnResume, btnReset;
     private EditText etHour, etMin, etSec;
 
     private MainViewModel model;
+    private FragmentNotificationsBinding binding;
 
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         // Get the ViewModel.
         model = new ViewModelProvider(requireActivity(),
@@ -55,9 +52,20 @@ public class NotificationsFragment extends Fragment {
 
         //Get current project
         project = model.getSelectedProject().getValue();
-        Toast.makeText(getActivity(), "Current Project: " + project.getTitle(), Toast.LENGTH_SHORT).show();
+    }
 
-        // Create the observer which updates the UI.
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        // Databinding
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
+        binding.setTimeCount(model);
+        binding.setLifecycleOwner(this);
+
+        Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
+
+/*        // Create the observer which updates the UI.
         final Observer<Project> observer = new Observer<Project>() {
             @Override
             public void onChanged(@Nullable Project project) {
@@ -67,25 +75,21 @@ public class NotificationsFragment extends Fragment {
             }
         };
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getSelectedProject().observe(this, observer);
+        model.getSelectedProject().observe(this, observer);*/
 
         activity = model.getSelectedActivity().getValue();
 
-        btnStart = (Button) root.findViewById(R.id.btnStart);
-        btnPause = (Button) root.findViewById(R.id.btnPause);
-        btnResume = (Button) root.findViewById(R.id.btnResume);
-        btnReset = (Button) root.findViewById(R.id.btnReset);
-        btnPause.setVisibility(View.GONE);
-        btnReset.setVisibility(View.GONE);
-        btnResume.setVisibility(View.GONE);
+        binding.btnPause.setVisibility(View.GONE);
+        binding.btnReset.setVisibility(View.GONE);
+        binding.btnResume.setVisibility(View.GONE);
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
+        binding.btnStart.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int allTime = Integer.parseInt(etHour.getText().toString()) * 60
-                        * 60 + Integer.parseInt(etMin.getText().toString()) * 60
-                        + Integer.parseInt(etSec.getText().toString());
+                int allTime = Integer.parseInt(binding.etHour.getText().toString()) * 60
+                        * 60 + Integer.parseInt(binding.etMin.getText().toString()) * 60
+                        + Integer.parseInt(binding.etSec.getText().toString());
 
                 activity.setAllTime(allTime);
 
@@ -93,12 +97,8 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        etHour = (EditText) root.findViewById(R.id.etHour);
-        etMin = (EditText) root.findViewById(R.id.etMin);
-        etSec = (EditText) root.findViewById(R.id.etSec);
-
-        etHour.setText("00");
-        etHour.addTextChangedListener(new TextWatcher() {
+        binding.etHour.setText("00");
+        binding.etHour.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -116,9 +116,9 @@ public class NotificationsFragment extends Fragment {
                     int value = Integer.parseInt(s.toString());
 
                     if (value > 59) {
-                        etHour.setText("59");
+                        binding.etHour.setText("59");
                     } else if (value < 0) {
-                        etHour.setText("00");
+                        binding.etHour.setText("00");
                     }
                 }
                 checkToEnableBtnStart();
@@ -131,8 +131,8 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        etMin.setText("00");
-        etMin.addTextChangedListener(new TextWatcher() {
+        binding.etMin.setText("00");
+        binding.etMin.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -147,9 +147,9 @@ public class NotificationsFragment extends Fragment {
                     int value = Integer.parseInt(s.toString());
 
                     if (value > 59) {
-                        etMin.setText("59");
+                        binding.etMin.setText("59");
                     } else if (value < 0) {
-                        etMin.setText("00");
+                        binding.etMin.setText("00");
                     }
                 }
                 checkToEnableBtnStart();
@@ -162,8 +162,8 @@ public class NotificationsFragment extends Fragment {
         });
 
 
-        etSec.setText("00");
-        etSec.addTextChangedListener(new TextWatcher() {
+        binding.etSec.setText("00");
+        binding.etSec.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -178,9 +178,9 @@ public class NotificationsFragment extends Fragment {
                     int value = Integer.parseInt(s.toString());
 
                     if (value > 59) {
-                        etSec.setText("59");
+                        binding.etSec.setText("59");
                     } else if (value < 0) {
-                        etSec.setText("00");
+                        binding.etSec.setText("00");
                     }
                 }
                 checkToEnableBtnStart();
@@ -191,28 +191,21 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        btnStart.setVisibility(View.VISIBLE);
-        btnStart.setEnabled(false);
+        binding.btnStart.setVisibility(View.VISIBLE);
+        binding.btnStart.setEnabled(false);
 
-        return root;
+        return binding.getRoot();
 
-    }
-
-    // 将目标 Project 进行保存
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(PROJECT_KEY, prjId);
     }
 
     // 检查时分秒数据的有效性，若有效就启用
     private void checkToEnableBtnStart() {
-        btnStart.setEnabled((!TextUtils.isEmpty(etHour.getText()) && Integer
-                .parseInt(etHour.getText().toString()) > 0)
-                || (!TextUtils.isEmpty(etMin.getText()) && Integer
-                .parseInt(etMin.getText().toString()) > 0)
-                || (!TextUtils.isEmpty(etSec.getText()) && Integer
-                .parseInt(etSec.getText().toString()) > 0));
+        binding.btnStart.setEnabled((!TextUtils.isEmpty(binding.etHour.getText()) && Integer
+                .parseInt(binding.etHour.getText().toString()) > 0)
+                || (!TextUtils.isEmpty(binding.etMin.getText()) && Integer
+                .parseInt(binding.etMin.getText().toString()) > 0)
+                || (!TextUtils.isEmpty(binding.etSec.getText()) && Integer
+                .parseInt(binding.etSec.getText().toString()) > 0));
     }
 
     private void startCountDownTimer() {
@@ -220,7 +213,7 @@ public class NotificationsFragment extends Fragment {
         startTimeStamp = currentTime.getTimeInMillis();
 
         NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown();
-        Navigation.findNavController(btnStart).navigate(action);
+        Navigation.findNavController(binding.btnStart).navigate(action);
 
         model.resetTimeCounter(activity);   // 初始化TimeCounter
     }

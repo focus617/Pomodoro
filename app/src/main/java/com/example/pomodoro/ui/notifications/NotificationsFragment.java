@@ -69,7 +69,7 @@ public class NotificationsFragment extends Fragment {
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         model.getSelectedProject().observe(this, observer);
 
-        activity = model.getCurrentActivity().getValue();
+        activity = model.getSelectedActivity().getValue();
 
         btnStart = (Button) root.findViewById(R.id.btnStart);
         btnPause = (Button) root.findViewById(R.id.btnPause);

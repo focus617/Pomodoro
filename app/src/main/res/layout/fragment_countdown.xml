@@ -13,10 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.notifications.NotificationsFragment">
+        tools:context=".ui.notifications.CountDownFragment">
 
-
-        <!--定时器-->
 
         <TextView
             android:id="@+id/lbHour"
@@ -54,6 +52,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline18"
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
+        <!--定时器-->
         <TextView
             android:id="@+id/etHour"
             android:layout_width="wrap_content"

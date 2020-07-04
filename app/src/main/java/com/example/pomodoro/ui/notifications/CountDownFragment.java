@@ -53,7 +53,7 @@ public class CountDownFragment extends Fragment {
                 .get(MainViewModel.class);
 
         //Get current activity
-        activity = model.getCurrentActivity().getValue();
+        activity = model.getSelectedActivity().getValue();
 
         // 增加一个lifecycle Observer
         observer = new LifeObserverCountDownFg();
@@ -71,7 +71,7 @@ public class CountDownFragment extends Fragment {
         binding.setLifecycleOwner(this);
 
         Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",
-                model.getCurrentActivity().getValue().getAllTime()), Toast.LENGTH_SHORT).show();
+                model.getSelectedActivity().getValue().getAllTime()), Toast.LENGTH_SHORT).show();
 
         binding.btnStart.setVisibility(View.GONE);
         binding.btnPause.setVisibility(View.VISIBLE);

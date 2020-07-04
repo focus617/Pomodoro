@@ -18,23 +18,27 @@ public class MainViewModel extends AndroidViewModel {
 
     private MyRepository repository;
     private MutableLiveData<Project> selectedProject;    // 当前选择的目标活动
-    private MutableLiveData<Activity> currentActivity;   // 当前选择的活动
+    private MutableLiveData<Activity> selectedActivity;   // 当前选择的活动
     public MutableLiveData<Integer> timeCounter;
-    private int selectedProjectId;
+    private int selectedProjectId, selectedActivityId;
     Project dummyProject;
 
     // Introduce ViewModel.SavedState
     private SavedStateHandle mState;
-    public MainViewModel(@NonNull Application application, SavedStateHandle mState) {
+    public MainViewModel(@NonNull Application application, SavedStateHandle state) {
         super(application);
-        repository = new MyRepository(application);
-        this.mState = mState;
+        this.repository = new MyRepository(application);
         this.dummyProject = createDummyProject();
 
-        if (!mState.contains(MainViewModel.KEY_PROJECT)) {
+        if (!state.contains(MainViewModel.KEY_PROJECT)) {
             selectedProjectId = 0;
-            mState.set(MainViewModel.KEY_PROJECT, selectedProjectId);
+            state.set(MainViewModel.KEY_PROJECT, selectedProjectId);
         }
+        if (!state.contains(MainViewModel.KEY_ACTIVITY)) {
+            selectedActivityId = 0;
+            state.set(MainViewModel.KEY_ACTIVITY, selectedActivityId);
+        }
+        this.mState = state;
     }
 
     public MutableLiveData<Project> getSelectedProject() {
@@ -50,7 +54,7 @@ public class MainViewModel extends AndroidViewModel {
             } else {
                 prj = repository.getProjectById(id);
             }
-            
+
             selectedProject = new MutableLiveData<>();
             selectedProject.setValue(prj);
         }
@@ -67,25 +71,25 @@ public class MainViewModel extends AndroidViewModel {
         mState.set(MainViewModel.KEY_PROJECT, project.getId());
     }
 
-    public MutableLiveData<Activity> getCurrentActivity() {
-        if (null == currentActivity) {
-            currentActivity = new MutableLiveData<>();
-            currentActivity.setValue(createDummyActivity());
+    public MutableLiveData<Activity> getSelectedActivity() {
+        if (null == selectedActivity) {
+            selectedActivity = new MutableLiveData<>();
+            selectedActivity.setValue(createDummyActivity());
         }
-        return currentActivity;
+        return selectedActivity;
     }
 
-    public void setCurrentActivity(Activity activity) {
-        if (null == currentActivity) {
-            currentActivity = new MutableLiveData<>();
+    public void setSelectedActivity(Activity activity) {
+        if (null == selectedActivity) {
+            selectedActivity = new MutableLiveData<>();
         }
-        currentActivity.setValue(activity);
+        selectedActivity.setValue(activity);
     }
 
     public MutableLiveData<Integer> getTimeCounter() {
         if (null == timeCounter) {
             timeCounter = new MutableLiveData<>();
-            timeCounter.setValue(currentActivity.getValue().getAllTime());
+            timeCounter.setValue(selectedActivity.getValue().getAllTime());
         }
         return timeCounter;
     }

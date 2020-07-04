@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro.R;
@@ -47,7 +48,9 @@ public class CountDownFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Get the ViewModel.
-        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        model = new ViewModelProvider(requireActivity(),
+                new SavedStateViewModelFactory(requireActivity().getApplication(),this))
+                .get(MainViewModel.class);
 
         //Get current activity
         activity = model.getCurrentActivity().getValue();

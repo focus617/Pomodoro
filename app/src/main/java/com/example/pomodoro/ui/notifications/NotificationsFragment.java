@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -26,7 +27,6 @@ import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 
 import java.util.Calendar;
-import java.util.List;
 
 public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
@@ -49,24 +49,26 @@ public class NotificationsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         // Get the ViewModel.
-        model = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        model = new ViewModelProvider(requireActivity(),
+                new SavedStateViewModelFactory(requireActivity().getApplication(),this))
+                .get(MainViewModel.class);
 
         //Get current project
-        project = model.getCurrentProject().getValue();
-
+        project = model.getSelectedProject().getValue();
         Toast.makeText(getActivity(), "Current Project: " + project.getTitle(), Toast.LENGTH_SHORT).show();
 
         // Create the observer which updates the UI.
         final Observer<Project> observer = new Observer<Project>() {
             @Override
             public void onChanged(@Nullable Project project) {
-                project = model.getCurrentProject().getValue();
+                project = model.getSelectedProject().getValue();
                 Log.d(TAG, "onChanged: project= " + project.getTitle());
                 //TODO: adjust corresponding actionlist
             }
         };
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getCurrentProject().observe(this, observer);
+        model.getSelectedProject().observe(this, observer);
+
         activity = model.getCurrentActivity().getValue();
 
         btnStart = (Button) root.findViewById(R.id.btnStart);

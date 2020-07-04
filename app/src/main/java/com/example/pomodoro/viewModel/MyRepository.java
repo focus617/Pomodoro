@@ -23,11 +23,7 @@ public class MyRepository {
         return prjListLive;
     }
 
-
-    public Project getProjectById(int id){
-        //new GetAsyncTask(projectDao).execute(projects);
-        return projectDao.getProjectById(id);
-    }
+    public Project getProjectById(int id) {return projectDao.getProjectById(id);}
 
     public void insertProjects(Project...projects){
         new InsertAsyncTask(projectDao).execute(projects);
@@ -44,20 +40,6 @@ public class MyRepository {
     public void deleteAllProjects(Void...voids){
         new DeleteAllAsyncTask(projectDao).execute();
     }
-
-/*    static class GetAsyncTask extends AsyncTask<Project,Void,Void>{
-        private ProjectDAO projectDAO;
-
-        public GetAsyncTask(ProjectDAO projectDAO) {
-            this.projectDAO = projectDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            projectDAO.getProjectById(id);
-            return null;
-        }
-    }*/
 
     static class InsertAsyncTask extends AsyncTask<Project,Void,Void> {
         private ProjectDAO projectDAO;

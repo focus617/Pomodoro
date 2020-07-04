@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.MainViewModel;
@@ -72,7 +71,7 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Project prj = mValues.get(position);
-                viewModel.setCurrentProject(prj);
+                viewModel.setSelectedProject(prj);
 
                 //Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: ");

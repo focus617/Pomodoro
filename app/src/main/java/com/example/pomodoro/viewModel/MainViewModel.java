@@ -6,39 +6,55 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.example.pomodoro.R;
 
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
+    final static String KEY_PROJECT = "Pomodoro_Project";
+    final static String KEY_ACTIVITY = "Pomodoro_Activity";
+
     private MyRepository repository;
-    private MutableLiveData<Project> currentProject;    // 当前选择的目标活动
+    private MutableLiveData<Project> selectedProject;    // 当前选择的目标活动
     private MutableLiveData<Activity> currentActivity;  // 当前选择的活动
     public MutableLiveData<Integer> timeCounter;
 
-    public MainViewModel(@NonNull Application application) {
+    // Introduce ViewModel.SavedState
+    private SavedStateHandle mState;
+    public MainViewModel(@NonNull Application application, SavedStateHandle mState) {
         super(application);
         repository = new MyRepository(application);
+        this.mState = mState;
     }
+
 
     public LiveData<List<Project>> getPrjListLive() {
         return repository.getPrjListLive();
     }
 
-    public MutableLiveData<Project> getCurrentProject() {
-        if (null == currentProject){
-            currentProject = new MutableLiveData<>();
-            currentProject.setValue(getPrjListLive().getValue().get(0));
+    public MutableLiveData<Project> getSelectedProject() {
+        if (null == selectedProject){
+            selectedProject = new MutableLiveData<>();
+            selectedProject.setValue(getPrjListLive().getValue().get(1));
         }
-        return currentProject;
+        return selectedProject;
+
+/*        // Introduce ViewModel.SavedState
+        if (!mState.contains(MainViewModel.KEY_PROJECT)) {
+            selectedProject = new MutableLiveData<>();
+            selectedProject.setValue(createDummyProject());
+            mState.set(MainViewModel.KEY_PROJECT, selectedProject);
+        }
+        return mState.getLiveData(MainViewModel.KEY_PROJECT);*/
     }
 
-    public void setCurrentProject(Project project) {
-        if (null == currentProject) {
-            currentProject = new MutableLiveData<>();
+    public void setSelectedProject(Project project) {
+        if (null == selectedProject) {
+            selectedProject = new MutableLiveData<>();
         }
-        currentProject.setValue(project);
+        selectedProject.setValue(project);
     }
 
     public MutableLiveData<Activity> getCurrentActivity() {
@@ -78,7 +94,7 @@ public class MainViewModel extends AndroidViewModel {
         timeCounter.setValue(act.getAllTime());
     }
 
-    public void countdown(){
+    public void countdown() {
         int counter = timeCounter.getValue();
         if (counter > 0) {
             timeCounter.postValue(counter - 1);
@@ -114,34 +130,35 @@ public class MainViewModel extends AndroidViewModel {
 
         // Add some sample items.
         for (int i = 0; i < images.length; i++) {
-            Project prj = new Project(projects[i],  images[i]);
-            prj.setPriority(i+1);
+            Project prj = new Project(projects[i], images[i]);
+            prj.setPriority(i + 1);
             insertProjects(prj);
         }
     }
 
-    public Activity createDummyActivity(){
-        Activity act =  new Activity("番茄工作时间",R.drawable.focus, 25*60*1000);
+    public Project createDummyProject() {
+        Project prj = new Project("番茄工作", R.drawable.read_book);
+        return prj;
+    }
+
+    public Activity createDummyActivity() {
+        Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60 * 1000);
         return act;
     }
 
-    public Project getProjectById(int id){
-        return repository.getProjectById(id);
-    }
-
-    public void insertProjects(Project...projects){
+    public void insertProjects(Project... projects) {
         repository.insertProjects(projects);
     }
 
-    public void updateProjects(Project...projects){
+    public void updateProjects(Project... projects) {
         repository.updateProjects(projects);
     }
 
-    public void deleteProjects(Project...projects){
+    public void deleteProjects(Project... projects) {
         repository.deleteProjects(projects);
     }
 
-    public void deleteAllProjects(Void...voids){
+    public void deleteAllProjects(Void... voids) {
         repository.deleteAllProjects();
     }
 

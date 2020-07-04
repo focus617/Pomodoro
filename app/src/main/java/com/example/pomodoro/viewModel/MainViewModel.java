@@ -18,8 +18,10 @@ public class MainViewModel extends AndroidViewModel {
 
     private MyRepository repository;
     private MutableLiveData<Project> selectedProject;    // 当前选择的目标活动
-    private MutableLiveData<Activity> currentActivity;  // 当前选择的活动
+    private MutableLiveData<Activity> currentActivity;   // 当前选择的活动
     public MutableLiveData<Integer> timeCounter;
+    private int selectedProjectId;
+    Project dummyProject;
 
     // Introduce ViewModel.SavedState
     private SavedStateHandle mState;
@@ -27,27 +29,32 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
         repository = new MyRepository(application);
         this.mState = mState;
-    }
+        this.dummyProject = createDummyProject();
 
-
-    public LiveData<List<Project>> getPrjListLive() {
-        return repository.getPrjListLive();
+        if (!mState.contains(MainViewModel.KEY_PROJECT)) {
+            selectedProjectId = 0;
+            mState.set(MainViewModel.KEY_PROJECT, selectedProjectId);
+        }
     }
 
     public MutableLiveData<Project> getSelectedProject() {
-        if (null == selectedProject){
+        Project prj;
+
+        if (null == selectedProject) {
+            // Introduce ViewModel.SavedState
+            int id = mState.get(MainViewModel.KEY_PROJECT);
+
+            if(id==0)
+            {
+                prj=dummyProject;
+            } else {
+                prj = repository.getProjectById(id);
+            }
+            
             selectedProject = new MutableLiveData<>();
-            selectedProject.setValue(getPrjListLive().getValue().get(1));
+            selectedProject.setValue(prj);
         }
         return selectedProject;
-
-/*        // Introduce ViewModel.SavedState
-        if (!mState.contains(MainViewModel.KEY_PROJECT)) {
-            selectedProject = new MutableLiveData<>();
-            selectedProject.setValue(createDummyProject());
-            mState.set(MainViewModel.KEY_PROJECT, selectedProject);
-        }
-        return mState.getLiveData(MainViewModel.KEY_PROJECT);*/
     }
 
     public void setSelectedProject(Project project) {
@@ -55,6 +62,9 @@ public class MainViewModel extends AndroidViewModel {
             selectedProject = new MutableLiveData<>();
         }
         selectedProject.setValue(project);
+
+        // Introduce ViewModel.SavedState
+        mState.set(MainViewModel.KEY_PROJECT, project.getId());
     }
 
     public MutableLiveData<Activity> getCurrentActivity() {
@@ -138,12 +148,18 @@ public class MainViewModel extends AndroidViewModel {
 
     public Project createDummyProject() {
         Project prj = new Project("番茄工作", R.drawable.read_book);
+        prj.setId(0);
         return prj;
     }
 
     public Activity createDummyActivity() {
         Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60 * 1000);
         return act;
+    }
+
+    // Data functions accessing database
+    public LiveData<List<Project>> getPrjListLive() {
+        return repository.getPrjListLive();
     }
 
     public void insertProjects(Project... projects) {

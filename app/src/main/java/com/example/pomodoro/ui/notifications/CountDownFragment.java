@@ -70,8 +70,8 @@ public class CountDownFragment extends Fragment {
         binding.setTimeCount(model);
         binding.setLifecycleOwner(this);
 
-        Toast.makeText(getActivity(), String.format("CountDown Fragment:%d",
-                model.getSelectedActivity().getValue().getAllTime()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), String.format("CountDown Fragment:"+
+                model.getSelectedActivity().getValue().getTitle()), Toast.LENGTH_SHORT).show();
 
         binding.btnStart.setVisibility(View.GONE);
         binding.btnPause.setVisibility(View.VISIBLE);

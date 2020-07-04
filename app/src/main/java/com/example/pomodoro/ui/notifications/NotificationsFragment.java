@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class NotificationsFragment extends Fragment {
 
         // Databinding
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
-        binding.setTimeCount(model);
+        binding.setModel(model);
         binding.setLifecycleOwner(this);
 
         Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
@@ -78,6 +79,8 @@ public class NotificationsFragment extends Fragment {
         model.getSelectedProject().observe(this, observer);*/
 
         activity = model.getSelectedActivity().getValue();
+        model.activityAllTime = activity.getAllTime();
+        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityAllTime));
 
         binding.btnPause.setVisibility(View.GONE);
         binding.btnReset.setVisibility(View.GONE);

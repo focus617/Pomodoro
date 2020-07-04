@@ -21,7 +21,9 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<Activity> selectedActivity;   // 当前选择的活动
     public MutableLiveData<Integer> timeCounter;
     private int selectedProjectId, selectedActivityId;
-    Project dummyProject;
+    private Project dummyProject;
+    private Activity dummyActivity;
+    public int activityAllTime;
 
     // Introduce ViewModel.SavedState
     private SavedStateHandle mState;
@@ -29,6 +31,7 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
         this.repository = new MyRepository(application);
         this.dummyProject = createDummyProject();
+        this.dummyActivity = createDummyActivity();
 
         if (!state.contains(MainViewModel.KEY_PROJECT)) {
             selectedProjectId = 0;
@@ -72,9 +75,22 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Activity> getSelectedActivity() {
+        Activity act;
+
         if (null == selectedActivity) {
+            // Introduce ViewModel.SavedState
+            int id = mState.get(MainViewModel.KEY_ACTIVITY);
+
+            if(id==0)
+            {
+                act = dummyActivity;
+            } else {
+                //TODO： act = repository.getActivityById(id);
+                act = dummyActivity;
+            }
+
             selectedActivity = new MutableLiveData<>();
-            selectedActivity.setValue(createDummyActivity());
+            selectedActivity.setValue(act);
         }
         return selectedActivity;
     }
@@ -84,6 +100,9 @@ public class MainViewModel extends AndroidViewModel {
             selectedActivity = new MutableLiveData<>();
         }
         selectedActivity.setValue(activity);
+
+        // Introduce ViewModel.SavedState
+        mState.set(MainViewModel.KEY_ACTIVITY, activity.getId());
     }
 
     public MutableLiveData<Integer> getTimeCounter() {
@@ -157,7 +176,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public Activity createDummyActivity() {
-        Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60 * 1000);
+        Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60 );
+        act.setId(0);
         return act;
     }
 

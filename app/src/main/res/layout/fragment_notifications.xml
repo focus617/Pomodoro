@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="timeCount"
+            name="model"
             type="com.example.pomodoro.viewModel.MainViewModel" />
     </data>
 
@@ -62,6 +62,7 @@
             android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="2"
+            android:text="@{String.valueOf(model.activityAllTime/ 60 / 60)}"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
@@ -92,6 +93,7 @@
             android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="2"
+            android:text="@{String.valueOf((model.activityAllTime/60) % 60)}"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
@@ -120,6 +122,7 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="2"
+            android:text="@{String.valueOf(model.activityAllTime % 60)}"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"

@@ -18,5 +18,8 @@
     <string name="second">Second</string>
     <string name="item_removable">Drag  and Remove</string>
     <string name="icon_msg">Icon</string>
+    <string name="quit_dialog_title">Are you sure to quit?</string>
+    <string name="dialog_positive_message">OK</string>
+    <string name="dialog_negative_message">Cancel</string>
 
 </resources>

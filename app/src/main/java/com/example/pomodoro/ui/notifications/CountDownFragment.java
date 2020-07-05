@@ -67,7 +67,7 @@ public class CountDownFragment extends Fragment {
 
         // Databinding
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_countdown,container, false);
-        binding.setTimeCount(model);
+        binding.setModel(model);
         binding.setLifecycleOwner(requireActivity());
 
         Toast.makeText(getActivity(), String.format("CountDown Fragment:"+

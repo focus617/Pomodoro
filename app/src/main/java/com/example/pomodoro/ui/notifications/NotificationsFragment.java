@@ -79,8 +79,8 @@ public class NotificationsFragment extends Fragment {
         model.getSelectedProject().observe(this, observer);*/
 
         activity = model.getSelectedActivity().getValue();
-        model.activityAllTime = activity.getAllTime();
-        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityAllTime));
+        model.activityAllTime.setValue(activity.getAllTime());
+        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityAllTime.getValue()));
 
         binding.btnPause.setVisibility(View.GONE);
         binding.btnReset.setVisibility(View.GONE);

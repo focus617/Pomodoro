@@ -19,4 +19,7 @@
     <string name="time_seperator">:</string>
     <string name="item_removable">左右拖动删除</string>
     <string name="icon_msg">图标</string>
+    <string name="dialog_positive_message">确定</string>
+    <string name="dialog_negative_message">取消</string>
+    <string name="quit_dialog_title">确认离开？</string>
 </resources>

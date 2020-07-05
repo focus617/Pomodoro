@@ -1,5 +1,6 @@
 package com.example.pomodoro;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -52,8 +54,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         //return super.onSupportNavigateUp();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return navController.navigateUp();      ///popBackStack enabled
+        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        // if quit from CountdownFragment
+        if(navController.getCurrentDestination().getId() == R.id.navigation_countdown){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.quit_dialog_title));
+            builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    navController.popBackStack();
+                }
+            });
+            builder.setNegativeButton(R.string.dialog_negative_message, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            navController.navigate(R.id.navigation_home);
+        }
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        onSupportNavigateUp();
     }
 
     @Override

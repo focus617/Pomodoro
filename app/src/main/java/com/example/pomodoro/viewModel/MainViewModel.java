@@ -21,7 +21,8 @@ public class MainViewModel extends AndroidViewModel {
     private int selectedProjectId, selectedActivityId;
     private Project dummyProject;
     private Activity dummyActivity;
-    public int activityAllTime;                         // Total timer count number
+
+    public MutableLiveData<Integer> activityAllTime;    // Total timer count number
     public MutableLiveData<Integer> timeCounter;        // Countdown timer
 
     private MyRepository repository;
@@ -97,10 +98,25 @@ public class MainViewModel extends AndroidViewModel {
         mState.set(MainViewModel.KEY_ACTIVITY, activity.getId());
     }
 
+    public MutableLiveData<Integer> getActivityAllTime() {
+        if (null == activityAllTime) {
+            activityAllTime = new MutableLiveData<>();
+            activityAllTime.setValue(getSelectedActivity().getValue().getAllTime());
+        }
+        return activityAllTime;
+    }
+
+    public void setActivityAllTime(Integer actTime) {
+        if (null == activityAllTime) {
+            activityAllTime = new MutableLiveData<>();
+        }
+        activityAllTime.postValue(actTime);
+    }
+
     public MutableLiveData<Integer> getTimeCounter() {
         if (null == timeCounter) {
             timeCounter = new MutableLiveData<>();
-            timeCounter.setValue(selectedActivity.getValue().getAllTime());
+            timeCounter.setValue(getSelectedActivity().getValue().getAllTime()); //TODO: Check reasonable?
         }
         return timeCounter;
     }

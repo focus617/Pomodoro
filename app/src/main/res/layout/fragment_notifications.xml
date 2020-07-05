@@ -132,6 +132,18 @@
             app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lv_activity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/guideline12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline10"
+            app:layout_constraintVertical_bias="0.451" />
+
         <Button
             android:id="@+id/btnStart"
             android:layout_width="0dp"
@@ -270,5 +282,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.74" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -50,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        //return super.onSupportNavigateUp();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return navController.navigateUp();      ///popBackStack enabled
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为ActionBar扩展菜单项
         MenuInflater inflater = getMenuInflater();
@@ -79,9 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             default:
+/*              // Removed due to onSupportNavigateUp() introduced
                 Toast.makeText(this, "You clicked backward", Toast.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-                navController.popBackStack();
+                navController.popBackStack();*/
                 return super.onOptionsItemSelected(item);
         }
     }

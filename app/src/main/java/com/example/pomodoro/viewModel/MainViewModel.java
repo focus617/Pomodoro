@@ -50,13 +50,7 @@ public class MainViewModel extends AndroidViewModel {
         if (null == selectedProject) {
             // Introduce ViewModel.SavedState
             int id = mState.get(MainViewModel.KEY_PROJECT);
-
-            if (id == 0) {
-                prj = dummyProject;
-            } else {
-                prj = repository.getProjectById(id);
-            }
-
+            prj = (id == 0) ? dummyProject : repository.getProjectById(id);
             selectedProject = new MutableLiveData<>();
             selectedProject.setValue(prj);
         }

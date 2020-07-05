@@ -62,7 +62,7 @@ public class NotificationsFragment extends Fragment {
         // Databinding
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
         binding.setModel(model);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(requireActivity());
 
         Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
 

@@ -26,6 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+// TODO: 1. Add project in recyclerView
+
 /**
  * A fragment representing a list of Items.
  */

@@ -16,17 +16,17 @@ public class MainViewModel extends AndroidViewModel {
     final static String KEY_PROJECT = "Pomodoro_Project";
     final static String KEY_ACTIVITY = "Pomodoro_Activity";
 
-    private MyRepository repository;
-    private MutableLiveData<Project> selectedProject;    // 当前选择的目标活动
-    private MutableLiveData<Activity> selectedActivity;   // 当前选择的活动
-    public MutableLiveData<Integer> timeCounter;
+    private MutableLiveData<Project> selectedProject;   // 当前选择的目标活动
+    private MutableLiveData<Activity> selectedActivity; // 当前选择的活动
     private int selectedProjectId, selectedActivityId;
     private Project dummyProject;
     private Activity dummyActivity;
-    public int activityAllTime;
+    public int activityAllTime;                         // Total timer count number
+    public MutableLiveData<Integer> timeCounter;        // Countdown timer
 
-    // Introduce ViewModel.SavedState
-    private SavedStateHandle mState;
+    private MyRepository repository;
+    private SavedStateHandle mState;    // Introduce ViewModel.SavedState
+
     public MainViewModel(@NonNull Application application, SavedStateHandle state) {
         super(application);
         this.repository = new MyRepository(application);
@@ -51,9 +51,8 @@ public class MainViewModel extends AndroidViewModel {
             // Introduce ViewModel.SavedState
             int id = mState.get(MainViewModel.KEY_PROJECT);
 
-            if(id==0)
-            {
-                prj=dummyProject;
+            if (id == 0) {
+                prj = dummyProject;
             } else {
                 prj = repository.getProjectById(id);
             }
@@ -81,8 +80,7 @@ public class MainViewModel extends AndroidViewModel {
             // Introduce ViewModel.SavedState
             int id = mState.get(MainViewModel.KEY_ACTIVITY);
 
-            if(id==0)
-            {
+            if (id == 0) {
                 act = dummyActivity;
             } else {
                 //TODO： act = repository.getActivityById(id);
@@ -176,7 +174,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public Activity createDummyActivity() {
-        Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60 );
+        Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60);
         act.setId(0);
         return act;
     }

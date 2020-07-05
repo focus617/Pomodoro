@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
         <TextView
-            android:id="@+id/lbMinute"
+            android:id="@+id/lbActionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -62,14 +62,15 @@
             android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="2"
-            android:text="@{String.valueOf(model.activityAllTime/ 60 / 60)}"
             android:singleLine="true"
+            android:text="@{String.valueOf(model.activityAllTime/ 60 / 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
             app:layout_constraintEnd_toStartOf="@+id/guideline14"
             app:layout_constraintStart_toStartOf="@+id/guideline13"
-            app:layout_constraintTop_toTopOf="@+id/guideline9" />
+            app:layout_constraintTop_toTopOf="@+id/guideline9"
+            tools:text="00" />
 
         <TextView
             android:id="@+id/splitter1"
@@ -93,14 +94,15 @@
             android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="2"
-            android:text="@{String.valueOf((model.activityAllTime/60) % 60)}"
             android:singleLine="true"
+            android:text="@{String.valueOf((model.activityAllTime/60) % 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
             app:layout_constraintEnd_toStartOf="@+id/guideline17"
             app:layout_constraintStart_toStartOf="@+id/guideline15"
-            app:layout_constraintTop_toTopOf="@+id/guideline9"/>
+            app:layout_constraintTop_toTopOf="@+id/guideline9"
+            tools:text="00" />
 
         <TextView
             android:id="@+id/splitter2"
@@ -122,14 +124,15 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="2"
-            android:text="@{String.valueOf(model.activityAllTime % 60)}"
             android:singleLine="true"
+            android:text="@{String.valueOf(model.activityAllTime % 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
             app:layout_constraintEnd_toStartOf="@+id/guideline11"
             app:layout_constraintStart_toStartOf="@+id/guideline18"
-            app:layout_constraintTop_toTopOf="@+id/guideline9" />
+            app:layout_constraintTop_toTopOf="@+id/guideline9"
+            tools:text="00" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -150,7 +153,6 @@
             android:layout_height="wrap_content"
             android:text="@string/start"
             android:textSize="@dimen/btnTextSize"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnResume"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +164,6 @@
             android:layout_height="wrap_content"
             android:text="@string/resume"
             android:textSize="@dimen/btnTextSize"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnPause"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnStart"
@@ -174,7 +175,6 @@
             android:layout_height="wrap_content"
             android:text="@string/reset"
             android:textSize="@dimen/btnTextSize"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnPause"
@@ -186,53 +186,38 @@
             android:layout_height="wrap_content"
             android:text="@string/pause"
             android:textSize="@dimen/btnTextSize"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnReset"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnResume"
             app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="70dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="342dp" />
-
-        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_percent="0.1" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
+            app:layout_constraintGuide_percent="0.2" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_percent="0.4" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
+            app:layout_constraintGuide_percent="0.8" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline11"

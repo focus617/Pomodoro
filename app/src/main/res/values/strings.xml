@@ -21,5 +21,8 @@
     <string name="quit_dialog_title">Are you sure to quit?</string>
     <string name="dialog_positive_message">OK</string>
     <string name="dialog_negative_message">Cancel</string>
+    <string name="timeup_dialog_title">Timer</string>
+    <string name="timeup_dialog_message">"Time is up ! "</string>
+    <string name="dialog_quit">Quit</string>
 
 </resources>

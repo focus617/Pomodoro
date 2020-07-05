@@ -5,7 +5,7 @@
     <dimen name="fab_right_margin">18dp</dimen>
     <dimen name="fab_bottom_margin">64dp</dimen>
     <dimen name="bottomNavView_height_margin">58dp</dimen>
-    <dimen name="notification_clock_text_size">40sp</dimen>
+    <dimen name="notification_clock_text_size">35sp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="btnTextSize">24sp</dimen>
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Chronometer;
 import android.widget.Toast;
 
 import com.example.pomodoro.viewModel.MainViewModel;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private MainViewModel model;    // ViewModel for whole activity
-    final int COUNT = 15;           // No of Dummy projects for testing purpose
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,29 +53,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        //return super.onSupportNavigateUp();
+
         final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        // if quit from CountdownFragment
+        /* if quit from CountdownFragment */
         if(navController.getCurrentDestination().getId() == R.id.navigation_countdown){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.quit_dialog_title));
-            builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    navController.popBackStack();
-                }
-            });
-            builder.setNegativeButton(R.string.dialog_negative_message, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            /* 如果当前定时器尚未到期 */
+            if(model.getTimeCounter().getValue()!=0){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.quit_dialog_title));
+                builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        navController.popBackStack();
+                    }
+                });
+                builder.setNegativeButton(R.string.dialog_negative_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            /* 如果正常到期 */
+            else navController.popBackStack();
         } else {
-            navController.navigate(R.id.navigation_home);
+            navController.popBackStack();
         }
         return super.onSupportNavigateUp();
     }
@@ -115,10 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             default:
-/*              // Removed due to onSupportNavigateUp() introduced
-                Toast.makeText(this, "You clicked backward", Toast.LENGTH_SHORT).show();
-                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-                navController.popBackStack();*/
                 return super.onOptionsItemSelected(item);
         }
     }

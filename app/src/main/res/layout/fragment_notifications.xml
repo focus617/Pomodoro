@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:labelFor="@id/etHour"
             android:text="@string/hour"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:labelFor="@id/etMin"
             android:text="@string/minute"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
@@ -45,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:labelFor="@id/etSec"
             android:text="@string/second"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
@@ -63,7 +66,7 @@
             android:inputType="number"
             android:maxLength="2"
             android:singleLine="true"
-            android:text="@{String.valueOf(model.activityAllTime/ 60 / 60)}"
+            android:text="@{String.valueOf(model.activityTotalTime/ 60 / 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
@@ -77,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text=":"
+            android:text="@string/time_seperator"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
@@ -95,7 +98,7 @@
             android:inputType="number"
             android:maxLength="2"
             android:singleLine="true"
-            android:text="@{String.valueOf((model.activityAllTime/60) % 60)}"
+            android:text="@{String.valueOf((model.activityTotalTime/60) % 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
@@ -109,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text=":"
+            android:text="@string/time_seperator"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
@@ -125,20 +128,22 @@
             android:inputType="number"
             android:maxLength="2"
             android:singleLine="true"
-            android:text="@{String.valueOf(model.activityAllTime % 60)}"
+            android:text="@{String.valueOf(model.activityTotalTime % 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
             app:layout_constraintEnd_toStartOf="@+id/guideline11"
             app:layout_constraintStart_toStartOf="@+id/guideline18"
             app:layout_constraintTop_toTopOf="@+id/guideline9"
-            tools:text="00" />
+            tools:text="00"
+            android:importantForAutofill="no" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lv_activity"
+            android:id="@+id/lvActivity"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/guideline12"
             app:layout_constraintEnd_toEndOf="parent"
@@ -151,45 +156,49 @@
             android:id="@+id/btnStart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bottomNavView_height_margin"
             android:text="@string/start"
             android:textSize="@dimen/btnTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnResume"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline12" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btnResume"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bottomNavView_height_margin"
             android:text="@string/resume"
             android:textSize="@dimen/btnTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnPause"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnStart"
-            app:layout_constraintTop_toTopOf="@+id/guideline12" />
+            app:layout_constraintStart_toEndOf="@+id/btnStart" />
 
         <Button
             android:id="@+id/btnReset"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bottomNavView_height_margin"
             android:text="@string/reset"
             android:textSize="@dimen/btnTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnPause"
-            app:layout_constraintTop_toTopOf="@+id/guideline12" />
+            app:layout_constraintStart_toEndOf="@+id/btnPause" />
 
         <Button
             android:id="@+id/btnPause"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bottomNavView_height_margin"
             android:text="@string/pause"
             android:textSize="@dimen/btnTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnReset"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnResume"
-            app:layout_constraintTop_toTopOf="@+id/guideline12" />
+            app:layout_constraintStart_toEndOf="@+id/btnResume" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"

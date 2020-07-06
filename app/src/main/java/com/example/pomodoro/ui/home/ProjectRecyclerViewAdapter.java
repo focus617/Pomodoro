@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecyclerViewAdapter.ViewHolder> {
-    private static final String TAG = "MyItemRecyclerViewAdapt";
+    private static final String TAG = "PrjRecyclerViewAdapter";
 
     private MainViewModel viewModel;
     private List<Project> mValues = new ArrayList<>();  // 避免空指针

@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "ItemFragment";
 
     private MainViewModel model;           // ViewModel
-    private ProjectRecyclerViewAdapter adapter;  // Adapter of recycleView
+    private ProjectRecyclerViewAdapter adapter;  // Adapter of recyclerView for projects
 
     // TODO:(NoActionNeeded) Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";

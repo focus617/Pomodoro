@@ -1,5 +1,6 @@
 package com.example.pomodoro.ui.notifications;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -8,18 +9,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.databinding.FragmentNotificationsBinding;
@@ -28,6 +29,7 @@ import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.viewModel.Project;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class NotificationsFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
@@ -36,11 +38,9 @@ public class NotificationsFragment extends Fragment {
     private Activity activity;
     private long startTimeStamp, endTimeStamp;
 
-    private Button btnStart, btnPause, btnResume, btnReset;
-    private EditText etHour, etMin, etSec;
-
     private MainViewModel model;
     private FragmentNotificationsBinding binding;
+    private ActivityRecyclerViewAdapter adapter; //Adapter of recyclerView for activities
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +50,20 @@ public class NotificationsFragment extends Fragment {
         model = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(),this))
                 .get(MainViewModel.class);
+
+        // create adapter for RecyclerView
+        adapter = new ActivityRecyclerViewAdapter(model);
+
+        // Create the observer which updates the UI.
+        final Observer<List<Activity>> observer = new Observer<List<Activity>>() {
+            @Override
+            public void onChanged(@Nullable List<Activity> activityList) {
+                adapter.setActivityList(activityList);
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        model.getActListLive().observe(this, observer);
 
         //Get current project
         project = model.getSelectedProject().getValue();
@@ -66,21 +80,17 @@ public class NotificationsFragment extends Fragment {
 
         Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
 
-/*        // Create the observer which updates the UI.
-        final Observer<Project> observer = new Observer<Project>() {
-            @Override
-            public void onChanged(@Nullable Project project) {
-                project = model.getSelectedProject().getValue();
-                Log.d(TAG, "onChanged: project= " + project.getTitle());
-                //TODO: adjust corresponding actionlist
-            }
-        };
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getSelectedProject().observe(this, observer);*/
+        // 构造RecycleView
+        // Set the layoutManager
+        Context context = binding.getRoot().getContext();
+         binding.lvActivity.setLayoutManager(new LinearLayoutManager(context,
+                 LinearLayoutManager.HORIZONTAL,false));
+        // Set the adapter
+        binding.lvActivity.setAdapter(adapter);
 
         activity = model.getSelectedActivity().getValue();
-        model.activityAllTime.setValue(activity.getTotalTime());
-        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityAllTime.getValue()));
+        model.activityTotalTime.setValue(activity.getTotalTime());
+        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityTotalTime.getValue()));
 
         binding.btnPause.setVisibility(View.GONE);
         binding.btnReset.setVisibility(View.GONE);
@@ -96,7 +106,7 @@ public class NotificationsFragment extends Fragment {
 
                 /* 修订定时值 */
                 activity.setTotalTime(allTime);
-                model.activityAllTime.setValue(allTime);
+                model.activityTotalTime.setValue(allTime);
 
                 startCountDownTimer();
             }

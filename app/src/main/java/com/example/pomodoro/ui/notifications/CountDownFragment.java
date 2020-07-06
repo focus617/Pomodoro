@@ -1,6 +1,5 @@
 package com.example.pomodoro.ui.notifications;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
@@ -164,7 +163,7 @@ public class CountDownFragment extends Fragment {
                 case MSG_WHAT_TIME_TICK:
                     // 因为使用了Databinding，就不需要每秒手动更新UI了。
                     int timecount = model.getTimeCounter().getValue();
-                    int alltime = model.getActivityAllTime().getValue();
+                    int alltime = model.getActivityTotalTime().getValue();
                     int progress = timecount * 100 / alltime;
                     binding.progressCircular.setProgress(progress);
                     break;

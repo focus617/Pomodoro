@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                  * TODO: Clean it in future and Replace the implementation with code for your data type.
                  */
                 model.createDummyPrjList();
+                model.createDummyActList();
                 return true;
 
             case R.id.action_about:
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 // Clear database for testing purpose
                 // TODO: Clean in future
                 model.deleteAllProjects();
+                model.deleteAllActivities();
                 return true;
 
             default:

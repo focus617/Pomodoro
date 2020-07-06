@@ -16,6 +16,8 @@ public class CircleProgressBar extends View {
     private Paint mBackPaint;
     private Paint mFrontPaint;
     private Paint mTextPaint;
+    private int mFrontColor, mBackColor, mTextColor;
+    private int mTextSize;
 
     private float mStrokeWidth;
     private float mHalfStrokeWidth = mStrokeWidth / 2;
@@ -25,9 +27,8 @@ public class CircleProgressBar extends View {
     private int mWidth;
     private int mHeight;
 
-    private int mProgress = 0;
-    private int mTargetProgress = 100;
-    private int mMax = 100;
+    private int mProgress;
+    private int mMax;
 
 
     public CircleProgressBar(Context context) {
@@ -40,6 +41,12 @@ public class CircleProgressBar extends View {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.circleProgressBar);
         this.mStrokeWidth = ta.getInteger(R.styleable.circleProgressBar_stroke_width, 20);
         this.mRadius = ta.getInteger(R.styleable.circleProgressBar_radius, 600);
+        this.mFrontColor = ta.getColor(R.styleable.circleProgressBar_front_color, Color.BLUE);
+        this.mBackColor = ta.getColor(R.styleable.circleProgressBar_background_color, Color.WHITE);
+        this.mTextColor = ta.getColor(R.styleable.circleProgressBar_text_color, Color.BLUE);
+        this.mTextSize = ta.getDimensionPixelSize(R.styleable.circleProgressBar_text_size,60);
+        this.mProgress = ta.getInteger(R.styleable.circleProgressBar_default_progress, 0);
+        this.mMax = ta.getInteger(R.styleable.circleProgressBar_max, 100);
         initPaint();
     }
 
@@ -51,17 +58,17 @@ public class CircleProgressBar extends View {
     // 完成画笔相关参数的初始化
     private void initPaint() {
         mBackPaint = new Paint();
-        mBackPaint.setColor(Color.WHITE);
+        mBackPaint.setColor(mBackColor);
         mBackPaint.setAntiAlias(true);
         mBackPaint.setStyle(Paint.Style.STROKE);
         mBackPaint.setStrokeWidth(mStrokeWidth);
         mFrontPaint = new Paint();
-        mFrontPaint.setColor(Color.BLUE);
+        mFrontPaint.setColor(mFrontColor);
         mFrontPaint.setAntiAlias(true);
         mFrontPaint.setStyle(Paint.Style.STROKE);
         mFrontPaint.setStrokeWidth(mStrokeWidth);
         mTextPaint = new Paint();
-        mTextPaint.setColor(Color.BLUE);
+        mTextPaint.setColor(mTextColor);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(80);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -82,11 +89,8 @@ public class CircleProgressBar extends View {
         float angle = mProgress / (float) mMax * 360;
         canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBackPaint);
         canvas.drawArc(mRect, -90, angle, false, mFrontPaint);
-        //canvas.drawText(mProgress + "%", mWidth / 2 + mHalfStrokeWidth, mHeight / 2 + mHalfStrokeWidth, mTextPaint);
-//        if (mProgress < mTargetProgress) {
-//            mProgress += 1;
-           invalidate();
-//        }
+        canvas.drawText(mProgress + "%", mWidth / 2 + mHalfStrokeWidth, mHeight*4/5 + mHalfStrokeWidth, mTextPaint);
+        invalidate();
     }
 
     public int getRealSize(int measureSpec) {

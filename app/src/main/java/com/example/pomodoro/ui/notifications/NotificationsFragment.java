@@ -94,7 +94,9 @@ public class NotificationsFragment extends Fragment {
                         * 60 + Integer.parseInt(binding.etMin.getText().toString()) * 60
                         + Integer.parseInt(binding.etSec.getText().toString());
 
+                /* 修订定时值 */
                 activity.setAllTime(allTime);
+                model.activityAllTime.setValue(allTime);
 
                 startCountDownTimer();
             }
@@ -219,6 +221,7 @@ public class NotificationsFragment extends Fragment {
         Navigation.findNavController(binding.btnStart).navigate(action);
 
         model.resetTimeCounter(activity);   // 初始化TimeCounter
+
     }
 
     //TODO: 在此增加“添加 ActivityRecord”的功能

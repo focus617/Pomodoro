@@ -2,6 +2,7 @@ package com.example.pomodoro.ui.notifications;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,37 +10,46 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.example.pomodoro.R;
+
 public class CircleProgressBar extends View {
     private Paint mBackPaint;
     private Paint mFrontPaint;
     private Paint mTextPaint;
-    private float mStrokeWidth = 20;
+
+    private float mStrokeWidth;
     private float mHalfStrokeWidth = mStrokeWidth / 2;
-    private float mRadius = 600;
+    private float mRadius;
+
     private RectF mRect;
-    private int mProgress = 0;
-    private int mTargetProgress = 100;
-    private int mMax = 100;
     private int mWidth;
     private int mHeight;
 
+    private int mProgress = 0;
+    private int mTargetProgress = 100;
+    private int mMax = 100;
+
+
     public CircleProgressBar(Context context) {
         super(context);
-        init();
+        initPaint();
     }
 
     public CircleProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.circleProgressBar);
+        this.mStrokeWidth = ta.getInteger(R.styleable.circleProgressBar_stroke_width, 20);
+        this.mRadius = ta.getInteger(R.styleable.circleProgressBar_radius, 600);
+        initPaint();
     }
 
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        initPaint();
     }
 
-    // 完成相关参数初始化
-    private void init() {
+    // 完成画笔相关参数的初始化
+    private void initPaint() {
         mBackPaint = new Paint();
         mBackPaint.setColor(Color.WHITE);
         mBackPaint.setAntiAlias(true);
@@ -57,7 +67,7 @@ public class CircleProgressBar extends View {
         mTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
-    // 重写测量大小的onMeasure方法和绘制View的核心方法onDraw()
+    // 重写测量大小的onMeasure方法
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -65,7 +75,7 @@ public class CircleProgressBar extends View {
         mHeight = getRealSize(heightMeasureSpec);
         setMeasuredDimension(mWidth, mHeight);
     }
-
+    // 重写绘制View的核心方法onDraw()
     @Override
     protected void onDraw(Canvas canvas) {
         initRect();

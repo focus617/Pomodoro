@@ -98,11 +98,14 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         }
 
         public String getText() {
-            String titleLabel = String.format("%8s...", mItem.getTitle());
+            String title = mItem.getTitle();
+            String titleLabel = (title.length()>6)? title.substring(0,5)+"...":title;
             int totalTime = mItem.getTotalTime();
-            String timeLabel = String.valueOf(totalTime / 60 / 60) + ":"
-                    + String.valueOf((totalTime / 60) % 60) + ":"
-                    + String.valueOf(totalTime % 60);
+
+            String timeLabel = (totalTime/60/60 > 0)? String.format("%02d:", totalTime/60/60):"";
+            timeLabel += String.format("%02d:", (totalTime/60)%60)
+                       + String.format("%02d", totalTime % 60);
+
             Log.d(TAG, "getText: "+titleLabel + "\n" + timeLabel);
             return titleLabel + "\n" + timeLabel;
         }

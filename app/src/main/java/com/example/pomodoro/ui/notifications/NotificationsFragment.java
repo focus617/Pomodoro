@@ -79,7 +79,7 @@ public class NotificationsFragment extends Fragment {
         model.getSelectedProject().observe(this, observer);*/
 
         activity = model.getSelectedActivity().getValue();
-        model.activityAllTime.setValue(activity.getAllTime());
+        model.activityAllTime.setValue(activity.getTotalTime());
         Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityAllTime.getValue()));
 
         binding.btnPause.setVisibility(View.GONE);
@@ -95,7 +95,7 @@ public class NotificationsFragment extends Fragment {
                         + Integer.parseInt(binding.etSec.getText().toString());
 
                 /* 修订定时值 */
-                activity.setAllTime(allTime);
+                activity.setTotalTime(allTime);
                 model.activityAllTime.setValue(allTime);
 
                 startCountDownTimer();

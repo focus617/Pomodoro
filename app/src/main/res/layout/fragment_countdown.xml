@@ -161,6 +161,7 @@
             android:layout_height="0dp"
             app:stroke_width="20"
             app:radius="600"
+            app:text_color = "@color/colorPrimary"
             app:default_progress="100"
             app:layout_constraintBottom_toTopOf="@+id/guideline8"
             app:layout_constraintEnd_toEndOf="parent"

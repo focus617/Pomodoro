@@ -101,7 +101,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> getActivityAllTime() {
         if (null == activityAllTime) {
             activityAllTime = new MutableLiveData<>();
-            activityAllTime.setValue(getSelectedActivity().getValue().getAllTime());
+            activityAllTime.setValue(getSelectedActivity().getValue().getTotalTime());
         }
         return activityAllTime;
     }
@@ -116,7 +116,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> getTimeCounter() {
         if (null == timeCounter) {
             timeCounter = new MutableLiveData<>();
-            timeCounter.setValue(getSelectedActivity().getValue().getAllTime()); //TODO: Check reasonable?
+            timeCounter.setValue(getSelectedActivity().getValue().getTotalTime()); //TODO: Check reasonable?
         }
         return timeCounter;
     }
@@ -132,7 +132,7 @@ public class MainViewModel extends AndroidViewModel {
         if (null == timeCounter) {
             timeCounter = new MutableLiveData<>();
         }
-        timeCounter.setValue(act.getAllTime());
+        timeCounter.setValue(act.getTotalTime());
     }
 
     public void countdown() {
@@ -183,6 +183,31 @@ public class MainViewModel extends AndroidViewModel {
         return prj;
     }
 
+    // Create dummy list for testing purpose
+    public void createDummyActList() {
+        String[] actions = {
+                "番茄工作时间",
+                "喝水，休息一下眼睛，活动身体",
+                "锻炼时间",
+                "午睡",
+                "用餐时间"
+        };
+        int[] total_time = {
+                25*60,
+                5*60,
+                30*60,
+                30*60,
+                60*60
+        };
+
+        // Add some sample items.
+        for (int i = 0; i < actions.length; i++) {
+            Activity act = new Activity(actions[i], R.drawable.focus, total_time[i]);
+            act.setPriority(i + 1);
+            insertActivities(act);
+        }
+    }
+
     public Activity createDummyActivity() {
         Activity act = new Activity("番茄工作时间", R.drawable.focus, 25 * 60);
         act.setId(0);
@@ -210,5 +235,23 @@ public class MainViewModel extends AndroidViewModel {
         repository.deleteAllProjects();
     }
 
+    public LiveData<List<Activity>> getActListLive() {
+        return repository.getActListLive();
+    }
 
+    public void insertActivities(Activity... activities) {
+        repository.insertActivities(activities);
+    }
+
+    public void updateActivities(Activity... activities) {
+        repository.updateActivities(activities);
+    }
+
+    public void deleteActivities(Activity... activities) {
+        repository.deleteActivities(activities);
+    }
+
+    public void deleteAllActivities(Void... voids) {
+        repository.deleteAllActivities();
+    }
 }

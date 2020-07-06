@@ -24,7 +24,7 @@ public class Project {
     @ColumnInfo(name = "imageID")
     private int imageId;
     @ColumnInfo(name = "priority")
-    private int priority;
+    private int priority;      /* 显示的顺序 */
     @ColumnInfo(name = "createTime")
     private long createTime;
 

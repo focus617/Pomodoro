@@ -47,6 +47,9 @@ public class CircleProgressBar extends View {
         this.mTextSize = ta.getDimensionPixelSize(R.styleable.circleProgressBar_text_size,60);
         this.mProgress = ta.getInteger(R.styleable.circleProgressBar_default_progress, 0);
         this.mMax = ta.getInteger(R.styleable.circleProgressBar_max, 100);
+        //最后记得将TypedArray对象回收
+        ta.recycle();
+
         initPaint();
     }
 
@@ -89,11 +92,12 @@ public class CircleProgressBar extends View {
         float angle = mProgress / (float) mMax * 360;
         canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBackPaint);
         canvas.drawArc(mRect, -90, angle, false, mFrontPaint);
-        canvas.drawText(mProgress + "%", mWidth / 2 + mHalfStrokeWidth, mHeight*4/5 + mHalfStrokeWidth, mTextPaint);
+        canvas.drawText(mProgress + "%", mWidth / 2 + mHalfStrokeWidth,
+                mHeight*4/5 + mHalfStrokeWidth, mTextPaint);
         invalidate();
     }
 
-    public int getRealSize(int measureSpec) {
+    private int getRealSize(int measureSpec) {
         int result = 1;
         int mode = MeasureSpec.getMode(measureSpec);
         int size = MeasureSpec.getSize(measureSpec);
@@ -118,7 +122,11 @@ public class CircleProgressBar extends View {
         }
     }
 
-    public void setProgress(int Progress) {
-        this.mProgress = Progress;
+    // interface of CircleProgressBar
+    public void setProgress(int progress) {
+        mProgress = progress;
+    }
+    public int getProgress() {
+        return this.mProgress;
     }
 }

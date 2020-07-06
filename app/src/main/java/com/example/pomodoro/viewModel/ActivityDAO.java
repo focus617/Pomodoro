@@ -10,22 +10,22 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao // Database Access Object
-public interface ProjectDAO {
+public interface ActivityDAO {
     @Insert
-    void insertProject(Project...projects);
+    void insertActivity(Activity... activities);
 
     @Update
-    void  updateProject(Project...projects);
+    void  updateActivity(Activity... activities);
 
     @Delete
-    void  deleteProject(Project...projects);
+    void  deleteActivity(Activity... activities);
 
-    @Query("SELECT * FROM PROJECT WHERE id = :id")
-    Project getProjectById(int id);
+    @Query("SELECT * FROM ACTIVITY WHERE id = :id")
+    Activity getActivityById(int id);
 
-    @Query("DELETE FROM PROJECT")
-    void deleteAllProjects();
+    @Query("DELETE FROM ACTIVITY")
+    void deleteAllActivities();
 
-    @Query("SELECT * FROM PROJECT ORDER BY priority")
-    LiveData<List<Project>> getAllProjectsLive();   //当Room查询返回时LiveData，将自动在后台线程上异步运行。
+    @Query("SELECT * FROM ACTIVITY ORDER BY priority")
+    LiveData<List<Activity>> getAllActivitiesLive();   //当Room查询返回时LiveData，将自动在后台线程上异步运行。
 }

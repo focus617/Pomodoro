@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Project.class}, version = 1,exportSchema = false)
+@Database(entities = {Project.class, Activity.class}, version = 1,exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
     private static MyDatabase INSTANCE;
 
@@ -23,6 +23,8 @@ public abstract class MyDatabase extends RoomDatabase {
         return INSTANCE;
     }
     public abstract ProjectDAO getProjectDao();
+
+    public abstract ActivityDAO getActivityDao();
 
     static final Migration MIGRATION_1_2 = new Migration(1,2) {
         @Override

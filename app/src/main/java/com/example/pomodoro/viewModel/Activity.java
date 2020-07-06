@@ -22,39 +22,41 @@ public class Activity {
 
     /**
      * 如果希望与成员变量的名称不同，请通过name指定列的名称。
-     * */
+     */
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "imageID")
     private int imageId;
-    @ColumnInfo(name = "allTime")
-    private int allTime;
+    @ColumnInfo(name = "totalTime")
+    private int totalTime;
+    @ColumnInfo(name = "priority")
+    private int priority;       /* 显示的顺序 */
     @ColumnInfo(name = "createTime")
     private long createTime;
 
     /**
      * Room会使用这个构造器来存储数据，也就是当你从表中得到 Activity对象时候，Room会使用这个构造器
-     * */
-    public Activity(int id, String title, int imageId, int allTime, long createTime) {
+     */
+    public Activity(int id, String title, int imageId, int totalTime, int priority, long createTime) {
         this.id = id;
         this.title = title;
         this.imageId = imageId;
-        this.allTime = allTime;
+        this.totalTime = totalTime;
+        this.priority = priority;
         this.createTime = createTime;
     }
 
     /**
      * 由于Room只能识别和使用一个构造器，如果希望定义多个构造器，你可以使用Ignore标签，让Room忽略这个构造器
      * 同样，@Ignore标签还可用于字段，使用@Ignore标签标记过的字段，Room不会持久化该字段的数据
-     * */
+     */
     @Ignore
-    public Activity(String title, int imageId, int allTime) {
+    public Activity(String title, int imageId, int totalTime) {
         this.title = title;
         this.imageId = imageId;
-        this.allTime = allTime;
+        this.totalTime = totalTime;
         this.createTime = getInstance().getTimeInMillis();
     }
-
 
 
     public int getId() {
@@ -77,12 +79,20 @@ public class Activity {
         return imageId;
     }
 
-    public int getAllTime() {
-        return allTime;
+    public int getPriority() {
+        return priority;
     }
 
-    public void setAllTime(int allTime) {
-        this.allTime = allTime;
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(int totalTime) {
+        this.totalTime = totalTime;
     }
 
     public long getCreateTime() {

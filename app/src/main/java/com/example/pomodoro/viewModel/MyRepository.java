@@ -9,12 +9,16 @@ import java.util.List;
 
 public class MyRepository {
     private LiveData<List<Project>> prjListLive;
+    private LiveData<List<Activity>> actListLive;
     private ProjectDAO projectDao;
+    private ActivityDAO activityDao;
 
     public MyRepository(Context context) {
         MyDatabase myDatabase = MyDatabase.getDatabase(context.getApplicationContext());
         projectDao = myDatabase.getProjectDao();
         prjListLive = projectDao.getAllProjectsLive();
+        activityDao = myDatabase.getActivityDao();
+        actListLive = activityDao.getAllActivitiesLive();
     }
 
     // Room在单独的线程上执行所有查询。
@@ -98,4 +102,85 @@ public class MyRepository {
         }
     }
 
+
+    // Room在单独的线程上执行所有查询。
+    // 观察到的LiveData将在数据更改时通知观察者
+    public LiveData<List<Activity>> getActListLive() {
+        return actListLive;
+    }
+
+    public Activity getActivityById(int id) {return activityDao.getActivityById(id);}
+
+    public void insertActivities(Activity...activities){
+        new InsertAsyncTask2(activityDao).execute(activities);
+    }
+
+    public void updateActivities(Activity...activities){
+        new UpdateAsyncTask2(activityDao).execute(activities);
+    }
+
+    public void deleteActivities(Activity...activities){
+        new DeleteAsyncTask2(activityDao).execute(activities);
+    }
+
+    public void deleteAllActivities(Void...voids){
+        new DeleteAllAsyncTask2(activityDao).execute();
+    }
+
+    static class InsertAsyncTask2 extends AsyncTask<Activity,Void,Void> {
+        private ActivityDAO activityDao;
+
+        public InsertAsyncTask2(ActivityDAO activityDao) {
+            this.activityDao = activityDao;
+        }
+
+        @Override
+        protected Void doInBackground(Activity... activities) {
+            activityDao.insertActivity(activities);
+            return null;
+        }
+    }
+
+    static class UpdateAsyncTask2 extends AsyncTask<Activity,Void,Void>{
+        private ActivityDAO activityDao;
+
+        public UpdateAsyncTask2(ActivityDAO activityDao) {
+            this.activityDao = activityDao;
+        }
+
+        @Override
+        protected Void doInBackground(Activity... activities) {
+            activityDao.updateActivity(activities);
+            return null;
+        }
+    }
+
+    static class DeleteAsyncTask2 extends AsyncTask<Activity,Void,Void>{
+        private ActivityDAO activityDao;
+
+        public DeleteAsyncTask2(ActivityDAO activityDao) {
+            this.activityDao = activityDao;
+        }
+
+        @Override
+        protected Void doInBackground(Activity... activities) {
+            activityDao.deleteActivity(activities);
+            return null;
+        }
+    }
+
+
+    static class DeleteAllAsyncTask2 extends AsyncTask<Void,Void,Void>{
+        private ActivityDAO activityDao;
+
+        public DeleteAllAsyncTask2(ActivityDAO activityDao) {
+            this.activityDao = activityDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            activityDao.deleteAllActivities();
+            return null;
+        }
+    }
 }

@@ -119,7 +119,6 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         @Override
         public void onClick(View v) {      //添加点击事件
             mAdapter.viewModel.setSelectedActivity(mItem);
-            mButton.setSelected(true);
             mAdapter.notifyItemChanged(mAdapter.selectedPos);
             mAdapter.selectedPos= getAdapterPosition();
             mAdapter.notifyItemChanged(mAdapter.selectedPos);

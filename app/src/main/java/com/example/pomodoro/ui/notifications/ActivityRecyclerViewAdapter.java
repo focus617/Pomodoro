@@ -5,16 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
-import com.example.pomodoro.viewModel.Project;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,14 +23,16 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
     private MainViewModel viewModel;
     private List<Activity> mValues = new ArrayList<>();  // 避免空指针
 
+    private int selectedPos = RecyclerView.NO_POSITION;
+
     public ActivityRecyclerViewAdapter(MainViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
 
     //Interface of Adapter
-    public void setActivityList(List<Activity> mValues) {
-        this.mValues = mValues;
+    public void setActivityList(List<Activity> datas) {
+        mValues = datas;
 
         // Update the UI when source changed.
         notifyDataSetChanged();
@@ -76,6 +75,8 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         holder.mItem = mValues.get(position);
         holder.mButton.setText(holder.getText());
         holder.mAdapter = this;
+        holder.itemView.setSelected(selectedPos == position);
+        holder.mButton.setSelected(selectedPos == position);
     }
 
     @Override
@@ -119,6 +120,9 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         public void onClick(View v) {      //添加点击事件
             mAdapter.viewModel.setSelectedActivity(mItem);
             mButton.setSelected(true);
+            mAdapter.notifyItemChanged(mAdapter.selectedPos);
+            mAdapter.selectedPos= getAdapterPosition();
+            mAdapter.notifyItemChanged(mAdapter.selectedPos);
 
             //Toast.makeText(v.getContext(), "你点击了Item: " + mItem.getTitle(), Toast.LENGTH_SHORT).show();
             Log.d(TAG, "onClick: ");

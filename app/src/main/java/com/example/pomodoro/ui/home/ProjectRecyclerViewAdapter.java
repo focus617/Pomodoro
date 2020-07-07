@@ -30,8 +30,8 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
     }
 
     //Interface of Adapter
-    public void setProjectList(List<Project> mValues) {
-        this.mValues = mValues;
+    public void setProjectList(List<Project> datas) {
+        mValues = datas;
 
         // Update the UI when source changed.
         notifyDataSetChanged();

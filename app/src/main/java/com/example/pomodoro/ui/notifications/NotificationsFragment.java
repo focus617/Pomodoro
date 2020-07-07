@@ -40,35 +40,36 @@ public class NotificationsFragment extends Fragment {
     private Activity activity;
     private long startTimeStamp, endTimeStamp;
 
-    private MainViewModel model;
-    private FragmentNotificationsBinding binding;
-    private ActivityRecyclerViewAdapter adapter; //Adapter of recyclerView for activities
+    private MainViewModel mModel;
+    private FragmentNotificationsBinding mBinding;
+    private ActivityRecyclerViewAdapter mAdapter; //Adapter of recyclerView for activities
+    private RecyclerView.LayoutManager mLayoutManager; // Layoutmanagher of recyclerview for activities
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Get the ViewModel.
-        model = new ViewModelProvider(requireActivity(),
+        mModel = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(),this))
                 .get(MainViewModel.class);
 
         // create adapter for RecyclerView
-        adapter = new ActivityRecyclerViewAdapter(model);
+        mAdapter = new ActivityRecyclerViewAdapter(mModel);
 
         // Create the observer which updates the UI.
         final Observer<List<Activity>> observer = new Observer<List<Activity>>() {
             @Override
             public void onChanged(@Nullable List<Activity> activityList) {
-                adapter.setActivityList(activityList);
+                mAdapter.setActivityList(activityList);
             }
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getActListLive().observe(this, observer);
+        mModel.getActListLive().observe(this, observer);
 
         //Get current project
-        project = model.getSelectedProject().getValue();
+        project = mModel.getSelectedProject().getValue();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -76,22 +77,23 @@ public class NotificationsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Databinding
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
-        binding.setModel(model);
-        binding.setLifecycleOwner(requireActivity());
+        mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
+        mBinding.setModel(mModel);
+        mBinding.setLifecycleOwner(requireActivity());
 
         Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
 
         /* 构造 Activity 的 RecycleView */
         // Set the layoutManager
-        Context context = binding.getRoot().getContext();
-         binding.lvActivity.setLayoutManager(new LinearLayoutManager(context,
-                 LinearLayoutManager.HORIZONTAL,false));
+        Context context = mBinding.getRoot().getContext();
+        mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+         mBinding.lvActivity.setLayoutManager(mLayoutManager);
         // Set the adapter
-        binding.lvActivity.setAdapter(adapter);
+        mBinding.lvActivity.setAdapter(mAdapter);
 
         // 创建ItemTouchHelper.Callback，实现回调方法
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+
             // 返回允许滑动的方向
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -110,7 +112,7 @@ public class NotificationsFragment extends Fragment {
                 int from = viewHolder.getAdapterPosition();
                 int to = target.getAdapterPosition();
                 // 交换数据集的数据
-                adapter.swapItem(from, to);
+                mAdapter.swapItem(from, to);
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
                 //adapter.notifyItemMoved(from, to);
@@ -125,7 +127,7 @@ public class NotificationsFragment extends Fragment {
                 // 获取滑动的item对应的适配器索引
                 int pos = viewHolder.getAdapterPosition();
                 // 从数据集移除数据
-                adapter.removeItem(pos);
+                mAdapter.removeItem(pos);
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
                 //adapter.notifyItemRemoved(pos);
@@ -135,40 +137,40 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-                adapter.adjustPriority();
+                mAdapter.adjustPriority();
             }
         };
         // 传入ItemTouchHelper.Callback
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         // 将touchHelper和recyclerView绑定
-        touchHelper.attachToRecyclerView(binding.lvActivity);
+        touchHelper.attachToRecyclerView(mBinding.lvActivity);
 
-        activity = model.getSelectedActivity().getValue();
-        model.activityTotalTime.setValue(activity.getTotalTime());
-        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(model.activityTotalTime.getValue()));
+        activity = mModel.getSelectedActivity().getValue();
+        mModel.activityTotalTime.setValue(activity.getTotalTime());
+        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(mModel.activityTotalTime.getValue()));
 
-        binding.btnPause.setVisibility(View.GONE);
-        binding.btnReset.setVisibility(View.GONE);
-        binding.btnResume.setVisibility(View.GONE);
+        mBinding.btnPause.setVisibility(View.GONE);
+        mBinding.btnReset.setVisibility(View.GONE);
+        mBinding.btnResume.setVisibility(View.GONE);
 
-        binding.btnStart.setOnClickListener(new View.OnClickListener() {
+        mBinding.btnStart.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int allTime = Integer.parseInt(binding.etHour.getText().toString()) * 60
-                        * 60 + Integer.parseInt(binding.etMin.getText().toString()) * 60
-                        + Integer.parseInt(binding.etSec.getText().toString());
+                int allTime = Integer.parseInt(mBinding.etHour.getText().toString()) * 60
+                        * 60 + Integer.parseInt(mBinding.etMin.getText().toString()) * 60
+                        + Integer.parseInt(mBinding.etSec.getText().toString());
 
                 /* 修订定时值 */
                 activity.setTotalTime(allTime);
-                model.activityTotalTime.setValue(allTime);
+                mModel.activityTotalTime.setValue(allTime);
 
                 startCountDownTimer();
             }
         });
 
-        binding.etHour.setText("00");
-        binding.etHour.addTextChangedListener(new TextWatcher() {
+        mBinding.etHour.setText("00");
+        mBinding.etHour.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -186,9 +188,9 @@ public class NotificationsFragment extends Fragment {
                     int value = Integer.parseInt(s.toString());
 
                     if (value > 59) {
-                        binding.etHour.setText("59");
+                        mBinding.etHour.setText("59");
                     } else if (value < 0) {
-                        binding.etHour.setText("00");
+                        mBinding.etHour.setText("00");
                     }
                 }
                 checkToEnableBtnStart();
@@ -201,8 +203,8 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        binding.etMin.setText("00");
-        binding.etMin.addTextChangedListener(new TextWatcher() {
+        mBinding.etMin.setText("00");
+        mBinding.etMin.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -217,9 +219,9 @@ public class NotificationsFragment extends Fragment {
                     int value = Integer.parseInt(s.toString());
 
                     if (value > 59) {
-                        binding.etMin.setText("59");
+                        mBinding.etMin.setText("59");
                     } else if (value < 0) {
-                        binding.etMin.setText("00");
+                        mBinding.etMin.setText("00");
                     }
                 }
                 checkToEnableBtnStart();
@@ -232,8 +234,8 @@ public class NotificationsFragment extends Fragment {
         });
 
 
-        binding.etSec.setText("00");
-        binding.etSec.addTextChangedListener(new TextWatcher() {
+        mBinding.etSec.setText("00");
+        mBinding.etSec.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -248,9 +250,9 @@ public class NotificationsFragment extends Fragment {
                     int value = Integer.parseInt(s.toString());
 
                     if (value > 59) {
-                        binding.etSec.setText("59");
+                        mBinding.etSec.setText("59");
                     } else if (value < 0) {
-                        binding.etSec.setText("00");
+                        mBinding.etSec.setText("00");
                     }
                 }
                 checkToEnableBtnStart();
@@ -261,21 +263,21 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        binding.btnStart.setVisibility(View.VISIBLE);
-        binding.btnStart.setEnabled(false);
+        mBinding.btnStart.setVisibility(View.VISIBLE);
+        mBinding.btnStart.setEnabled(false);
 
-        return binding.getRoot();
+        return mBinding.getRoot();
 
     }
 
     // 检查时分秒数据的有效性，若有效就启用
     private void checkToEnableBtnStart() {
-        binding.btnStart.setEnabled((!TextUtils.isEmpty(binding.etHour.getText()) && Integer
-                .parseInt(binding.etHour.getText().toString()) > 0)
-                || (!TextUtils.isEmpty(binding.etMin.getText()) && Integer
-                .parseInt(binding.etMin.getText().toString()) > 0)
-                || (!TextUtils.isEmpty(binding.etSec.getText()) && Integer
-                .parseInt(binding.etSec.getText().toString()) > 0));
+        mBinding.btnStart.setEnabled((!TextUtils.isEmpty(mBinding.etHour.getText()) && Integer
+                .parseInt(mBinding.etHour.getText().toString()) > 0)
+                || (!TextUtils.isEmpty(mBinding.etMin.getText()) && Integer
+                .parseInt(mBinding.etMin.getText().toString()) > 0)
+                || (!TextUtils.isEmpty(mBinding.etSec.getText()) && Integer
+                .parseInt(mBinding.etSec.getText().toString()) > 0));
     }
 
     private void startCountDownTimer() {
@@ -283,9 +285,9 @@ public class NotificationsFragment extends Fragment {
         startTimeStamp = currentTime.getTimeInMillis();
 
         NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown();
-        Navigation.findNavController(binding.btnStart).navigate(action);
+        Navigation.findNavController(mBinding.btnStart).navigate(action);
 
-        model.resetTimeCounter(activity);   // 初始化TimeCounter
+        mModel.resetTimeCounter(activity);   // 初始化TimeCounter
 
     }
 

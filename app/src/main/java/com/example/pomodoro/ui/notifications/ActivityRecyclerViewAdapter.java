@@ -118,6 +118,7 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         @Override
         public void onClick(View v) {      //添加点击事件
             mAdapter.viewModel.setSelectedActivity(mItem);
+            mButton.setSelected(true);
 
             //Toast.makeText(v.getContext(), "你点击了Item: " + mItem.getTitle(), Toast.LENGTH_SHORT).show();
             Log.d(TAG, "onClick: ");

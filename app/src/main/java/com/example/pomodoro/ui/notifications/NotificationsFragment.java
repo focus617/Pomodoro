@@ -20,7 +20,9 @@ import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.databinding.FragmentNotificationsBinding;
@@ -80,13 +82,66 @@ public class NotificationsFragment extends Fragment {
 
         Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
 
-        // 构造RecycleView
+        /* 构造 Activity 的 RecycleView */
         // Set the layoutManager
         Context context = binding.getRoot().getContext();
          binding.lvActivity.setLayoutManager(new LinearLayoutManager(context,
                  LinearLayoutManager.HORIZONTAL,false));
         // Set the adapter
         binding.lvActivity.setAdapter(adapter);
+
+        // 创建ItemTouchHelper.Callback，实现回调方法
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+            // 返回允许滑动的方向
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                // 返回可滑动方向，通过使用一个int，在各个bit位标记来记录。
+                // 这里drag支持上下方向，swipe支持左右方向。
+                int dragFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+                int swipeFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                // 返回设置了标识位的复合int
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            // 允许drag的前提下，当ItemTouchHelper想要将拖动的项目从其旧位置移动到新位置时调用
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                // 获取被拖拽item和目标item的适配器索引（适配器索引是该item对应数据集的索引，getLayoutPosition是当前布局的位置）
+                int from = viewHolder.getAdapterPosition();
+                int to = target.getAdapterPosition();
+                // 交换数据集的数据
+                adapter.swapItem(from, to);
+
+                // 通知Adapter更新，此动作应是Adapter的内生逻辑
+                //adapter.notifyItemMoved(from, to);
+
+                // 返回true表示item移到了目标位置
+                return true;
+            }
+
+            // 允许swipe的前提下，当用户滑动ViewHolder触发临界时调用
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // 获取滑动的item对应的适配器索引
+                int pos = viewHolder.getAdapterPosition();
+                // 从数据集移除数据
+                adapter.removeItem(pos);
+
+                // 通知Adapter更新，此动作应是Adapter的内生逻辑
+                //adapter.notifyItemRemoved(pos);
+            }
+
+            //当用户操作完毕后，记录项目清单的顺序
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                adapter.adjustPriority();
+            }
+        };
+        // 传入ItemTouchHelper.Callback
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        // 将touchHelper和recyclerView绑定
+        touchHelper.attachToRecyclerView(binding.lvActivity);
 
         activity = model.getSelectedActivity().getValue();
         model.activityTotalTime.setValue(activity.getTotalTime());

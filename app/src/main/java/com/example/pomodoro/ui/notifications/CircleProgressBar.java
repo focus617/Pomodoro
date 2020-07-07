@@ -44,7 +44,7 @@ public class CircleProgressBar extends View {
         this.mFrontColor = ta.getColor(R.styleable.circleProgressBar_front_color, Color.BLUE);
         this.mBackColor = ta.getColor(R.styleable.circleProgressBar_background_color, Color.WHITE);
         this.mTextColor = ta.getColor(R.styleable.circleProgressBar_text_color, Color.BLUE);
-        this.mTextSize = ta.getDimensionPixelSize(R.styleable.circleProgressBar_text_size,60);
+        this.mTextSize = ta.getDimensionPixelSize(R.styleable.circleProgressBar_text_size, 60);
         this.mProgress = ta.getInteger(R.styleable.circleProgressBar_default_progress, 0);
         this.mMax = ta.getInteger(R.styleable.circleProgressBar_max, 100);
         //最后记得将TypedArray对象回收
@@ -83,8 +83,11 @@ public class CircleProgressBar extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mWidth = getRealSize(widthMeasureSpec);
         mHeight = getRealSize(heightMeasureSpec);
+        int min = (mWidth < mHeight) ? mWidth : mHeight;
+        mRadius = (min - mStrokeWidth) / 2;
         setMeasuredDimension(mWidth, mHeight);
     }
+
     // 重写绘制View的核心方法onDraw()
     @Override
     protected void onDraw(Canvas canvas) {
@@ -93,7 +96,7 @@ public class CircleProgressBar extends View {
         canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBackPaint);
         canvas.drawArc(mRect, -90, angle, false, mFrontPaint);
         canvas.drawText(mProgress + "%", mWidth / 2 + mHalfStrokeWidth,
-                mHeight*4/5 + mHalfStrokeWidth, mTextPaint);
+                mHeight * 4 / 5 + mHalfStrokeWidth, mTextPaint);
         invalidate();
     }
 
@@ -103,7 +106,8 @@ public class CircleProgressBar extends View {
         int size = MeasureSpec.getSize(measureSpec);
         if (mode == MeasureSpec.AT_MOST || mode == MeasureSpec.UNSPECIFIED) {
             //自己计算
-            result = (int) (mRadius * 2 + mStrokeWidth);
+            int demand = (int) (mRadius * 2 + mStrokeWidth);
+            result = (demand > size) ? size : demand;   //
         } else {
             result = size;
         }
@@ -126,6 +130,7 @@ public class CircleProgressBar extends View {
     public void setProgress(int progress) {
         mProgress = progress;
     }
+
     public int getProgress() {
         return this.mProgress;
     }

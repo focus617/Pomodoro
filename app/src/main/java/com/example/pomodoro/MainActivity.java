@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_notifications, R.id.navigation_dashboard)
                 .build();
-        Log.d(TAG, "onCreate: "+ appBarConfiguration.toString());
-        
+        Log.d(TAG, "onCreate: " + appBarConfiguration.toString());
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
@@ -57,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
         final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         /* if quit from CountdownFragment */
-        if(navController.getCurrentDestination().getId() == R.id.navigation_countdown){
+        if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
+            Log.d(TAG, "onSupportNavigateUp: nav_countdown");
             /* 如果当前定时器尚未到期 */
-            if(model.getTimeCounter().getValue()!=0){
+            if (model.getTimeCounter().getValue() != 0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.quit_dialog_title));
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
@@ -78,16 +79,52 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
             /* 如果正常到期 */
-            else navController.popBackStack();
+            else {
+                Log.d(TAG, "onSupportNavigateUp: normal exit");
+                navController.popBackStack();
+            }
         } else {
-            navController.popBackStack();
+            Log.d(TAG, "onSupportNavigateUp: other nav ");
         }
         return super.onSupportNavigateUp();
     }
 
     @Override
     public void onBackPressed() {
-        onSupportNavigateUp();
+        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        /* if quit from CountdownFragment */
+        if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
+            Log.d(TAG, "onBackPressed: nav_countdown");
+            /* 如果当前定时器尚未到期 */
+            if (model.getTimeCounter().getValue() != 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.quit_dialog_title));
+                builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        navController.popBackStack();
+                    }
+                });
+                builder.setNegativeButton(R.string.dialog_negative_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            /* 如果正常到期 */
+            else {
+                Log.d(TAG, "onBackPressed: normal exit");
+                super.onBackPressed();
+            }
+        } else {
+            Log.d(TAG, "onBackPressed: other nav ");
+            super.onBackPressed();
+        }
+
     }
 
     @Override

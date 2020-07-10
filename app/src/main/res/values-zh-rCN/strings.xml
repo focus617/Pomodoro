@@ -6,6 +6,8 @@
     <string name="title_notifications">活动</string>
     <string name="title_countdown">定时器</string>
     <string name="title_dashboard">统计面板</string>
+    <string name="action_delete_data">删除数据</string>
+    <string name="action_create_data">创建数据</string>
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
     <string name="add_alarm">添加项目</string>
@@ -26,7 +28,7 @@
     <string name="timeup_dialog_title">定时器</string>
     <string name="dialog_quit">退出</string>
     <string name="title_about">关于</string>
-    <string name="action_delete_data">删除数据</string>
-    <string name="action_create_data">创建数据</string>
+    <string name="title_settings">设置</string>
+
 
 </resources>

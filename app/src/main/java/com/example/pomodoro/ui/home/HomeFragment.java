@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         // 为ActionBar扩展菜单项
-        inflater.inflate(R.menu.actionbar_menu_actions, menu);
+        inflater.inflate(R.menu.actionbar_menu, menu);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.pomodoro.databinding.ActivityMainBinding;
 import com.example.pomodoro.ui.home.HomeFragmentDirections;
 import com.example.pomodoro.ui.notifications.NotificationsFragmentDirections;
 import com.example.pomodoro.viewModel.MainViewModel;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -32,13 +34,19 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private MainViewModel mModel;    // ViewModel for whole activity
+    private MainViewModel mModel;           // ViewModel for whole activity
+    private ActivityMainBinding mBinding;   // Binding for main activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        setContentView(R.layout.activity_main);
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
+
+        // Get the ViewModel.
+        mModel = new ViewModelProvider(this).get(MainViewModel.class);
+        //Databinding
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -49,12 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
+        NavigationUI.setupWithNavController(mBinding.navView, navController);
+        NavigationUI.setupWithNavController(mBinding.navDrawerView,navController);
 
-        ActionBar actionBar = getSupportActionBar();
-
-        // Get the ViewModel.
-        mModel = new ViewModelProvider(this).get(MainViewModel.class);
     }
 
     @Override

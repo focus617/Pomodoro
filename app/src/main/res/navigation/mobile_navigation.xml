@@ -48,6 +48,12 @@
         tools:layout="@layout/fragment_countdown" />
 
     <fragment
+        android:id="@+id/action_settings"
+        android:name="com.example.pomodoro.ui.home.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
         android:id="@+id/action_about"
         android:name="com.example.pomodoro.ui.home.AboutFragment"
         android:label="@string/title_about"

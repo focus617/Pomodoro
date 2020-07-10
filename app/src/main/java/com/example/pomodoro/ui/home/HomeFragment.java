@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
 
         // Get the ViewModel.
         mModel = new ViewModelProvider(requireActivity(),
-                new SavedStateViewModelFactory(requireActivity().getApplication(),this))
+                new SavedStateViewModelFactory(requireActivity().getApplication(), this))
                 .get(MainViewModel.class);
 
 
@@ -209,12 +209,12 @@ public class HomeFragment extends Fragment {
                 mModel.deleteAllActivities();
                 return true;
 
-            case R.id.action_about:
+/*            case R.id.action_about:
                 Toast.makeText(getContext(), "You clicked about", Toast.LENGTH_SHORT).show();
 
                 return NavigationUI.onNavDestinationSelected(item,
                         Navigation.findNavController(getActivity(), R.id.nav_host_fragment))
-                        || super.onOptionsItemSelected(item);
+                        || super.onOptionsItemSelected(item);*/
 
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,41 +1,29 @@
 package com.example.pomodoro;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.example.pomodoro.databinding.ActivityMainBinding;
-import com.example.pomodoro.ui.home.HomeFragmentDirections;
-import com.example.pomodoro.ui.notifications.NotificationsFragmentDirections;
-import com.example.pomodoro.viewModel.MainViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.pomodoro.databinding.ActivityMainBinding;
+import com.example.pomodoro.viewModel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private MainViewModel mModel;           // ViewModel for whole activity
     private ActivityMainBinding mBinding;   // Binding for main activity
+
+    private DrawerLayout mDrawerLayout;     // Navigation Drawer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mModel = new ViewModelProvider(this).get(MainViewModel.class);
         //Databinding
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        mDrawerLayout = mBinding.drawerLayout;
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -57,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(this, navController, mDrawerLayout);
         NavigationUI.setupWithNavController(mBinding.navView, navController);
         NavigationUI.setupWithNavController(mBinding.navDrawerView,navController);
 
@@ -96,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Log.d(TAG, "onSupportNavigateUp: other nav ");
-            navController.navigateUp();
+            //navController.navigateUp();
+            NavigationUI.navigateUp(navController, mDrawerLayout);
         }
         return super.onSupportNavigateUp();
     }

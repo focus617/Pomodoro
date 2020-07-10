@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Log.d(TAG, "onSupportNavigateUp: other nav ");
+            navController.navigateUp();
         }
         return super.onSupportNavigateUp();
     }

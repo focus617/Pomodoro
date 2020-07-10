@@ -192,7 +192,7 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_create_data:
                 Toast.makeText(getContext(), "You clicked settings", Toast.LENGTH_SHORT).show();
                 /**
                  * {@link RecyclerView.Adapter} Create dummy project list that can display a {@link DummyItem}.
@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment {
                 mModel.createDummyActList();
                 return true;
 
-            case R.id.action_delete_all:
+            case R.id.action_delete_data:
                 // Clear database for testing purpose
                 // TODO: Clean in future
                 mModel.deleteAllProjects();

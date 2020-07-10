@@ -10,12 +10,12 @@
 
     <!-- 设置, 在溢出菜单中展示 -->
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:id="@+id/action_create_data"
+        android:title="@string/action_create_data"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_delete_all"
-        android:title="@string/action_delete_all"
+        android:id="@+id/action_delete_data"
+        android:title="@string/action_delete_data"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"

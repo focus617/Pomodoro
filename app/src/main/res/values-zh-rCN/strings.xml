@@ -25,5 +25,7 @@
     <string name="timeup_dialog_message">闹钟时间到了!</string>
     <string name="timeup_dialog_title">定时器</string>
     <string name="dialog_quit">退出</string>
+    <string name="title_about">关于</string>
+    <string name="action_delete_all">删除数据</string>
 
 </resources>

@@ -24,5 +24,7 @@
     <string name="timeup_dialog_title">Timer</string>
     <string name="timeup_dialog_message">"Time is up ! "</string>
     <string name="dialog_quit">Quit</string>
+    <string name="title_about">About</string>
+    <string name="action_delete_all">DeleteAllData</string>
 
 </resources>

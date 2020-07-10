@@ -9,12 +9,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -34,8 +39,8 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private static final String TAG = "ItemFragment";
 
-    private MainViewModel model;           // ViewModel
-    private ProjectRecyclerViewAdapter adapter;  // Adapter of recyclerView for projects
+    private MainViewModel mModel;                 // ViewModel
+    private ProjectRecyclerViewAdapter mAdapter;  // Adapter of recyclerView for projects
 
     // TODO:(NoActionNeeded) Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -68,25 +73,25 @@ public class HomeFragment extends Fragment {
         }
 
         // Get the ViewModel.
-        model = new ViewModelProvider(requireActivity(),
+        mModel = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(),this))
                 .get(MainViewModel.class);
 
 
         // create adapter for RecyclerView
-        adapter = new ProjectRecyclerViewAdapter(model);
+        mAdapter = new ProjectRecyclerViewAdapter(mModel);
 
 
         // Create the observer which updates the UI.
         final Observer<List<Project>> observer = new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projectList) {
-                adapter.setProjectList(projectList);
+                mAdapter.setProjectList(projectList);
             }
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getPrjListLive().observe(this, observer);
+        mModel.getPrjListLive().observe(this, observer);
     }
 
     @Override
@@ -105,6 +110,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        setHasOptionsMenu(true);
+
         // 构造RecycleView
         RecyclerView recyclerView = view.findViewById(R.id.lvPrjList);
         // Set the layoutManager
@@ -116,7 +123,7 @@ public class HomeFragment extends Fragment {
         }
 
         // Set the adapter
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
 
         // 创建ItemTouchHelper.Callback，实现回调方法
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
@@ -138,7 +145,7 @@ public class HomeFragment extends Fragment {
                 int from = viewHolder.getAdapterPosition();
                 int to = target.getAdapterPosition();
                 // 交换数据集的数据
-                adapter.swapItem(from, to);
+                mAdapter.swapItem(from, to);
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
                 //adapter.notifyItemMoved(from, to);
@@ -153,7 +160,7 @@ public class HomeFragment extends Fragment {
                 // 获取滑动的item对应的适配器索引
                 int pos = viewHolder.getAdapterPosition();
                 // 从数据集移除数据
-                adapter.removeItem(pos);
+                mAdapter.removeItem(pos);
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
                 //adapter.notifyItemRemoved(pos);
@@ -163,7 +170,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-                adapter.adjustPriority();
+                mAdapter.adjustPriority();
             }
         };
         // 传入ItemTouchHelper.Callback
@@ -172,5 +179,45 @@ public class HomeFragment extends Fragment {
         touchHelper.attachToRecyclerView(recyclerView);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // 为ActionBar扩展菜单项
+        inflater.inflate(R.menu.actionbar_menu_actions, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Toast.makeText(getContext(), "You clicked settings", Toast.LENGTH_SHORT).show();
+                /**
+                 * {@link RecyclerView.Adapter} Create dummy project list that can display a {@link DummyItem}.
+                 * TODO: Clean it in future and Replace the implementation with code for your data type.
+                 */
+                mModel.createDummyPrjList();
+                mModel.createDummyActList();
+                return true;
+
+            case R.id.action_delete_all:
+                // Clear database for testing purpose
+                // TODO: Clean in future
+                mModel.deleteAllProjects();
+                mModel.deleteAllActivities();
+                return true;
+
+            case R.id.action_about:
+                Toast.makeText(getContext(), "You clicked about", Toast.LENGTH_SHORT).show();
+
+                return NavigationUI.onNavDestinationSelected(item,
+                        Navigation.findNavController(getActivity(), R.id.nav_host_fragment))
+                        || super.onOptionsItemSelected(item);
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

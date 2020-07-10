@@ -1,23 +1,29 @@
 package com.example.pomodoro;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Chronometer;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.pomodoro.ui.home.HomeFragmentDirections;
+import com.example.pomodoro.ui.notifications.NotificationsFragmentDirections;
 import com.example.pomodoro.viewModel.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -26,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private MainViewModel model;    // ViewModel for whole activity
+    private MainViewModel mModel;    // ViewModel for whole activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         // Get the ViewModel.
-        model = new ViewModelProvider(this).get(MainViewModel.class);
+        mModel = new ViewModelProvider(this).get(MainViewModel.class);
     }
 
     @Override
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
             Log.d(TAG, "onSupportNavigateUp: nav_countdown");
             /* 如果当前定时器尚未到期 */
-            if (model.getTimeCounter().getValue() != 0) {
+            if (mModel.getTimeCounter().getValue() != 0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.quit_dialog_title));
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
@@ -97,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
             Log.d(TAG, "onBackPressed: nav_countdown");
             /* 如果当前定时器尚未到期 */
-            if (model.getTimeCounter().getValue() != 0) {
+            if (mModel.getTimeCounter().getValue() != 0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.quit_dialog_title));
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
@@ -125,41 +131,5 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar_menu_actions, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Toast.makeText(this, "You clicked settings", Toast.LENGTH_SHORT).show();
-                /**
-                 * {@link RecyclerView.Adapter} Create dummy project list that can display a {@link DummyItem}.
-                 * TODO: Clean it in future and Replace the implementation with code for your data type.
-                 */
-                model.createDummyPrjList();
-                model.createDummyActList();
-                return true;
-
-            case R.id.action_about:
-                Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
-
-                // Clear database for testing purpose
-                // TODO: Clean in future
-                model.deleteAllProjects();
-                model.deleteAllActivities();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

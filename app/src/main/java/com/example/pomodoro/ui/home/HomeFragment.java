@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        // 为ActionBar扩展菜单项
+        // 在App Bar扩展菜单项
         inflater.inflate(R.menu.actionbar_menu, menu);
     }
 
@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_create_data:
-                Toast.makeText(getContext(), "You clicked settings", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Dummy data are created now.", Toast.LENGTH_SHORT).show();
                 /**
                  * {@link RecyclerView.Adapter} Create dummy project list that can display a {@link DummyItem}.
                  * TODO: Clean it in future and Replace the implementation with code for your data type.
@@ -203,6 +203,8 @@ public class HomeFragment extends Fragment {
                 return true;
 
             case R.id.action_delete_data:
+                Toast.makeText(getContext(), "Whole dummy data are deleted.", Toast.LENGTH_SHORT).show();
+
                 // Clear database for testing purpose
                 // TODO: Clean in future
                 mModel.deleteAllProjects();

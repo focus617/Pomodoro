@@ -1,7 +1,11 @@
 package com.example.pomodoro.ui.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,6 +37,43 @@ public class DashboardFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.dashboard_menu, menu);
+
+        // check if the activity resolved
+        if(null == getShareIntent().resolveActivity(getActivity().getPackageManager())){
+            // hide the menu item if it doesn't resolve
+            menu.findItem(R.id.share).setVisible(false);
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.share:
+                shareSuccess();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Creating share Intent
+    private Intent getShareIntent(){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT,"Hello from Pomodoro.");
+        return shareIntent;
+    }
+
+    // Starting an Activity with new Intent
+    private void shareSuccess(){
+        startActivity(getShareIntent());
     }
 }

@@ -9,19 +9,25 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import java.util.ConcurrentModificationException;
+import java.util.Timer;
 
-public class LifeObserverCountDownFg implements LifecycleObserver {
-    private static final String TAG = "lifeObserver_CountDownF";
+import timber.log.Timber;
+
+public class LifeObserverTimer extends Timer implements LifecycleObserver {
+
+    public LifeObserverTimer(Lifecycle lifecycle) {
+        lifecycle.addObserver(this);
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     void onCreate(LifecycleOwner owner){
-        Log.d(TAG, "onCreate: ");
+        Timber.d("onCreate: ");
 
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     void onDestroy(LifecycleOwner owner){
-        Log.d(TAG, "onDestroy: ");
+        Timber.d("onDestroy: ");
 
     }
 }

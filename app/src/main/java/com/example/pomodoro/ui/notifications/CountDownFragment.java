@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,14 +35,15 @@ public class CountDownFragment extends Fragment {
     private static final int MSG_WHAT_TIME_TICK = 2;
 
     private Activity activity;
-    private Timer timer = new Timer();
     private TimerTask timerTask = null;
     private MediaPlayer mp;
 
     private MainViewModel model;
     private FragmentCountdownBinding binding;
 
-    private LifeObserverCountDownFg observer;
+    private LifeObserverTimer timer;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,9 +57,8 @@ public class CountDownFragment extends Fragment {
         //Get current activity
         activity = model.getSelectedActivity().getValue();
 
-        // 增加一个lifecycle Observer
-        observer = new LifeObserverCountDownFg();
-        getLifecycle().addObserver(observer);
+        // Create a Timer with lifecycle Observer func
+        timer = new LifeObserverTimer(this.getLifecycle());
     }
 
     @Override
@@ -70,7 +69,7 @@ public class CountDownFragment extends Fragment {
         // Databinding
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_countdown, container, false);
         binding.setModel(model);
-        binding.setLifecycleOwner(requireActivity());
+        binding.setLifecycleOwner(this);
 
         Toast.makeText(getActivity(), String.format("CountDown Fragment:" +
                 model.getSelectedActivity().getValue().getTitle()), Toast.LENGTH_SHORT).show();
@@ -136,6 +135,7 @@ public class CountDownFragment extends Fragment {
                     // 每秒通知 Activity - TimerView 减一
                     handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
 
+                    // 如果计时到零
                     if (model.getTimeCounter().getValue() <= 0) {
                         Timber.d( "run: time is up!");
 
@@ -144,6 +144,8 @@ public class CountDownFragment extends Fragment {
                     }
                 }
             };
+
+            // This is what initially starts the timer
             timer.schedule(timerTask, 1000, 1000);
         }
     }
@@ -158,6 +160,8 @@ public class CountDownFragment extends Fragment {
     }
 
     // 因为 TimerTask在一个线程里面，需要使用Handler通知 Activity 来更新计时器UI
+    // Note that the Thread the handler runs on is determined by a class called Looper.
+    // In this case, no looper is defined, and it defaults to the main or UI thread.
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {

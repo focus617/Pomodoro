@@ -12,6 +12,8 @@ import com.example.pomodoro.R;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class MainViewModel extends AndroidViewModel {
     final static String KEY_PROJECT = "Pomodoro_Project";
     final static String KEY_ACTIVITY = "Pomodoro_Activity";
@@ -22,7 +24,7 @@ public class MainViewModel extends AndroidViewModel {
     private Project dummyProject;
     private Activity dummyActivity;
 
-    public MutableLiveData<Integer> activityTotalTime;    // Total timer count number
+    public MutableLiveData<Integer> activityTotalTime;  // Total timer count number
     public MutableLiveData<Integer> timeCounter;        // Countdown timer
 
     private MyRepository repository;
@@ -30,6 +32,8 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application, SavedStateHandle state) {
         super(application);
+        Timber.d("ViewModel Created");
+
         this.repository = new MyRepository(application);
         this.dummyProject = createDummyProject();
         this.dummyActivity = createDummyActivity();
@@ -43,6 +47,16 @@ public class MainViewModel extends AndroidViewModel {
             state.set(MainViewModel.KEY_ACTIVITY, selectedActivityId);
         }
         this.mState = state;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        Timber.d("ViewModel Destroyed");
+
+        this.repository = null;
+        this.dummyProject = null;
+        this.dummyActivity = null;
     }
 
     public MutableLiveData<Project> getSelectedProject() {

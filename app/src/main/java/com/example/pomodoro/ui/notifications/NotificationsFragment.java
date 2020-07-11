@@ -33,8 +33,9 @@ import com.example.pomodoro.viewModel.Project;
 import java.util.Calendar;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class NotificationsFragment extends Fragment {
-    private static final String TAG = "NotificationsFragment";
 
     private Project project;
     private Activity activity;
@@ -147,7 +148,7 @@ public class NotificationsFragment extends Fragment {
 
         activity = mModel.getSelectedActivity().getValue();
         mModel.activityTotalTime.setValue(activity.getTotalTime());
-        Log.d(TAG, "onCreateView: AllTime="+String.valueOf(mModel.activityTotalTime.getValue()));
+        Timber.d("onCreateView: AllTime="+String.valueOf(mModel.activityTotalTime.getValue()));
 
         mBinding.btnPause.setVisibility(View.GONE);
         mBinding.btnReset.setVisibility(View.GONE);
@@ -268,6 +269,12 @@ public class NotificationsFragment extends Fragment {
 
         return mBinding.getRoot();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Timber.d("onSaveInstanceState Called");
     }
 
     // 检查时分秒数据的有效性，若有效就启用

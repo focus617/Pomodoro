@@ -58,6 +58,14 @@ public class NotificationsFragment extends Fragment {
         // create adapter for RecyclerView
         mAdapter = new ActivityRecyclerViewAdapter(mModel);
 
+        //Get current project
+        project = mModel.getSelectedProject().getValue();
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         // Create the observer which updates the UI.
         final Observer<List<Activity>> observer = new Observer<List<Activity>>() {
             @Override
@@ -67,15 +75,7 @@ public class NotificationsFragment extends Fragment {
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mModel.getActListLive().observe(this, observer);
-
-        //Get current project
-        project = mModel.getSelectedProject().getValue();
-    }
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        mModel.getActListLive().observe(getViewLifecycleOwner(), observer);
 
         // Databinding
         mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);

@@ -28,8 +28,9 @@ import com.example.pomodoro.viewModel.MainViewModel;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import timber.log.Timber;
+
 public class CountDownFragment extends Fragment {
-    private static final String TAG = "CountDownFragment";
 
     private static final int MSG_WHAT_TIME_IS_UP = 1;
     private static final int MSG_WHAT_TIME_TICK = 2;
@@ -119,7 +120,7 @@ public class CountDownFragment extends Fragment {
 
     // TODO: move allTimeCount into a service, in order to avoid the fragment lifecycle impact.
     private void startTimer() {
-        Log.d(TAG, "startTimer: ");
+        Timber.d("startTimer: ");
 
         if (timerTask == null) {
 
@@ -127,15 +128,16 @@ public class CountDownFragment extends Fragment {
 
                 @Override
                 public void run() {
-                    Log.d(TAG, "run: timer count--: " +
+                    Timber.d("run: timer count--: " +
                             String.valueOf(model.getTimeCounter().getValue()));
 
                     model.countdown();
 
                     // 每秒通知 Activity - TimerView 减一
                     handler.sendEmptyMessage(MSG_WHAT_TIME_TICK);
+
                     if (model.getTimeCounter().getValue() <= 0) {
-                        Log.d(TAG, "run: time is up!");
+                        Timber.d( "run: time is up!");
 
                         handler.sendEmptyMessage(MSG_WHAT_TIME_IS_UP);
                         stopTimer();
@@ -147,7 +149,7 @@ public class CountDownFragment extends Fragment {
     }
 
     private void stopTimer() {
-        Log.d(TAG, "stopTimer: ");
+        Timber.d("stopTimer: ");
 
         if (timerTask != null) {
             timerTask.cancel();
@@ -177,7 +179,7 @@ public class CountDownFragment extends Fragment {
                     builder.setNegativeButton(R.string.dialog_quit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.d(TAG, "AlertDialog.onCancel: ");
+                            Timber.d("AlertDialog.onCancel: ");
                             mp.stop();
                             mp.release();
                             NavController navController = Navigation.findNavController(getView());
@@ -202,7 +204,7 @@ public class CountDownFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
+        Timber.d("onDestroy: ");
         timer.cancel();
     }
 

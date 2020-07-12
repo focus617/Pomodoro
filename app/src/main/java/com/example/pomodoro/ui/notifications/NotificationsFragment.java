@@ -147,8 +147,7 @@ public class NotificationsFragment extends Fragment {
         touchHelper.attachToRecyclerView(mBinding.lvActivity);
 
         activity = mModel.getSelectedActivity().getValue();
-        mModel.activityTotalTime.setValue(activity.getTotalTime());
-        Timber.d("onCreateView: AllTime="+String.valueOf(mModel.activityTotalTime.getValue()));
+        Timber.d("AllTime="+mModel.getActivityTotalTime().getValue());
 
         mBinding.btnPause.setVisibility(View.GONE);
         mBinding.btnReset.setVisibility(View.GONE);
@@ -164,7 +163,7 @@ public class NotificationsFragment extends Fragment {
 
                 /* 修订定时值 */
                 activity.setTotalTime(allTime);
-                mModel.activityTotalTime.setValue(allTime);
+                mModel.getActivityTotalTime().setValue(allTime);
 
                 startCountDownTimer();
             }

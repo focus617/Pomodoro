@@ -77,6 +77,11 @@ public class HomeFragment extends Fragment {
                 new SavedStateViewModelFactory(requireActivity().getApplication(), this))
                 .get(MainViewModel.class);
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         // create adapter for RecyclerView
         mAdapter = new ProjectRecyclerViewAdapter(mModel);
@@ -91,13 +96,7 @@ public class HomeFragment extends Fragment {
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mModel.getPrjListLive().observe(this, observer);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final List<Project> list;
+        mModel.getPrjListLive().observe(getViewLifecycleOwner(), observer);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 

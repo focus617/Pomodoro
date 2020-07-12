@@ -80,7 +80,7 @@ public class NotificationsFragment extends Fragment {
         // Databinding
         mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
         mBinding.setModel(mModel);
-        mBinding.setLifecycleOwner(requireActivity());
+        mBinding.setLifecycleOwner(getViewLifecycleOwner());
 
         Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
 
@@ -88,7 +88,7 @@ public class NotificationsFragment extends Fragment {
         // Set the layoutManager
         Context context = mBinding.getRoot().getContext();
         mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-         mBinding.lvActivity.setLayoutManager(mLayoutManager);
+        mBinding.lvActivity.setLayoutManager(mLayoutManager);
         // Set the adapter
         mBinding.lvActivity.setAdapter(mAdapter);
 
@@ -149,9 +149,6 @@ public class NotificationsFragment extends Fragment {
         activity = mModel.getSelectedActivity().getValue();
         Timber.d("AllTime="+mModel.getActivityTotalTime().getValue());
 
-        mBinding.btnPause.setVisibility(View.GONE);
-        mBinding.btnReset.setVisibility(View.GONE);
-        mBinding.btnResume.setVisibility(View.GONE);
 
         mBinding.btnStart.setOnClickListener(new View.OnClickListener() {
 

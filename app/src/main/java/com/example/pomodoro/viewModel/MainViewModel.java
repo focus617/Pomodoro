@@ -26,7 +26,7 @@ public class MainViewModel extends AndroidViewModel {
     private int selectedProjectId, selectedActivityId;
     private Project dummyProject;
     private Activity dummyActivity;
-    
+
     private MyRepository repository;
     private SavedStateHandle mState;    // Introduce ViewModel.SavedState
 

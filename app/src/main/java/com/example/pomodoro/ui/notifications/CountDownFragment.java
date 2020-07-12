@@ -71,7 +71,7 @@ public class CountDownFragment extends Fragment {
         // Databinding
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_countdown, container, false);
         mBinding.setModel(mModel);
-        mBinding.setLifecycleOwner(this);
+        mBinding.setLifecycleOwner(getViewLifecycleOwner());
 
         // Create the observer which updates the UI.
         final Observer<Integer> observer = new Observer<Integer>() {

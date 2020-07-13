@@ -1,10 +1,12 @@
 package com.example.pomodoro.ui.notifications;
 
 import android.os.CountDownTimer;
+import android.text.format.DateUtils;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import timber.log.Timber;
@@ -25,8 +27,6 @@ public class CountDownViewModel extends ViewModel {
     private MutableLiveData<Boolean> _eventTimeUp = new MutableLiveData<Boolean>();
 
     // observable current countdown Timer value
-    private LiveData<Long> currentTime;
-
     public LiveData<Long> getCurrentTime() {
             return _currentTime;
     }
@@ -63,7 +63,7 @@ public class CountDownViewModel extends ViewModel {
     }
 
     private void startTimer(Long totalTime){
-        Timber.d("CountDownTimer start: TotalTime ="+totalTime);
+        Timber.d("CountDownTimer start: TotalTime="+DateUtils.formatElapsedTime(totalTime));
 
         if(mTimer != null) mTimer.cancel();
 
@@ -72,12 +72,13 @@ public class CountDownViewModel extends ViewModel {
             @Override
             public void onTick(long millisUntilFinished) {
                 _currentTime.setValue(millisUntilFinished/ONE_SECOND);
-                Timber.d("Ticker:" + getCurrentTime().getValue());
+                String currentTimeString = DateUtils.formatElapsedTime(_currentTime.getValue());
+                Timber.d("CountDownTimer onTick - " + currentTimeString);
             }
 
             @Override
             public void onFinish() {
-                Timber.d("Time is up!");
+                Timber.d("CountDownTimer onFinish:");
                 _currentTime.setValue(DONE);
                 _eventTimeUp.setValue(true);
             }

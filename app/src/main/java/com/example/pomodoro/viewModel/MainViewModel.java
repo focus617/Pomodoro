@@ -21,7 +21,6 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<Project> _selectedProject;   // 当前选择的目标活动
     private MutableLiveData<Activity> _selectedActivity; // 当前选择的活动
     private MutableLiveData<Long> _activityTotalTime;  // Total timer count number
-    private MutableLiveData<Long> _timeCounter;      // Countdown timer
 
     private int selectedProjectId, selectedActivityId;
     private Project dummyProject;
@@ -126,35 +125,6 @@ public class MainViewModel extends AndroidViewModel {
             _activityTotalTime = new MutableLiveData<>();
         }
         _activityTotalTime.postValue(actTime);
-    }
-
-    public MutableLiveData<Long> getTimeCounter() {
-        if (null == _timeCounter) {
-            _timeCounter = new MutableLiveData<>();
-            _timeCounter.setValue(getSelectedActivity().getValue().getTotalTime()); //TODO: Check reasonable?
-        }
-        return _timeCounter;
-    }
-
-    public void setTimeCounter(Long timeCount) {
-        if (null == _timeCounter) {
-            _timeCounter = new MutableLiveData<>();
-        }
-        _timeCounter.postValue(timeCount);
-    }
-
-    public void resetTimeCounter(Activity act) {
-        if (null == _timeCounter) {
-            _timeCounter = new MutableLiveData<>();
-        }
-        _timeCounter.setValue(act.getTotalTime());
-    }
-
-    public void countdown() {
-        long counter = _timeCounter.getValue();
-        if (counter > 0) {
-            _timeCounter.postValue(counter - 1);
-        }
     }
 
     // Create dummy list for testing purpose

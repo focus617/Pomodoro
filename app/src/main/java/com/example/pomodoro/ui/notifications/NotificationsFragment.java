@@ -295,9 +295,6 @@ public class NotificationsFragment extends Fragment {
 
         NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown();
         Navigation.findNavController(mBinding.btnStart).navigate(action);
-
-        mModel.resetTimeCounter(activity);   // 初始化TimeCounter
-
     }
 
     //TODO: 在此增加“添加 ActivityRecord”的功能

@@ -40,6 +40,7 @@ public class CountDownFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate: ");
 
         // Get the ViewModel.
         mModel = new ViewModelProvider(requireActivity(),

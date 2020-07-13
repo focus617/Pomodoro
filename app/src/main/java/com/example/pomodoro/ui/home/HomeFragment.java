@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.MainViewModel;
-import com.example.pomodoro.viewModel.Project;
+import com.example.pomodoro.database.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

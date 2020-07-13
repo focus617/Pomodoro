@@ -9,6 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.example.pomodoro.R;
+import com.example.pomodoro.database.Activity;
+import com.example.pomodoro.database.MyRepository;
+import com.example.pomodoro.database.Project;
 
 import java.util.List;
 

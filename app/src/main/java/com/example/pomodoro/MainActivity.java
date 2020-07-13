@@ -15,7 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.pomodoro.databinding.ActivityMainBinding;
-import com.example.pomodoro.ui.notifications.CountDownViewModel;
+import com.example.pomodoro.viewModel.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
             Log.d(TAG, "onSupportNavigateUp: nav_countdown");
             /* 如果当前定时器尚未到期 */
-            if (!mCountDownViewModel.eventTimeUp.getValue()) {
+            if (!mCountDownViewModel.getEventTimeUp().getValue()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.quit_dialog_title));
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
             Log.d(TAG, "onBackPressed: nav_countdown");
             /* 如果当前定时器尚未到期 */
-            if (!mCountDownViewModel.eventTimeUp.getValue()) {
+            if (!mCountDownViewModel.getEventTimeUp().getValue()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.quit_dialog_title));
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {

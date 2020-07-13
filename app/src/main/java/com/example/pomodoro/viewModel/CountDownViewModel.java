@@ -1,4 +1,4 @@
-package com.example.pomodoro.ui.notifications;
+package com.example.pomodoro.viewModel;
 
 import android.os.CountDownTimer;
 import android.text.format.DateUtils;
@@ -41,13 +41,9 @@ public class CountDownViewModel extends ViewModel {
     };
 
     // observable TimeUp Event
-    public LiveData<Boolean> eventTimeUp = new LiveData<Boolean>() {
-        @Nullable
-        @Override
-        public Boolean getValue() {
-            return _eventTimeUp.getValue();
-        }
-    };
+    public LiveData<Boolean> getEventTimeUp() {
+            return _eventTimeUp;
+    }
 
     public CountDownViewModel() {
         Timber.d("CountDownViewModel created.");

@@ -1,4 +1,4 @@
-package com.example.pomodoro.viewModel;
+package com.example.pomodoro.database;
 
 import android.content.Context;
 
@@ -8,6 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
 
 @Database(entities = {Project.class, Activity.class}, version = 1,exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
@@ -25,6 +26,8 @@ public abstract class MyDatabase extends RoomDatabase {
     public abstract ProjectDAO getProjectDao();
 
     public abstract ActivityDAO getActivityDao();
+
+    //public abstract RecordDAO getRecordDao();
 
     static final Migration MIGRATION_1_2 = new Migration(1,2) {
         @Override

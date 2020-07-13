@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pomodoro.R;
-import com.example.pomodoro.viewModel.Activity;
+import com.example.pomodoro.database.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 import java.util.ArrayList;

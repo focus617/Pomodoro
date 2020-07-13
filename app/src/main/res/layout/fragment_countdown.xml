@@ -10,7 +10,7 @@
             type="com.example.pomodoro.viewModel.MainViewModel" />
         <variable
             name="fragmentModel"
-            type="com.example.pomodoro.ui.notifications.CountDownViewModel" />
+            type="com.example.pomodoro.viewModel.CountDownViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

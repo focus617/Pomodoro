@@ -1,4 +1,4 @@
-package com.example.pomodoro.viewModel;
+package com.example.pomodoro.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

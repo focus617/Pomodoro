@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.databinding.FragmentNotificationsBinding;
-import com.example.pomodoro.viewModel.Activity;
+import com.example.pomodoro.database.Activity;
+import com.example.pomodoro.viewModel.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
-import com.example.pomodoro.viewModel.Project;
+import com.example.pomodoro.database.Project;
 
 import java.util.Calendar;
 import java.util.List;
@@ -88,7 +88,7 @@ public class NotificationsFragment extends Fragment {
         mBinding.setModel(mModel);
         mBinding.setLifecycleOwner(getViewLifecycleOwner());
 
-        Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), String.format("Current Project:"+project.getTitle()), Toast.LENGTH_SHORT).show();
 
         /* 构造 Activity 的 RecycleView */
         // Set the layoutManager
@@ -166,7 +166,7 @@ public class NotificationsFragment extends Fragment {
 
                 /* 修订定时值 */
                 activity.setTotalTime(totalTime);
-                // mModel.getActivityTotalTime().setValue(allTime);
+                mModel.getActivityTotalTime().setValue(totalTime);
 
                 startCountDownTimer();
             }

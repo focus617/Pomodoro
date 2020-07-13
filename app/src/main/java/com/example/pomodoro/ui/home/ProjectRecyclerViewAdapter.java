@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.viewModel.MainViewModel;
-import com.example.pomodoro.viewModel.Project;
+import com.example.pomodoro.database.Project;
 
 import java.util.ArrayList;
 import java.util.Collections;

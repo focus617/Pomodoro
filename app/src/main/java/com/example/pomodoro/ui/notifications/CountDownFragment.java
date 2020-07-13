@@ -21,7 +21,8 @@ import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.databinding.FragmentCountdownBinding;
-import com.example.pomodoro.viewModel.Activity;
+import com.example.pomodoro.database.Activity;
+import com.example.pomodoro.viewModel.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 import timber.log.Timber;
@@ -64,8 +65,8 @@ public class CountDownFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        Toast.makeText(getActivity(), String.format("CountDown Fragment:" +
-                mModel.getSelectedActivity().getValue().getTitle()), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), String.format("CountDown Fragment:" +
+        //        mModel.getSelectedActivity().getValue().getTitle()), Toast.LENGTH_SHORT).show();
 
 
         // Databinding
@@ -118,7 +119,7 @@ public class CountDownFragment extends Fragment {
             }
         };
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mCountDownViewModel.eventTimeUp.observe(getViewLifecycleOwner(), observerTimeUp);
+        mCountDownViewModel.getEventTimeUp().observe(getViewLifecycleOwner(), observerTimeUp);
 
         mBinding.btnStart.setVisibility(View.GONE);
         mBinding.btnPause.setVisibility(View.VISIBLE);

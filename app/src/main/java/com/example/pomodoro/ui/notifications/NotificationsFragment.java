@@ -43,6 +43,7 @@ public class NotificationsFragment extends Fragment {
 
     private MainViewModel mModel;
     private FragmentNotificationsBinding mBinding;
+    private CountDownViewModel mCountDownViewModel;
     private ActivityRecyclerViewAdapter mAdapter; //Adapter of recyclerView for activities
     private RecyclerView.LayoutManager mLayoutManager; // Layoutmanagher of recyclerview for activities
 
@@ -54,6 +55,11 @@ public class NotificationsFragment extends Fragment {
         mModel = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(),this))
                 .get(MainViewModel.class);
+
+        // Get the Fragment ViewModel.
+        mCountDownViewModel =  new ViewModelProvider(requireActivity(),
+                new SavedStateViewModelFactory(requireActivity().getApplication(),this))
+                .get(CountDownViewModel.class);
 
         // create adapter for RecyclerView
         mAdapter = new ActivityRecyclerViewAdapter(mModel);
@@ -147,20 +153,20 @@ public class NotificationsFragment extends Fragment {
         touchHelper.attachToRecyclerView(mBinding.lvActivity);
 
         activity = mModel.getSelectedActivity().getValue();
-        Timber.d("AllTime="+mModel.getActivityTotalTime().getValue());
+        Timber.d("ActTotalTime="+mModel.getActivityTotalTime().getValue());
 
 
         mBinding.btnStart.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int allTime = Integer.parseInt(mBinding.etHour.getText().toString()) * 60
+                long totalTime = Integer.parseInt(mBinding.etHour.getText().toString()) * 60
                         * 60 + Integer.parseInt(mBinding.etMin.getText().toString()) * 60
                         + Integer.parseInt(mBinding.etSec.getText().toString());
 
                 /* 修订定时值 */
-                activity.setTotalTime(allTime);
-                mModel.getActivityTotalTime().setValue(allTime);
+                activity.setTotalTime(totalTime);
+                // mModel.getActivityTotalTime().setValue(allTime);
 
                 startCountDownTimer();
             }

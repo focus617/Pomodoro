@@ -20,8 +20,8 @@ public class MainViewModel extends AndroidViewModel {
 
     private MutableLiveData<Project> _selectedProject;   // 当前选择的目标活动
     private MutableLiveData<Activity> _selectedActivity; // 当前选择的活动
-    private MutableLiveData<Integer> _activityTotalTime;  // Total timer count number
-    private MutableLiveData<Integer> _timeCounter;      // Countdown timer
+    private MutableLiveData<Long> _activityTotalTime;  // Total timer count number
+    private MutableLiveData<Long> _timeCounter;      // Countdown timer
 
     private int selectedProjectId, selectedActivityId;
     private Project dummyProject;
@@ -113,7 +113,7 @@ public class MainViewModel extends AndroidViewModel {
         mState.set(MainViewModel.KEY_ACTIVITY, activity.getId());
     }
 
-    public MutableLiveData<Integer> getActivityTotalTime() {
+    public MutableLiveData<Long> getActivityTotalTime() {
         if (null == _activityTotalTime) {
             _activityTotalTime = new MutableLiveData<>();
             _activityTotalTime.setValue(getSelectedActivity().getValue().getTotalTime());
@@ -121,14 +121,14 @@ public class MainViewModel extends AndroidViewModel {
         return _activityTotalTime;
     }
 
-    public void setActivityTotalTime(Integer actTime) {
+    public void setActivityTotalTime(Long actTime) {
         if (null == _activityTotalTime) {
             _activityTotalTime = new MutableLiveData<>();
         }
         _activityTotalTime.postValue(actTime);
     }
 
-    public MutableLiveData<Integer> getTimeCounter() {
+    public MutableLiveData<Long> getTimeCounter() {
         if (null == _timeCounter) {
             _timeCounter = new MutableLiveData<>();
             _timeCounter.setValue(getSelectedActivity().getValue().getTotalTime()); //TODO: Check reasonable?
@@ -136,7 +136,7 @@ public class MainViewModel extends AndroidViewModel {
         return _timeCounter;
     }
 
-    public void setTimeCounter(Integer timeCount) {
+    public void setTimeCounter(Long timeCount) {
         if (null == _timeCounter) {
             _timeCounter = new MutableLiveData<>();
         }
@@ -151,7 +151,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void countdown() {
-        int counter = _timeCounter.getValue();
+        long counter = _timeCounter.getValue();
         if (counter > 0) {
             _timeCounter.postValue(counter - 1);
         }

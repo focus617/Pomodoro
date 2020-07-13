@@ -8,6 +8,9 @@
         <variable
             name="model"
             type="com.example.pomodoro.viewModel.MainViewModel" />
+        <variable
+            name="fragmentModel"
+            type="com.example.pomodoro.ui.notifications.CountDownViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +40,7 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="2"
-            android:text="@{String.valueOf(model.timeCounter/ 60 / 60)}"
+            android:text="@{String.valueOf(fragmentModel.getCurrentTime()/ 60 / 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
@@ -67,7 +70,7 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="2"
-            android:text="@{String.valueOf((model.timeCounter/60) % 60)}"
+            android:text="@{String.valueOf((fragmentModel.getCurrentTime()/60) % 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"
@@ -96,7 +99,7 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="2"
-            android:text="@{String.valueOf(model.timeCounter % 60)}"
+            android:text="@{String.valueOf(fragmentModel.getCurrentTime() % 60)}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/notification_clock_text_size"
             app:layout_constraintBottom_toTopOf="@+id/guideline10"

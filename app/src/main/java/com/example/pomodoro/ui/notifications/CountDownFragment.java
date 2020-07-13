@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,22 +24,16 @@ import com.example.pomodoro.databinding.FragmentCountdownBinding;
 import com.example.pomodoro.viewModel.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 
-import java.util.List;
-import java.util.TimerTask;
-
 import timber.log.Timber;
 
 public class CountDownFragment extends Fragment {
 
-    private static final int MSG_WHAT_TIME_IS_UP = 1;
-    private static final int MSG_WHAT_TIME_TICK = 2;
-
     private MainViewModel mModel;
     private FragmentCountdownBinding mBinding;
+    private CountDownViewModel mCountDownViewModel;
 
     private Activity mActivity;
-    private TimerTask mTimerTask = null;
-    private LifeObserverTimer mTimer;
+    //private LifeObserverTimer mTimer;
     private MediaPlayer mMediaPlayer;
 
 
@@ -53,11 +46,16 @@ public class CountDownFragment extends Fragment {
                 new SavedStateViewModelFactory(requireActivity().getApplication(), this))
                 .get(MainViewModel.class);
 
+        // Get the Fragment ViewModel.
+        mCountDownViewModel =  new ViewModelProvider(requireActivity(),
+                new SavedStateViewModelFactory(requireActivity().getApplication(),this))
+                .get(CountDownViewModel.class);
+
         //Get current activity
         mActivity = mModel.getSelectedActivity().getValue();
 
-        // Create a Timer with lifecycle Observer func
-        mTimer = new LifeObserverTimer(this.getLifecycle());
+/*        // Create a Timer with lifecycle Observer func
+        mTimer = new LifeObserverTimer(this.getLifecycle());*/
     }
 
     @Override
@@ -68,26 +66,58 @@ public class CountDownFragment extends Fragment {
         Toast.makeText(getActivity(), String.format("CountDown Fragment:" +
                 mModel.getSelectedActivity().getValue().getTitle()), Toast.LENGTH_SHORT).show();
 
+
         // Databinding
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_countdown, container, false);
         mBinding.setModel(mModel);
+        mBinding.setFragmentModel(mCountDownViewModel);
         mBinding.setLifecycleOwner(getViewLifecycleOwner());
 
         // Create the observer which updates the UI.
-        final Observer<Integer> observer = new Observer<Integer>() {
+        final Observer<Long> observer = new Observer<Long>() {
             @Override
-            public void onChanged(@Nullable Integer timecount) {
-                // 因为使用了Databinding，就不需要每秒手动更新UI了。
-                int alltime = mModel.getActivityTotalTime().getValue();
-                int progress = timecount * 100 / alltime;
-                mBinding.progressCircular.setProgress(progress);
+            public void onChanged(@Nullable Long timecount) {
+                // 因为使用了Databinding，就不需要每秒手动更新时分秒了。
+                mBinding.progressCircular.setProgress(mCountDownViewModel.progress.getValue());
             }
         };
-
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mModel.getTimeCounter().observe(getViewLifecycleOwner(), observer);
+        //mModel.getTimeCounter().observe(getViewLifecycleOwner(), observer);
+        mCountDownViewModel.getCurrentTime().observe(getViewLifecycleOwner(),observer);
 
+        // Create the observer for TimeUp Event.
+        final Observer<Boolean> observerTimeUp = new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean hasTimeUp) {
+                // TODO：如果定时到达，启动提醒Dialog
+                if(hasTimeUp) {
+                    Timber.d("Time is Up!");
 
+                    mMediaPlayer = MediaPlayer.create(getContext(), R.raw.music);
+                    mMediaPlayer.start();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(R.string.timeup_dialog_title);
+                    builder.setMessage(R.string.timeup_dialog_message);
+                    builder.setNegativeButton(R.string.dialog_quit, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Timber.d("AlertDialog.onCancel: ");
+                            mMediaPlayer.stop();
+                            mMediaPlayer.release();
+                            NavController navController = Navigation.findNavController(getView());
+                            navController.popBackStack();
+                        }
+                    });
+                    builder.show();
+
+                    mBinding.btnReset.setVisibility(View.VISIBLE);
+                    mBinding.btnResume.setVisibility(View.GONE);
+                    mBinding.btnPause.setVisibility(View.GONE);
+                }
+            }
+        };
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        mCountDownViewModel.eventTimeUp.observe(getViewLifecycleOwner(), observerTimeUp);
 
         mBinding.btnStart.setVisibility(View.GONE);
         mBinding.btnPause.setVisibility(View.VISIBLE);
@@ -98,7 +128,9 @@ public class CountDownFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                stopTimer();
+                //stopTimer();
+                mCountDownViewModel.onPauseTimer();
+
                 mBinding.btnPause.setVisibility(View.GONE);
                 mBinding.btnResume.setVisibility(View.VISIBLE);
             }
@@ -108,7 +140,9 @@ public class CountDownFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                startTimer();
+                //startTimer();
+                mCountDownViewModel.onResumeTimer();
+
                 mBinding.btnPause.setVisibility(View.VISIBLE);
                 mBinding.btnResume.setVisibility(View.GONE);
             }
@@ -118,22 +152,22 @@ public class CountDownFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                stopTimer();
-                mModel.resetTimeCounter(mActivity);
-                startTimer();
+
+                mCountDownViewModel.onResetTimer();
 
                 mBinding.btnResume.setVisibility(View.GONE);
                 mBinding.btnPause.setVisibility(View.VISIBLE);
             }
         });
 
-        startTimer();
+        //startTimer();
+        mCountDownViewModel.onStartTimer(mActivity.getTotalTime());
 
         return mBinding.getRoot();
     }
 
     // TODO: move allTimeCount into a service, in order to avoid the fragment lifecycle impact.
-    private void startTimer() {
+/*    private void startTimer() {
         Timber.d("startTimer: ");
 
         if (mTimerTask == null) {
@@ -164,34 +198,34 @@ public class CountDownFragment extends Fragment {
             // This is what initially starts the timer
             mTimer.schedule(mTimerTask, 1000, 1000);
         }
-    }
+    }*/
 
-    private void stopTimer() {
+/*    private void stopTimer() {
         Timber.d("stopTimer: ");
 
         if (mTimerTask != null) {
             mTimerTask.cancel();
             mTimerTask = null;
         }
-    }
+    }*/
 
     // 因为 TimerTask在一个线程里面，需要使用Handler通知 Activity 来更新计时器UI
     // Note that the Thread the handler runs on is determined by a class called Looper.
     // In this case, no looper is defined, and it defaults to the main or UI thread.
-    private Handler handler = new Handler() {
+/*    private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_WHAT_TIME_TICK:
                     // 因为使用了Observed LiveData，就不需要每秒手动更新UI了。
-/*                    int timecount = mModel.getTimeCounter().getValue();
+*//*                    int timecount = mModel.getTimeCounter().getValue();
                     int alltime = mModel.getActivityTotalTime().getValue();
                     int progress = timecount * 100 / alltime;
-                    mBinding.progressCircular.setProgress(progress);*/
+                    mBinding.progressCircular.setProgress(progress);*//*
                     break;
 
                 case MSG_WHAT_TIME_IS_UP:
-                    mMediaPlayer = MediaPlayer.create(getContext(), R.raw.music);
+*//*                    mMediaPlayer = MediaPlayer.create(getContext(), R.raw.music);
                     mMediaPlayer.start();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle(R.string.timeup_dialog_title);
@@ -210,7 +244,7 @@ public class CountDownFragment extends Fragment {
 
                     mBinding.btnReset.setVisibility(View.VISIBLE);
                     mBinding.btnResume.setVisibility(View.GONE);
-                    mBinding.btnPause.setVisibility(View.GONE);
+                    mBinding.btnPause.setVisibility(View.GONE);*//*
                     break;
 
                 default:
@@ -219,13 +253,13 @@ public class CountDownFragment extends Fragment {
         }
 
         ;
-    };
+    };*/
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Timber.d("onDestroy: ");
-        mTimer.cancel();
+        //mTimer.cancel();
     }
 
 }

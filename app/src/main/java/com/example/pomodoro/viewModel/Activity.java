@@ -28,7 +28,7 @@ public class Activity {
     @ColumnInfo(name = "imageID")
     private int imageId;
     @ColumnInfo(name = "totalTime")
-    private int totalTime;
+    private long totalTime;     /* 定时时间，单位：秒 */
     @ColumnInfo(name = "priority")
     private int priority;       /* 显示的顺序 */
     @ColumnInfo(name = "createTime")
@@ -37,7 +37,7 @@ public class Activity {
     /**
      * Room会使用这个构造器来存储数据，也就是当你从表中得到 Activity对象时候，Room会使用这个构造器
      */
-    public Activity(int id, String title, int imageId, int totalTime, int priority, long createTime) {
+    public Activity(int id, String title, int imageId, long totalTime, int priority, long createTime) {
         this.id = id;
         this.title = title;
         this.imageId = imageId;
@@ -51,7 +51,7 @@ public class Activity {
      * 同样，@Ignore标签还可用于字段，使用@Ignore标签标记过的字段，Room不会持久化该字段的数据
      */
     @Ignore
-    public Activity(String title, int imageId, int totalTime) {
+    public Activity(String title, int imageId, long totalTime) {
         this.title = title;
         this.imageId = imageId;
         this.totalTime = totalTime;
@@ -87,11 +87,11 @@ public class Activity {
         this.priority = priority;
     }
 
-    public int getTotalTime() {
+    public long getTotalTime() {
         return totalTime;
     }
 
-    public void setTotalTime(int totalTime) {
+    public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
     }
 

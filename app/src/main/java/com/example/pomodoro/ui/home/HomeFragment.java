@@ -2,6 +2,13 @@ package com.example.pomodoro.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,17 +21,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.pomodoro.R;
-import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.database.Project;
+import com.example.pomodoro.viewModel.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -35,7 +34,6 @@ import java.util.List;
  * A fragment representing a list of Items.
  */
 public class HomeFragment extends Fragment {
-    private static final String TAG = "ItemFragment";
 
     private MainViewModel mModel;                 // ViewModel
     private ProjectRecyclerViewAdapter mAdapter;  // Adapter of recyclerView for projects
@@ -89,10 +87,9 @@ public class HomeFragment extends Fragment {
         final Observer<List<Project>> observer = new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projectList) {
-                mAdapter.setProjectList(projectList);
+                mAdapter.submitList(projectList);
             }
         };
-
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         mModel.getPrjListLive().observe(getViewLifecycleOwner(), observer);
 

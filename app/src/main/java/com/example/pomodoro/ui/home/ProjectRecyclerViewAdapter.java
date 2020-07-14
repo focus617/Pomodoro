@@ -1,57 +1,47 @@
 package com.example.pomodoro.ui.home;
 
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.pomodoro.R;
-import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.database.Project;
+import com.example.pomodoro.viewModel.MainViewModel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import timber.log.Timber;
 
-public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecyclerViewAdapter.ViewHolder> {
-    private static final String TAG = "PrjRecyclerViewAdapter";
+public class ProjectRecyclerViewAdapter
+        extends ListAdapter<Project, ProjectRecyclerViewAdapter.ViewHolder> {
 
     private MainViewModel viewModel;
-    private List<Project> mValues = new ArrayList<>();  // 避免空指针
 
     public ProjectRecyclerViewAdapter(MainViewModel viewModel) {
+        super(new ProjectDiffCallback());
         this.viewModel = viewModel;
     }
 
     //Interface of Adapter
-    public void setProjectList(List<Project> datas) {
-        mValues = datas;
-
-        // Update the UI when source changed.
-        notifyDataSetChanged();
-    }
-
     public void removeItem(int position) {
-        Project prj = mValues.get(position);
+        Project prj = getItem(position);
         viewModel.deleteProjects(prj);
-        notifyItemRemoved(position);
+        removeItem(position);
     }
 
     public void swapItem(int from, int to) {
-        Collections.swap(mValues, from, to);
-        notifyItemMoved(from, to);
+        swapItem(from, to);
     }
 
     // Adjust priority of each project
     public void adjustPriority(){
-        for (int i = 0; i < mValues.size(); i++) {
-            Project prj = mValues.get(i);
+        for (int i = 0; i < getItemCount(); i++) {
+            Project prj = getItem(i);
             prj.setPriority(i+1);
             viewModel.updateProjects(prj);
         }
@@ -72,7 +62,7 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
                 viewModel.setSelectedProject(holder.mItem);
 
                 //Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onClick: ");
+                Timber.d("onClick: ");
 
                 // Navigate to NotificationFragment
                 NavDirections action = HomeFragmentDirections.actionNavigationHomeToNavigationNotifications();
@@ -85,13 +75,9 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Project project = mValues.get(position);
+        //Project project = mValues.get(position);
+        Project project = getItem(position);
         holder.bind(project);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mValues.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

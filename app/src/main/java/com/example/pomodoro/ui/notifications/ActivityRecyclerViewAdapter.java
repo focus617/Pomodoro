@@ -13,6 +13,8 @@ import com.example.pomodoro.R;
 import com.example.pomodoro.database.Activity;
 import com.example.pomodoro.viewModel.MainViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,13 +63,7 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_activity, parent, false);
-        //创建Activity卡片  参数:  布局，组件组，是否是根节点
-
-        final ActivityRecyclerViewAdapter.ViewHolder holder = new ActivityRecyclerViewAdapter.ViewHolder(itemView);
-
-        return holder;
+        return ViewHolder.from(parent);
     }
 
     @Override
@@ -90,12 +86,21 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         public Activity mItem;
         public ActivityRecyclerViewAdapter mAdapter;
 
-        public ViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
             mView = view;
             view.setOnClickListener(this);
             mButton = (Button) view.findViewById(R.id.btnAction);
             mButton.setOnClickListener(this);
+        }
+
+        @NotNull
+        public static ViewHolder from(@NonNull ViewGroup parent) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_activity, parent, false);
+            //创建Activity卡片  参数:  布局，组件组，是否是根节点
+
+            return new ViewHolder(view);
         }
 
         public String getText() {

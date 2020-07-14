@@ -69,9 +69,7 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                Project prj = mValues.get(position);
-                viewModel.setSelectedProject(prj);
+                viewModel.setSelectedProject(holder.mItem);
 
                 //Toast.makeText(v.getContext(), "你点击了Item: "+ prj.getTitle(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: ");
@@ -87,9 +85,8 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mImageView.setImageResource(mValues.get(position).getImageId());
-        holder.mTitleView.setText(mValues.get(position).getTitle());
+        Project project = mValues.get(position);
+        holder.bind(project);
     }
 
     @Override
@@ -108,6 +105,12 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecy
             mView = view;
             mImageView = (ImageView) view.findViewById(R.id.item_image);
             mTitleView = (TextView) view.findViewById(R.id.item_title);
+        }
+
+        public void bind(Project item) {
+            mItem = item;
+            mImageView.setImageResource(item.getImageId());
+            mTitleView.setText(item.getTitle());
         }
 
         @Override

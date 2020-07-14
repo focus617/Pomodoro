@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,8 +19,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.pomodoro.R;
-import com.example.pomodoro.databinding.FragmentCountdownBinding;
 import com.example.pomodoro.database.Activity;
+import com.example.pomodoro.databinding.FragmentCountdownBinding;
 import com.example.pomodoro.viewModel.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 

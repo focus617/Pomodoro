@@ -12,6 +12,7 @@ public class MyRepository {
     private LiveData<List<Activity>> actListLive;
     private ProjectDAO projectDao;
     private ActivityDAO activityDao;
+    private RecordDao recordDao;
 
     public MyRepository(Context context) {
         MyDatabase myDatabase = MyDatabase.getDatabase(context.getApplicationContext());
@@ -19,6 +20,7 @@ public class MyRepository {
         prjListLive = projectDao.getAllProjectsLive();
         activityDao = myDatabase.getActivityDao();
         actListLive = activityDao.getAllActivitiesLive();
+        recordDao = myDatabase.getRecordDao();
     }
 
     // Room在单独的线程上执行所有查询。

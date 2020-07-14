@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class DatabaseTest {
+class DatabaseTestKotlin {
     private lateinit var db: MyDatabase
     private lateinit var projectDao: ProjectDAO
 

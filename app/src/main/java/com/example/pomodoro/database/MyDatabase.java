@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-
 @Database(entities = {Project.class, Activity.class}, version = 1,exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
     // volatile: make sure the value of INSTANCE is always up-to-date

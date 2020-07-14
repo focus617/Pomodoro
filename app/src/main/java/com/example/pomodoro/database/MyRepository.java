@@ -27,7 +27,7 @@ public class MyRepository {
         return prjListLive;
     }
 
-    public Project getProjectById(int id) {return projectDao.getProjectById(id);}
+    public Project getProjectById(int id) {return projectDao.getById(id);}
 
     public void insertProjects(Project...projects){
         new InsertAsyncTask(projectDao).execute(projects);
@@ -54,7 +54,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Project... projects) {
-            projectDAO.insertProject(projects);
+            projectDAO.insert(projects);
             return null;
         }
     }
@@ -68,7 +68,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Project... projects) {
-            projectDAO.updateProject(projects);
+            projectDAO.update(projects);
             return null;
         }
     }
@@ -97,7 +97,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            projectDAO.deleteAllProjects();
+            projectDAO.clear();
             return null;
         }
     }
@@ -109,7 +109,7 @@ public class MyRepository {
         return actListLive;
     }
 
-    public Activity getActivityById(int id) {return activityDao.getActivityById(id);}
+    public Activity getActivityById(int id) {return activityDao.getById(id);}
 
     public void insertActivities(Activity...activities){
         new InsertAsyncTask2(activityDao).execute(activities);
@@ -136,7 +136,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Activity... activities) {
-            activityDao.insertActivity(activities);
+            activityDao.insert(activities);
             return null;
         }
     }
@@ -150,7 +150,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Activity... activities) {
-            activityDao.updateActivity(activities);
+            activityDao.update(activities);
             return null;
         }
     }
@@ -164,7 +164,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Activity... activities) {
-            activityDao.deleteActivity(activities);
+            activityDao.delete(activities);
             return null;
         }
     }
@@ -179,7 +179,7 @@ public class MyRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            activityDao.deleteAllActivities();
+            activityDao.clear();
             return null;
         }
     }

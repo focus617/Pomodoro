@@ -12,19 +12,19 @@ import java.util.List;
 @Dao // Database Access Object
 public interface ActivityDAO {
     @Insert
-    void insertActivity(Activity... activities);
+    void insert(Activity... activities);
 
     @Update
-    void  updateActivity(Activity... activities);
+    void update(Activity... activities);
 
     @Delete
-    void  deleteActivity(Activity... activities);
+    void delete(Activity... activities);
 
     @Query("SELECT * FROM ACTIVITY WHERE id = :id")
-    Activity getActivityById(int id);
+    Activity getById(int id);
 
     @Query("DELETE FROM ACTIVITY")
-    void deleteAllActivities();
+    void clear();
 
     @Query("SELECT * FROM ACTIVITY ORDER BY priority")
     LiveData<List<Activity>> getAllActivitiesLive();   //当Room查询返回时LiveData，将自动在后台线程上异步运行。

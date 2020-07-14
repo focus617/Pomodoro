@@ -17,7 +17,7 @@ interface RecordDao {
     fun update(record: ActivityRecord)
 
     @Query("SELECT * from activity_record_table WHERE Id = :key")
-    fun getRecordById(key: Long): ActivityRecord?
+    fun getById(key: Long): ActivityRecord?
 
     @Query("DELETE FROM activity_record_table")
     fun clear()

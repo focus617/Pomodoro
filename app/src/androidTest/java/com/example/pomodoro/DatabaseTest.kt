@@ -1,0 +1,49 @@
+package com.example.pomodoro
+
+import androidx.room.Room
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.example.pomodoro.database.MyDatabase
+import com.example.pomodoro.database.Project
+import com.example.pomodoro.database.ProjectDAO
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.io.IOException
+
+@RunWith(AndroidJUnit4::class)
+class DatabaseTest {
+    private lateinit var db: MyDatabase
+    private lateinit var projectDao: ProjectDAO
+
+
+    @Before
+    fun createDb() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        // Using an in-memory database because the information stored here disappears when the
+        // process is killed.
+        db = Room.inMemoryDatabaseBuilder(context, MyDatabase::class.java)
+                // Allowing main thread queries, just for testing.
+                .allowMainThreadQueries()
+                .build()
+        projectDao = db.projectDao
+    }
+
+    @After
+    @Throws(IOException::class)
+    fun closeDb() {
+        db.close()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetProject() {
+        var prj : Project ? = Project("番茄工作", R.drawable.read_book)
+        prj?.setId(1)
+        projectDao.insert(prj)
+        val project = projectDao.getById(1)
+        assertEquals(project?.title, "番茄工作")
+    }
+}

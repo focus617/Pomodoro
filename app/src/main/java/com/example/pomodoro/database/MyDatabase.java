@@ -12,7 +12,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Project.class, Activity.class}, version = 1,exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
-    private static MyDatabase INSTANCE;
+    // volatile: make sure the value of INSTANCE is always up-to-date
+    //           and the same to all execution threads.
+    private static volatile MyDatabase INSTANCE = null;
 
     // create singleton database
     static synchronized MyDatabase getDatabase(Context context){
@@ -23,6 +25,7 @@ public abstract class MyDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
     public abstract ProjectDAO getProjectDao();
 
     public abstract ActivityDAO getActivityDao();

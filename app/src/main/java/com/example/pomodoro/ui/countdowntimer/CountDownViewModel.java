@@ -157,4 +157,11 @@ public class CountDownViewModel extends ViewModel {
         startTimer(mCountDown_Total_Time);
     }
 
+    // 8. Stop the timer
+    public void onStopTimer() {
+        Timber.d("onStopTimer: ");
+        if (mTimer != null)
+            mTimer.cancel();
+    }
+
 }

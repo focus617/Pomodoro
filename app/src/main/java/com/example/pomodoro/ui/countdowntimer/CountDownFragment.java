@@ -27,7 +27,6 @@ import timber.log.Timber;
 
 public class CountDownFragment extends Fragment {
 
-    private MainViewModel mModel;
     private FragmentCountdownBinding mBinding;
     private CountDownViewModel mCountDownViewModel;
 
@@ -44,8 +43,9 @@ public class CountDownFragment extends Fragment {
         int activity_id = CountDownFragmentArgs.fromBundle(getArguments()).getActivityId();
         Timber.d("activityID = "+activity_id);
 
+        //TODO: remove MainViewModel and create MyRepository in CountDownViewModel.
         // Get the ViewModel.
-        mModel = new ViewModelProvider(requireActivity(),
+        MainViewModel mModel = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(), this))
                 .get(MainViewModel.class);
 

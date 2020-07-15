@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mCountDownViewModel.onStopTimer();
                         navController.popBackStack();
                     }
                 });
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_positive_message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mCountDownViewModel.onStopTimer();
                         navController.popBackStack();
                     }
                 });

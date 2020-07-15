@@ -62,9 +62,9 @@ public class ProjectRecyclerViewAdapter
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ProjectRecyclerViewAdapter mAdapter;
-        public ListItemProjectBinding mBinding;
-        public Project mItem;
+        private ProjectRecyclerViewAdapter mAdapter;
+        private ListItemProjectBinding mBinding;
+        private Project mItem;
 
         private ViewHolder(ListItemProjectBinding binding) {
             super(binding.getRoot());

@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/fab_bottom_margin"
-        android:layout_marginRight="@dimen/fab_right_margin"
+        android:layout_marginEnd="@dimen/fab_right_margin"
         android:autofillHints="@string/add_alarm"
         app:srcCompat="@android:drawable/ic_menu_add" />
 

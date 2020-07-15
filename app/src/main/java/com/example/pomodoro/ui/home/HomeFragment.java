@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
         final Observer<List<Project>> observer = new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projectList) {
-                mAdapter.submitList(projectList);
+                mAdapter.setProjectList(projectList);
             }
         };
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
                 mAdapter.swapItem(from, to);
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
-                //adapter.notifyItemMoved(from, to);
+                //mAdapter.notifyItemMoved(from, to);
 
                 // 返回true表示item移到了目标位置
                 return true;
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment {
                 mAdapter.removeItem(pos);
 
                 // 通知Adapter更新，此动作应是Adapter的内生逻辑
-                //adapter.notifyItemRemoved(pos);
+                //mAdapter.notifyItemRemoved(pos);
             }
 
             //当用户操作完毕后，记录项目清单的顺序

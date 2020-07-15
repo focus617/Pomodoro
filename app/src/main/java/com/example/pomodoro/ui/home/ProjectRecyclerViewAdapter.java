@@ -15,33 +15,44 @@ import com.example.pomodoro.viewModel.MainViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import timber.log.Timber;
 
-public class ProjectRecyclerViewAdapter
-        extends ListAdapter<Project, ProjectRecyclerViewAdapter.ViewHolder> {
+public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectRecyclerViewAdapter.ViewHolder> {
 
     private MainViewModel viewModel;
+    private List<Project> mValues = new ArrayList<>();  // 避免空指针
 
     public ProjectRecyclerViewAdapter(MainViewModel viewModel) {
-        super(new ProjectDiffCallback());
         this.viewModel = viewModel;
     }
 
     //Interface of Adapter
+    public void setProjectList(List<Project> datas) {
+        mValues = datas;
+
+        // Update the UI when source changed.
+        notifyDataSetChanged();
+    }
+
     public void removeItem(int position) {
-        Project prj = getItem(position);
+        Project prj = mValues.get(position);
         viewModel.deleteProjects(prj);
-        removeItem(position);
+        notifyItemRemoved(position);
     }
 
     public void swapItem(int from, int to) {
-        swapItem(from, to);
+        Collections.swap(mValues, from, to);
+        notifyItemMoved(from, to);
     }
 
     // Adjust priority of each project
     public void adjustPriority(){
-        for (int i = 0; i < getItemCount(); i++) {
-            Project prj = getItem(i);
+        for (int i = 0; i < mValues.size(); i++) {
+            Project prj = mValues.get(i);
             prj.setPriority(i+1);
             viewModel.updateProjects(prj);
         }
@@ -56,9 +67,12 @@ public class ProjectRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        //Project project = mValues.get(position);
-        Project project = getItem(position);
-        holder.bind(project, this);
+        holder.bind(mValues.get(position), this);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mValues.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -88,7 +102,7 @@ public class ProjectRecyclerViewAdapter
         @NotNull
         @Override
         public String toString() {
-            return super.toString() + " '" + mBinding.itemTitle.getText() + "'";
+            return super.toString() + " '" + mItem.getTitle() + "'";
         }
 
         //添加点击事件

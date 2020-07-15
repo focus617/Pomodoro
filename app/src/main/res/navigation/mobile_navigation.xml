@@ -43,9 +43,13 @@
 
     <fragment
         android:id="@+id/navigation_countdown"
-        android:name="com.example.pomodoro.ui.notifications.CountDownFragment"
+        android:name="com.example.pomodoro.ui.countdowntimer.CountDownFragment"
         android:label="@string/title_countdown"
-        tools:layout="@layout/fragment_countdown" />
+        tools:layout="@layout/fragment_countdown" >
+        <argument
+            android:name="activityId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/action_settings"

@@ -1,4 +1,4 @@
-package com.example.pomodoro.ui.notifications;
+package com.example.pomodoro.ui.countdowntimer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,7 +21,6 @@ import androidx.navigation.Navigation;
 import com.example.pomodoro.R;
 import com.example.pomodoro.database.Activity;
 import com.example.pomodoro.databinding.FragmentCountdownBinding;
-import com.example.pomodoro.viewModel.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 import timber.log.Timber;
@@ -42,6 +41,9 @@ public class CountDownFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Timber.d("onCreate: ");
 
+        int activity_id = CountDownFragmentArgs.fromBundle(getArguments()).getActivityId();
+        Timber.d("activityID = "+activity_id);
+
         // Get the ViewModel.
         mModel = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(), this))
@@ -54,6 +56,7 @@ public class CountDownFragment extends Fragment {
 
         //Get current activity
         mActivity = mModel.getSelectedActivity().getValue();
+        mCountDownViewModel.set_currentActivity(mActivity);
 
 /*        // Create a Timer with lifecycle Observer func
         mTimer = new LifeObserverTimer(this.getLifecycle());*/
@@ -70,8 +73,7 @@ public class CountDownFragment extends Fragment {
 
         // Databinding
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_countdown, container, false);
-        mBinding.setModel(mModel);
-        mBinding.setFragmentModel(mCountDownViewModel);
+        mBinding.setModel(mCountDownViewModel);
         mBinding.setLifecycleOwner(getViewLifecycleOwner());
 
         // Create the observer which updates the UI.

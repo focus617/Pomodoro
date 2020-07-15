@@ -1,4 +1,4 @@
-package com.example.pomodoro.ui.notifications;
+package com.example.pomodoro.ui.countdowntimer;
 
 import android.util.Log;
 

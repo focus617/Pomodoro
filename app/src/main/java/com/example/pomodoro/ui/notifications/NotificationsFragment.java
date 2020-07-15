@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pomodoro.R;
 import com.example.pomodoro.databinding.FragmentNotificationsBinding;
 import com.example.pomodoro.database.Activity;
-import com.example.pomodoro.viewModel.CountDownViewModel;
+import com.example.pomodoro.ui.countdowntimer.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 import com.example.pomodoro.database.Project;
 
@@ -293,7 +292,9 @@ public class NotificationsFragment extends Fragment {
         Calendar currentTime = Calendar.getInstance();
         startTimeStamp = currentTime.getTimeInMillis();
 
-        NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationCountdown();
+        NavDirections action = NotificationsFragmentDirections
+                .actionNavigationNotificationsToNavigationCountdown(activity.getId());
+
         Navigation.findNavController(mBinding.btnStart).navigate(action);
     }
 

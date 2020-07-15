@@ -15,7 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.pomodoro.databinding.ActivityMainBinding;
-import com.example.pomodoro.viewModel.CountDownViewModel;
+import com.example.pomodoro.ui.countdowntimer.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {

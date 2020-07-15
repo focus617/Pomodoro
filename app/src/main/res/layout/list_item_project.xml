@@ -40,7 +40,8 @@
                 app:layout_constraintEnd_toStartOf="@id/item_title"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:projectImage="@{project}"/>
 
             <TextView
                 android:id="@+id/item_title"
@@ -53,7 +54,8 @@
                 app:layout_constraintEnd_toStartOf="@id/item_icon"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@id/item_image"
-                app:layout_constraintTop_toTopOf="@+id/item_image" />
+                app:layout_constraintTop_toTopOf="@+id/item_image"
+                app:projectTitle="@{project}"/>
 
             <ImageView
                 android:id="@+id/item_icon"

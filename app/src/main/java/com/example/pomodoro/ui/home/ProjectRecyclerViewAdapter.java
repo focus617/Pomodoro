@@ -47,6 +47,7 @@ public class ProjectRecyclerViewAdapter
         }
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //创建卡片  参数:  布局，组件组，是否是根节点
@@ -80,10 +81,11 @@ public class ProjectRecyclerViewAdapter
         public void bind(Project item, ProjectRecyclerViewAdapter adapter) {
             mAdapter = adapter;
             mItem = item;
-            mBinding.itemImage.setImageResource(item.getImageId());
-            mBinding.itemTitle.setText(item.getTitle());
+            mBinding.setProject(item);
+            mBinding.executePendingBindings();
         }
 
+        @NotNull
         @Override
         public String toString() {
             return super.toString() + " '" + mBinding.itemTitle.getText() + "'";
@@ -93,12 +95,14 @@ public class ProjectRecyclerViewAdapter
         public void onClick(View v) {
             mAdapter.viewModel.setSelectedProject(mItem);
             //Toast.makeText(v.getContext(), "你点击了Item: "+ mItem.getTitle(), Toast.LENGTH_SHORT).show();
-            Timber.d("onClick: "+mItem.getTitle());
+            Timber.d("onClick: %s", mItem.getTitle());
 
             // Navigate to NotificationFragment
             NavDirections action = HomeFragmentDirections.actionNavigationHomeToNavigationNotifications();
             Navigation.findNavController(v).navigate(action);
 
         }
+
     }
 }
+

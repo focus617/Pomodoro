@@ -2,7 +2,6 @@ package com.example.pomodoro;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +17,10 @@ import com.example.pomodoro.databinding.ActivityMainBinding;
 import com.example.pomodoro.ui.countdowntimer.CountDownViewModel;
 import com.example.pomodoro.viewModel.MainViewModel;
 
+import java.util.Objects;
+
+import timber.log.Timber;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
@@ -30,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // Get the ViewModel.
         mModel = new ViewModelProvider(this).get(MainViewModel.class);
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_notifications, R.id.navigation_dashboard)
                 .build();
-        Log.d(TAG, "onCreate: " + appBarConfiguration.toString());
+        Timber.d("onCreate: %s", appBarConfiguration.toString());
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         /* if quit from CountdownFragment */
-        if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
-            Log.d(TAG, "onSupportNavigateUp: nav_countdown");
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.navigation_countdown) {
+            Timber.d("onSupportNavigateUp: nav_countdown");
             /* 如果当前定时器尚未到期 */
             if (!mCountDownViewModel.getEventTimeUp().getValue()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -87,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
             }
             /* 如果正常到期 */
             else {
-                Log.d(TAG, "onSupportNavigateUp: normal exit");
+                Timber.d("onSupportNavigateUp: normal exit");
                 navController.popBackStack();
             }
         } else {
-            Log.d(TAG, "onSupportNavigateUp: other nav ");
+            Timber.d("onSupportNavigateUp: other nav ");
             //navController.navigateUp();
             NavigationUI.navigateUp(navController, mDrawerLayout);
         }
@@ -103,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
         final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         /* if quit from CountdownFragment */
-        if (navController.getCurrentDestination().getId() == R.id.navigation_countdown) {
-            Log.d(TAG, "onBackPressed: nav_countdown");
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.navigation_countdown) {
+            Timber.d("onBackPressed: nav_countdown");
             /* 如果当前定时器尚未到期 */
             if (!mCountDownViewModel.getEventTimeUp().getValue()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -127,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
             }
             /* 如果正常到期 */
             else {
-                Log.d(TAG, "onBackPressed: normal exit");
+                Timber.d("onBackPressed: normal exit");
                 super.onBackPressed();
             }
         } else {
-            Log.d(TAG, "onBackPressed: other nav ");
+            Timber.d("onBackPressed: other nav ");
             super.onBackPressed();
         }
 

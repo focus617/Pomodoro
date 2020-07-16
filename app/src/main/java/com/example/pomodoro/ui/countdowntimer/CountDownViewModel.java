@@ -1,20 +1,15 @@
 package com.example.pomodoro.ui.countdowntimer;
 
-import android.app.Application;
 import android.os.CountDownTimer;
 import android.text.format.DateUtils;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import com.example.pomodoro.R;
 import com.example.pomodoro.database.Activity;
 import com.example.pomodoro.database.MyRepository;
-import com.example.pomodoro.viewModel.MainViewModel;
 
 import timber.log.Timber;
 

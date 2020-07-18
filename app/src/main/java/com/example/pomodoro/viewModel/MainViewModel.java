@@ -3,6 +3,7 @@ package com.example.pomodoro.viewModel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,9 +22,11 @@ public class MainViewModel extends AndroidViewModel {
     final static String KEY_PROJECT = "Pomodoro_Project";
     final static String KEY_ACTIVITY = "Pomodoro_Activity";
 
-    private MutableLiveData<Project> _selectedProject;   // 当前选择的目标活动
-    private MutableLiveData<Activity> _selectedActivity; // 当前选择的活动
-    private MutableLiveData<Long> _activityTotalTime;  // Total timer count number
+    private MutableLiveData<Project> _selectedProject;   // 当前选择的目标
+    // 当前选择的活动
+    private MutableLiveData<Activity> _selectedActivity = new MutableLiveData<>();
+    // Total timer count number
+    private MutableLiveData<Long> _activityTotalTime= new MutableLiveData<>();
 
     private int selectedProjectId, selectedActivityId;
     private Project dummyProject;
@@ -31,6 +34,27 @@ public class MainViewModel extends AndroidViewModel {
 
     private MyRepository repository;
     private SavedStateHandle mState;    // Introduce ViewModel.SavedState
+
+    // LiveData to handle navigation to the selected activity
+    private MutableLiveData<Activity> _navigateToSelectedActivity = new MutableLiveData<>();
+    public LiveData<Activity> getNavigateToSelectedActivity() {
+        return _navigateToSelectedActivity;
+    }
+
+    /**
+     * When the activity is clicked, set the [_navigateToSelectedProperty] [MutableLiveData]
+     * @param activity The [Activity] that was clicked on.
+     */
+    public void displayCountDownFragment(Activity activity) {
+        _navigateToSelectedActivity.setValue(activity);
+    }
+
+    /**
+     * After the navigation has taken place, make sure _navigateToSelectedActivity is set to null
+     */
+    public void displayCountDownFragmentComplete() {
+        _navigateToSelectedActivity.setValue(null);
+    }
 
     public MainViewModel(@NonNull Application application, SavedStateHandle state) {
         super(application);
@@ -85,21 +109,10 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Activity> getSelectedActivity() {
-        Activity act;
 
-        if (null == _selectedActivity) {
-            // Introduce ViewModel.SavedState
-            int id = mState.get(MainViewModel.KEY_ACTIVITY);
-
-            if (id == 0) {
-                act = dummyActivity;
-            } else {
-                //TODO： act = repository.getActivityById(id);
-                act = dummyActivity;
-            }
-
-            _selectedActivity = new MutableLiveData<>();
-            _selectedActivity.setValue(act);
+        if (null == _selectedActivity.getValue()) {
+            // If none activity was selected
+            _selectedActivity.setValue(dummyActivity);
         }
         return _selectedActivity;
     }
@@ -109,16 +122,14 @@ public class MainViewModel extends AndroidViewModel {
             _selectedActivity = new MutableLiveData<>();
         }
         _selectedActivity.setValue(activity);
-        _activityTotalTime.setValue(activity.getTotalTime());
 
         // Introduce ViewModel.SavedState
         mState.set(MainViewModel.KEY_ACTIVITY, activity.getId());
     }
 
     public MutableLiveData<Long> getActivityTotalTime() {
-        if (null == _activityTotalTime) {
-            _activityTotalTime = new MutableLiveData<>();
-            _activityTotalTime.setValue(getSelectedActivity().getValue().getTotalTime());
+        if (null == _activityTotalTime.getValue()) {
+            _activityTotalTime.setValue(0L);
         }
         return _activityTotalTime;
     }

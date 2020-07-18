@@ -38,7 +38,6 @@ public class NotificationsFragment extends Fragment {
 
     private Project project;
     private Activity activity;
-    private long startTimeStamp, endTimeStamp;
 
     private MainViewModel mModel;
     private FragmentNotificationsBinding mBinding;
@@ -81,6 +80,27 @@ public class NotificationsFragment extends Fragment {
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         mModel.getActListLive().observe(getViewLifecycleOwner(), observer);
+
+
+        // Create the observer which launch the CountDownFragment.
+        mModel.getNavigateToSelectedActivity().observe(getViewLifecycleOwner(), new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                Timber.d("navigation observer");
+                if(null != mModel.getNavigateToSelectedActivity().getValue()){
+                    Activity act = mModel.getNavigateToSelectedActivity().getValue();
+                    Timber.d("Nav Observer: Act=%s", act.getTitle());
+
+                    NavDirections action = NotificationsFragmentDirections
+                            .actionNavigationNotificationsToNavigationCountdown(
+                                    mModel.getNavigateToSelectedActivity().getValue().getId());
+                    // Must find the NavController from the Fragment
+                    Navigation.findNavController(mBinding.btnStart).navigate(action);
+
+                }
+            }
+        });
+
 
         // Databinding
         mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_notifications,container, false);
@@ -151,8 +171,8 @@ public class NotificationsFragment extends Fragment {
         // 将touchHelper和recyclerView绑定
         touchHelper.attachToRecyclerView(mBinding.lvActivity);
 
-        activity = mModel.getSelectedActivity().getValue();
-        Timber.d("ActTotalTime="+mModel.getActivityTotalTime().getValue());
+/*        activity = mModel.getSelectedActivity().getValue();
+        Timber.d("ActTotalTime="+mModel.getActivityTotalTime().getValue());*/
 
 
         mBinding.btnStart.setOnClickListener(new View.OnClickListener() {
@@ -163,11 +183,14 @@ public class NotificationsFragment extends Fragment {
                         * 60 + Integer.parseInt(mBinding.etMin.getText().toString()) * 60
                         + Integer.parseInt(mBinding.etSec.getText().toString());
 
-                /* 修订定时值 */
-                activity.setTotalTime(totalTime);
-                mModel.getActivityTotalTime().setValue(totalTime);
+                /* 修订当前选择的Activity的定时值 */
+                mModel.getSelectedActivity().getValue().setTotalTime(totalTime);
+                mAdapter.notifyDataSetChanged();
+                mModel.getActivityTotalTime().setValue(totalTime);  // TODO: plan to remove
 
-                startCountDownTimer();
+                // Trigger the navigation to CountDownFragment
+                mModel.displayCountDownFragment(mModel.getSelectedActivity().getValue());
+
             }
         });
 
@@ -288,19 +311,5 @@ public class NotificationsFragment extends Fragment {
                 .parseInt(mBinding.etSec.getText().toString()) > 0));
     }
 
-    private void startCountDownTimer() {
-        Calendar currentTime = Calendar.getInstance();
-        startTimeStamp = currentTime.getTimeInMillis();
 
-        NavDirections action = NotificationsFragmentDirections
-                .actionNavigationNotificationsToNavigationCountdown(activity.getId());
-
-        Navigation.findNavController(mBinding.btnStart).navigate(action);
-    }
-
-    //TODO: 在此增加“添加 ActivityRecord”的功能
-    public void endCountDownTimer() {
-        Calendar currentTime = Calendar.getInstance();
-        endTimeStamp = currentTime.getTimeInMillis();
-    }
 }

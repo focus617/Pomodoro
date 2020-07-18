@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import java.util.Calendar;
 import java.util.ConcurrentModificationException;
 import java.util.Timer;
 
@@ -18,10 +19,14 @@ public class LifeObserverTimer extends Timer implements LifecycleObserver {
     public LifeObserverTimer(Lifecycle lifecycle) {
         lifecycle.addObserver(this);
     }
+    private long startTimeStamp, endTimeStamp;
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     void onCreate(LifecycleOwner owner){
         Timber.d("onCreate: ");
+
+        Calendar currentTime = Calendar.getInstance();
+        startTimeStamp = currentTime.getTimeInMillis();
 
     }
 
@@ -29,5 +34,10 @@ public class LifeObserverTimer extends Timer implements LifecycleObserver {
     void onDestroy(LifecycleOwner owner){
         Timber.d("onDestroy: ");
 
+        Calendar currentTime = Calendar.getInstance();
+        endTimeStamp = currentTime.getTimeInMillis();
+
+
+        //TODO: 在此增加“添加 ActivityRecord”的功能
     }
 }

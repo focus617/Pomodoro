@@ -74,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mCountDownViewModel.onStopTimer();
+
+                        // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                        mModel.displayCountDownFragmentComplete();
+
                         navController.popBackStack();
                     }
                 });
@@ -114,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mCountDownViewModel.onStopTimer();
+
+                        // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                        mModel.displayCountDownFragmentComplete();
+
                         navController.popBackStack();
                     }
                 });
@@ -129,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
             /* 如果正常到期 */
             else {
                 Timber.d("onBackPressed: normal exit");
+
+                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                mModel.displayCountDownFragmentComplete();
+                
                 super.onBackPressed();
             }
         } else {

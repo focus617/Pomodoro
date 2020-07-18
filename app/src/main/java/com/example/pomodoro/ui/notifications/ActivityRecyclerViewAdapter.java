@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "ActRecyclerViewAdapter";
 
@@ -112,7 +114,7 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
             timeLabel += String.format("%02d:", (totalTime/60)%60)
                        + String.format("%02d", totalTime % 60);
 
-            Log.d(TAG, "getText: "+titleLabel + "\n" + timeLabel);
+            //Timber.d("getText: " + titleLabel + "\n" + timeLabel);
             return titleLabel + "\n" + timeLabel;
         }
 
@@ -124,13 +126,15 @@ public class ActivityRecyclerViewAdapter extends RecyclerView.Adapter<ActivityRe
         @Override
         public void onClick(View v) {      //添加点击事件
             mAdapter.viewModel.setSelectedActivity(mItem);
+            mAdapter.viewModel.setActivityTotalTime(mItem.getTotalTime());
+
             // 改变 ItemView 的选中状态
             mAdapter.notifyItemChanged(mAdapter.selectedPos);
             mAdapter.selectedPos= getAdapterPosition();
             mAdapter.notifyItemChanged(mAdapter.selectedPos);
 
             //Toast.makeText(v.getContext(), "你点击了Item: " + mItem.getTitle(), Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "onClick: ");
+            Timber.d("onClick: %s", mItem.getTitle());
 
         }
     }

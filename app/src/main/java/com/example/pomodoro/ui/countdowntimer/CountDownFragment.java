@@ -41,7 +41,7 @@ public class CountDownFragment extends Fragment {
         Timber.d("onCreate: ");
 
         int activity_id = CountDownFragmentArgs.fromBundle(getArguments()).getActivityId();
-        Timber.d("activityID = "+activity_id);
+        Timber.d("activityID = %d ",activity_id);
 
         //TODO: remove MainViewModel and create MyRepository in CountDownViewModel.
         // Get the ViewModel.

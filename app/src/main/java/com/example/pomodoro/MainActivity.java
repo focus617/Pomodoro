@@ -137,10 +137,6 @@ public class MainActivity extends AppCompatActivity {
             /* 如果正常到期 */
             else {
                 Timber.d("onBackPressed: normal exit");
-
-                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                mModel.displayCountDownFragmentComplete();
-                
                 super.onBackPressed();
             }
         } else {

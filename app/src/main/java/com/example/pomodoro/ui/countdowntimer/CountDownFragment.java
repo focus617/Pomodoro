@@ -28,6 +28,7 @@ import timber.log.Timber;
 public class CountDownFragment extends Fragment {
 
     private FragmentCountdownBinding mBinding;
+    private MainViewModel mModel;
     private CountDownViewModel mCountDownViewModel;
 
     private Activity mActivity;
@@ -45,7 +46,7 @@ public class CountDownFragment extends Fragment {
 
         //TODO: remove MainViewModel and create MyRepository in CountDownViewModel.
         // Get the ViewModel.
-        MainViewModel mModel = new ViewModelProvider(requireActivity(),
+        mModel = new ViewModelProvider(requireActivity(),
                 new SavedStateViewModelFactory(requireActivity().getApplication(), this))
                 .get(MainViewModel.class);
 
@@ -109,6 +110,9 @@ public class CountDownFragment extends Fragment {
                             mMediaPlayer.release();
                             NavController navController = Navigation.findNavController(getView());
                             navController.popBackStack();
+
+                            // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                            mModel.displayCountDownFragmentComplete();
                         }
                     });
                     builder.show();

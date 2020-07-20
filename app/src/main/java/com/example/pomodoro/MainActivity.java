@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.pomodoro.databinding.ActivityMainBinding;
 import com.example.pomodoro.ui.countdowntimer.CountDownViewModel;
+import com.example.pomodoro.ui.countdowntimer.MyViewModelFactory;
 import com.example.pomodoro.viewModel.MainViewModel;
 
 import java.util.Objects;
@@ -34,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the ViewModel.
+        // Get the Activity ViewModel.
         mModel = new ViewModelProvider(this).get(MainViewModel.class);
+
         // Get the Fragment ViewModel.
-        mCountDownViewModel =  new ViewModelProvider(this).get(CountDownViewModel.class);
+        MyViewModelFactory factory = new MyViewModelFactory(mModel.getRepository());
+        mCountDownViewModel =  new ViewModelProvider(this, factory)
+                .get(CountDownViewModel.class);
 
         //Databinding
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);

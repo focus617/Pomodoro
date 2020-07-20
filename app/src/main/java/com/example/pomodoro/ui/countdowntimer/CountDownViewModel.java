@@ -9,11 +9,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pomodoro.database.Activity;
-import com.example.pomodoro.database.MyRepository;
+import com.example.pomodoro.database.AppRepository;
 
 import timber.log.Timber;
 
 public class CountDownViewModel extends ViewModel {
+
     // Time when the game is over
     private final static Long DONE = 0L;
 
@@ -21,11 +22,25 @@ public class CountDownViewModel extends ViewModel {
     private final static Long ONE_SECOND = 1000L;
 
     // Database
-    private MyRepository repository;
+    private AppRepository mRepository;
 
     // Total time for the timer
     private Long mCountDown_Total_Time;
     private CountDownTimer mTimer;
+
+    public CountDownViewModel(AppRepository appRepository) {
+        Timber.d("CountDownViewModel created.");
+        this.mRepository = appRepository;
+        this._eventTimeUp.setValue(false);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        Timber.d("CountDownViewModel destroyed!");
+        if (mTimer != null)
+            mTimer.cancel();
+    }
 
     // private data
     private MutableLiveData<Activity> _currentActivity;
@@ -84,18 +99,7 @@ public class CountDownViewModel extends ViewModel {
             this.repository = new MyRepository(application);
             this._eventTimeUp.setValue(false);
         }*/
-    public CountDownViewModel() {
-        Timber.d("CountDownViewModel created.");
-        this._eventTimeUp.setValue(false);
-    }
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        Timber.d("CountDownViewModel destroyed!");
-        if (mTimer != null)
-            mTimer.cancel();
-    }
 
     private void startTimer(Long totalTime) {
         Timber.d("CountDownTimer start: TotalTime=" + DateUtils.formatElapsedTime(totalTime));

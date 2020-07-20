@@ -10,16 +10,16 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Project.class, Activity.class, Record.class}, version = 1,exportSchema = false)
-public abstract class MyDatabase extends RoomDatabase {
+public abstract class AppDatabase extends RoomDatabase {
     // volatile: make sure the value of INSTANCE is always up-to-date
     //           and the same to all execution threads.
-    private static volatile MyDatabase INSTANCE = null;
+    private static volatile AppDatabase INSTANCE = null;
 
     // create singleton database
-    static synchronized MyDatabase getDatabase(Context context){
+    static synchronized AppDatabase getDatabase(Context context){
         if (INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    MyDatabase.class,"Pomodoro")
+                    AppDatabase.class,"Pomodoro")
                     .build();
         }
         return INSTANCE;

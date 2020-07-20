@@ -51,8 +51,8 @@ public class CountDownFragment extends Fragment {
                 .get(MainViewModel.class);
 
         // Get the Fragment ViewModel.
-        mCountDownViewModel =  new ViewModelProvider(requireActivity(),
-                new SavedStateViewModelFactory(requireActivity().getApplication(),this))
+        MyViewModelFactory factory = new MyViewModelFactory(mModel.getRepository());
+        mCountDownViewModel =  new ViewModelProvider(requireActivity(), factory)
                 .get(CountDownViewModel.class);
 
         //Get current activity

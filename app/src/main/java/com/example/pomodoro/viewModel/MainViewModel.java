@@ -3,7 +3,6 @@ package com.example.pomodoro.viewModel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,7 +10,7 @@ import androidx.lifecycle.SavedStateHandle;
 
 import com.example.pomodoro.R;
 import com.example.pomodoro.database.Activity;
-import com.example.pomodoro.database.MyRepository;
+import com.example.pomodoro.database.AppRepository;
 import com.example.pomodoro.database.Project;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class MainViewModel extends AndroidViewModel {
     private Project dummyProject;
     private Activity dummyActivity;
 
-    private MyRepository repository;
+    private AppRepository repository;
     private SavedStateHandle mState;    // Introduce ViewModel.SavedState
 
     // LiveData to handle navigation to the selected activity
@@ -60,7 +59,7 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
         Timber.d("ViewModel Created");
 
-        this.repository = new MyRepository(application);
+        this.repository = new AppRepository(application);
         this.dummyProject = createDummyProject();
         this.dummyActivity = createDummyActivity();
 
@@ -83,6 +82,10 @@ public class MainViewModel extends AndroidViewModel {
         this.repository = null;
         this.dummyProject = null;
         this.dummyActivity = null;
+    }
+
+    public AppRepository getRepository() {
+        return repository;
     }
 
     public MutableLiveData<Project> getSelectedProject() {

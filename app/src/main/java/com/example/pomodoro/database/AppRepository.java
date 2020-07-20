@@ -7,20 +7,20 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class MyRepository {
+public class AppRepository {
     private LiveData<List<Project>> prjListLive;
     private LiveData<List<Activity>> actListLive;
     private ProjectDAO projectDao;
     private ActivityDAO activityDao;
     private RecordDao recordDao;
 
-    public MyRepository(Context context) {
-        MyDatabase myDatabase = MyDatabase.getDatabase(context.getApplicationContext());
-        projectDao = myDatabase.getProjectDao();
+    public AppRepository(Context context) {
+        AppDatabase appDatabase = AppDatabase.getDatabase(context.getApplicationContext());
+        projectDao = appDatabase.getProjectDao();
         prjListLive = projectDao.getAllProjectsLive();
-        activityDao = myDatabase.getActivityDao();
+        activityDao = appDatabase.getActivityDao();
         actListLive = activityDao.getAllActivitiesLive();
-        recordDao = myDatabase.getRecordDao();
+        recordDao = appDatabase.getRecordDao();
     }
 
     // Room在单独的线程上执行所有查询。

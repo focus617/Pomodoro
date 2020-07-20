@@ -3,7 +3,7 @@ package com.example.pomodoro
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.pomodoro.database.MyDatabase
+import com.example.pomodoro.database.AppDatabase
 import com.example.pomodoro.database.Project
 import com.example.pomodoro.database.ProjectDAO
 import org.junit.After
